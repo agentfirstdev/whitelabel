@@ -5,13 +5,13 @@ iconType: light
 description: Extract real-time Google search results.
 ---
 
-import { companyName, apiEndpoint } from '/snippets/config.mdx';
-import { Reference } from '/snippets/reference.mdx';
-import Authentication from '/snippets/authentication.mdx';
-import Terms from '/snippets/search/terms.mdx';
-import Json from '/snippets/search/json.mdx';
-import Offset from '/snippets/search/offset.mdx';
-import Subaccount from '/snippets/search/subaccount.mdx';
+import { companyName, apiEndpoint } from '/snippets/whitelabel/config.mdx';
+import { Reference } from '/snippets/whitelabel/reference.mdx';
+import Authentication from '/snippets/whitelabel/authentication.mdx';
+import Terms from '/snippets/whitelabel/search/terms.mdx';
+import Json from '/snippets/whitelabel/search/json.mdx';
+import Offset from '/snippets/whitelabel/search/offset.mdx';
+import Subaccount from '/snippets/whitelabel/search/subaccount.mdx';
 
 <Reference endpoint='search' />
 
@@ -21,10 +21,11 @@ import Subaccount from '/snippets/search/subaccount.mdx';
 structured or raw data. The service has a RESTful interface that accepts `GET` requests at
 **https://&zwj;{apiEndpoint}/search**.
 
-Searches can be localized with <Link href='geotargeting'>geotargeting parameters</Link>. They're
-performed live by default or optionally queued for <Link href='scheduling'>subsequent
-retrieval</Link>. Live searches take an average of a few seconds but may require multiple retries,
-in which case up to **120 seconds** is allocated per API call.
+Searches can be localized with <Link href='whitelabel/geotargeting'>geotargeting parameters</Link>.
+They're performed live by default or optionally queued for <Link
+href='whitelabel/scheduling'>subsequent retrieval</Link>. Live searches take an average of a few
+seconds but may require multiple retries, in which case up to **120 seconds** is allocated per API
+call.
 
 <Authentication />
 

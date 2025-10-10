@@ -5,14 +5,14 @@ iconType: light
 description: Unblock difficult-to-crawl websites.
 ---
 
-import { companyName, apiEndpoint } from '/snippets/config.mdx';
-import { Reference } from '/snippets/reference.mdx';
-import Authentication from '/snippets/authentication.mdx';
-import Url from '/snippets/browser/url.mdx';
-import Devices from '/snippets/browser/devices.mdx';
-import Device from '/snippets/browser/device.mdx';
-import Expiration from '/snippets/browser/expiration.mdx';
-import Session from '/snippets/browser/session.mdx';
+import { companyName, apiEndpoint } from '/snippets/whitelabel/config.mdx';
+import { Reference } from '/snippets/whitelabel/reference.mdx';
+import Authentication from '/snippets/whitelabel/authentication.mdx';
+import Url from '/snippets/whitelabel/browser/url.mdx';
+import Devices from '/snippets/whitelabel/browser/devices.mdx';
+import Device from '/snippets/whitelabel/browser/device.mdx';
+import Expiration from '/snippets/whitelabel/browser/expiration.mdx';
+import Session from '/snippets/whitelabel/browser/session.mdx';
 
 <Reference endpoint='browser' />
 
@@ -23,10 +23,10 @@ solving [CAPTCHAs](https://www.ibm.com/topics/captcha), and retrying failed requ
 has a RESTful interface that accepts `GET` requests at
 **https://&zwj;{apiEndpoint}/browser**.
 
-Webpages can be localized with <Link href='geotargeting'>geotargeting parameters</Link>. They're
-retrieved in real time by default or optionally queued for <Link href='scheduling'>subsequent
-retrieval</Link>. Up to **120 seconds** is allotted per real-time API call to accommodate
-CAPTCHA-solving, multiple retries, and other mitigations.
+Webpages can be localized with <Link href='whitelabel/geotargeting'>geotargeting parameters</Link>.
+They're retrieved in real time by default or optionally queued for <Link
+href='whitelabel/scheduling'>subsequent retrieval</Link>. Up to **120 seconds** is allotted per
+real-time API call to accommodate CAPTCHA-solving, multiple retries, and other mitigations.
 
 <Authentication />
 

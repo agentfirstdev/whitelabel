@@ -5,11 +5,11 @@ iconType: light
 description: Defer responses for later retrieval.
 ---
 
-import { companyName, apiEndpoint } from '/snippets/config.mdx';
-import Search from '/snippets/search/mode.mdx';
-import Browser from '/snippets/browser/mode.mdx';
-import Results from '/snippets/search/id.mdx';
-import Content from '/snippets/browser/id.mdx';
+import { companyName, apiEndpoint } from '/snippets/whitelabel/config.mdx';
+import Search from '/snippets/whitelabel/search/mode.mdx';
+import Browser from '/snippets/whitelabel/browser/mode.mdx';
+import Results from '/snippets/whitelabel/search/id.mdx';
+import Content from '/snippets/whitelabel/browser/id.mdx';
 
 ## Asynchronous mode
 
@@ -37,9 +37,10 @@ identifier to **https://&zwj;{apiEndpoint}/search/results** or
 
 <Content />
 
-The results or content, if ready, will be returned in the <Link href='search#response-format'>same
-format as synchronous results</Link> or <Link href='browser#response-format'>synchronous
-content</Link>; otherwise, a JSON status message will be returned.
+The results or content, if ready, will be returned in the <Link
+href='whitelabel/search#response-format'>same format as synchronous results</Link> or <Link
+href='whitelabel/browser#response-format'>synchronous content</Link>; otherwise, a JSON status
+message will be returned.
 
 A `retrieving` status indicates that the search or request is in progress:
 
