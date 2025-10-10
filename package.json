@@ -1,0 +1,20 @@
+{
+  "name": "whitelabel",
+  "version": "1.0.0",
+  "description": "Whitelabeling of Agent First documentation.",
+  "keywords": [
+    "agent",
+    "first",
+    "whitelabeling"
+  ],
+  "author": "Brian Kennish <oldestlivingboy@gmail.com>",
+  "license": "GPL-3.0",
+  "type": "module",
+  "scripts": {
+    "whitelabel": "node scripts/whitelabel.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/agentfirstdev/whitelabel"
+  }
+}
