@@ -1,8 +1,8 @@
 ### Omission
 
 ```bash
-$ curl -H "Authorization: Bearer $AGENT_FIRST_TOKEN" \
-  'https://api.agentfirst.dev/search'\
+$ curl -H "Authorization: Bearer ${{COMPANY_SLUG}}_TOKEN" \
+  'https://{{API_ENDPOINT}}/search'\
   '?terms=vpn+comparison'\
   '&size=100'\
   '&offset=20'

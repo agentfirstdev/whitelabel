@@ -1,8 +1,8 @@
 ### Sticky sessions
 
 ```bash
-$ curl -H "Authorization: Bearer $AGENT_FIRST_TOKEN" \
-  'https://api.agentfirst.dev/browser'\
+$ curl -H "Authorization: Bearer ${{COMPANY_SLUG}}_TOKEN" \
+  'https://{{API_ENDPOINT}}/browser'\
   '?url=https://www.imdb.com/title/tt0094012'\
   '&session=12345'
 ```
