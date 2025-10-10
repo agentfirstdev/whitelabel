@@ -25,44 +25,51 @@ if (!companyName || !apiEndpoint) {
   process.exit(1);
 }
 
+const companySlug = companyName.toUpperCase().replaceAll(' ', '_');
 const whitelabelRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const templateDirectory = path.join(whitelabelRoot, 'templates');
-const fromSnippetDirectory = path.join(whitelabelRoot, 'snippets');
+const fromSnippetDirectory = path.join(templateDirectory, 'snippets');
 const toSnippetDirectory = path.join(whitelabelRoot, '..', 'snippets', 'whitelabel');
-const renderTemplate = async (template, rendering, vals) => {
+const renderTemplate = async (from, to, vals) => {
   await filesystem.writeFile(
-    rendering,
-    (await filesystem.readFile(template, 'utf8'))
+    to,
+    (await filesystem.readFile(from, 'utf8'))
       .replaceAll('{{COMPANY_NAME}}', vals.companyName)
+      .replaceAll('{{COMPANY_SLUG}}', vals.companySlug)
       .replaceAll('{{API_ENDPOINT}}', vals.apiEndpoint)
   );
 };
-const copyDirectory = async (from, to) => {
+const renderDirectory = async (from, to, vals) => {
+  await filesystem.mkdir(to, { recursive: true });
+
   for (const entry of await filesystem.readdir(from, { withFileTypes: true })) {
     const fromPath = path.join(from, entry.name);
     const toPath = path.join(to, entry.name);
 
     if (entry.isDirectory()) {
       await filesystem.mkdir(toPath, { recursive: true });
-      await copyDirectory(fromPath, toPath);
+      await renderDirectory(fromPath, toPath, vals);
     } else {
-      await filesystem.copyFile(fromPath, toPath);
+      await renderTemplate(fromPath, toPath, vals);
     }
   }
 };
 
 (async () => {
   await renderTemplate(
-    path.join(templateDirectory, 'config.mdx.tmpl'),
-    path.join(whitelabelRoot, 'snippets', 'config.mdx'),
-    { companyName, apiEndpoint }
+    path.join(templateDirectory, 'config.mdx'),
+    path.join(templateDirectory, 'snippets', 'config.mdx'),
+    { companyName, companySlug, apiEndpoint }
   );
   await renderTemplate(
-    path.join(templateDirectory, 'openapi.json.tmpl'),
+    path.join(templateDirectory, 'openapi.json'),
     path.join(whitelabelRoot, 'openapi.json'),
-    { companyName, apiEndpoint }
+    { companyName, companySlug, apiEndpoint }
   );
-  await filesystem.mkdir(toSnippetDirectory, { recursive: true });
-  await copyDirectory(fromSnippetDirectory, toSnippetDirectory);
+  await renderDirectory(
+    fromSnippetDirectory,
+    toSnippetDirectory,
+    { companyName, companySlug, apiEndpoint }
+  );
   console.log('Doc whitelabeled successfully!\n');
 })();
