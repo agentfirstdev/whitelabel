@@ -57,11 +57,6 @@ const renderDirectory = async (from, to, vals) => {
 
 (async () => {
   await renderTemplate(
-    path.join(templateDirectory, 'config.mdx'),
-    path.join(templateDirectory, 'snippets', 'config.mdx'),
-    { companyName, companySlug, apiEndpoint }
-  );
-  await renderTemplate(
     path.join(templateDirectory, 'openapi.json'),
     path.join(whitelabelRoot, 'openapi.json'),
     { companyName, companySlug, apiEndpoint }
