@@ -1,0 +1,38 @@
+---
+title: Geotargeting
+icon: earth-americas
+iconType: light
+description: Search and browse from anywhere.
+---
+
+import { companyName } from '/snippets/config.mdx';
+import Country from '/snippets/search/country.mdx';
+import Subdivision from '/snippets/search/subdivision.mdx';
+import City from '/snippets/browser/city.mdx';
+
+## Local content
+
+Every **{companyName}** request can be routed through one of more than 190 countries, by subdivision
+and city:
+
+<Country />
+
+<Accordion icon='terminal' title='View subdivision-targeting example'>
+  <Subdivision />
+</Accordion>
+
+<Accordion icon='terminal' title='View city-targeting example'>
+  <City />
+</Accordion>
+
+These are the available geotargeting keys and values:
+
+| Key           | Required | Value                                                                                                                                                                                                                                                                         |
+| :------------ | :------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `country`     | ⬜       | The [two-letter ISO code](https://www.iso.org/obp/ui/#search) of the country to browse from (these codes are case insensitive); a random country will be used by default                                                                                                      |
+| `subdivision` | ⬜       | The alphanumeric second part (proceeding the separator) of a [first-level subdivision code](https://www.iso.org/obp/ui/#search) in the (prerequisite) country to browse from (these codes are case insensitive); a random subdivision will be used by default                 |
+| `city`        | ⬜       | The [commonly spelled name](https://www.geonames.org/) of the city in the (prerequisite) country to browse from (these names are temporarily case sensitive and required to include form- or URL-encoded spaces and punctuation marks); a random city will be used by default |
+
+<Warning>
+  City targeting takes precedence over subdivision targeting if both are specified.
+</Warning>
