@@ -25,11 +25,13 @@ if (!companyName || !apiEndpoint) {
   process.exit(1);
 }
 
-const companySlug = companyName.toUpperCase().replaceAll(' ', '_');
 const whitelabelRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const templateDirectory = path.join(whitelabelRoot, 'templates');
 const fromSnippetDirectory = path.join(templateDirectory, 'snippets');
 const toSnippetDirectory = path.join(whitelabelRoot, '..', 'snippets', 'whitelabel');
+const fromApiSpec = path.join(templateDirectory, 'openapi.json');
+const toApiSpec = path.join(whitelabelRoot, 'openapi.json');
+const companySlug = companyName.toUpperCase().replaceAll(' ', '_');
 const renderTemplate = async (from, to, vals) => {
   await filesystem.writeFile(
     to,
@@ -56,15 +58,11 @@ const renderDirectory = async (from, to, vals) => {
 };
 
 (async () => {
-  await renderTemplate(
-    path.join(templateDirectory, 'openapi.json'),
-    path.join(whitelabelRoot, 'openapi.json'),
-    { companyName, companySlug, apiEndpoint }
-  );
   await renderDirectory(
     fromSnippetDirectory,
     toSnippetDirectory,
     { companyName, companySlug, apiEndpoint }
   );
+  await renderTemplate(fromApiSpec, toApiSpec, { companyName, companySlug, apiEndpoint });
   console.log('Doc whitelabeled successfully!\n');
 })();

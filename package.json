@@ -11,7 +11,8 @@
   "license": "GPL-3.0",
   "type": "module",
   "scripts": {
-    "whitelabel": "node scripts/whitelabel.mjs"
+    "whitelabel": "node scripts/whitelabel.mjs",
+    "lint": "npx eslint --config linter/eslint.config.js"
   },
   "repository": {
     "type": "git",
