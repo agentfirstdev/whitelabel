@@ -20,7 +20,7 @@ const companyName = args.company || args.c;
 const apiEndpoint = args.endpoint || args.e;
 
 if (!companyName || !apiEndpoint) {
-  console.error('Usage: npm run whitelabel -- --company=\'[name]\' --endpoint=[domain]');
+  console.error("Usage: npm run whitelabel -- --company='[name]' --endpoint=[domain]");
 
   process.exit(1);
 }
@@ -58,11 +58,11 @@ const renderDirectory = async (from, to, vals) => {
 };
 
 (async () => {
-  await renderDirectory(
-    fromSnippetDirectory,
-    toSnippetDirectory,
-    { companyName, companySlug, apiEndpoint }
-  );
+  await renderDirectory(fromSnippetDirectory, toSnippetDirectory, {
+    companyName,
+    companySlug,
+    apiEndpoint
+  });
   await renderTemplate(fromApiSpec, toApiSpec, { companyName, companySlug, apiEndpoint });
   console.log('Doc whitelabeled successfully!\n');
 })();
