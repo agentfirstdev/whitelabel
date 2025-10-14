@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import childProcess from 'node:child_process';
 import filesystem from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -26,9 +27,16 @@ if (!companyName || !apiEndpoint) {
 }
 
 const whitelabelRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const mintlifyRoot = childProcess
+  .execSync('git rev-parse --show-toplevel', {
+    cwd: path.join(whitelabelRoot, '..'),
+    stdio: ['ignore', 'pipe', 'ignore']
+  })
+  .toString()
+  .trim();
 const templateDirectory = path.join(whitelabelRoot, 'templates');
 const fromSnippetDirectory = path.join(templateDirectory, 'snippets');
-const toSnippetDirectory = path.join(whitelabelRoot, '..', 'snippets', 'whitelabel');
+const toSnippetDirectory = path.join(mintlifyRoot, 'snippets', 'whitelabel');
 const fromApiSpec = path.join(templateDirectory, 'openapi.json');
 const toApiSpec = path.join(whitelabelRoot, 'openapi.json');
 const companySlug = companyName.toUpperCase().replaceAll(' ', '_');
