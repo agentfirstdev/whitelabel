@@ -5,144 +5,107 @@
     "description": "The missing services for agent-first development.",
     "version": "1.0.0-beta"
   },
-  "servers": [{
-    "url": "https://{{API_ENDPOINT}}"
-  }],
-  "security": [{
-    "bearerAuth": []
-  }],
+  "servers": [{ "url": "https://{{API_ENDPOINT}}" }],
+  "security": [{ "bearerAuth": [] }],
   "paths": {
     "/search": {
       "get": {
         "summary": "Results",
         "description": "Retrieve Google search results or queue results for later retrieval.",
-        "parameters": [{
-          "name": "terms",
-          "in": "query",
-          "description": "The broad or exact word or phrase to query (e.g., `foo bar baz` or `\"foo bar baz\"`); the terms require [form or URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding) (with any space character being replaced by a `+` character or `%20` sequence).",
-          "required": true,
-          "schema": {
-            "type": "string"
+        "parameters": [
+          {
+            "name": "terms",
+            "in": "query",
+            "description": "The broad or exact word or phrase to query (e.g., `foo bar baz` or `\"foo bar baz\"`); the terms require [form or URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding) (with any space character being replaced by a `+` character or `%20` sequence).",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "serps",
+            "in": "query",
+            "description": "The number of results pages to retrieve.",
+            "schema": { "type": "integer", "minimum": 1, "maximum": 10, "default": 1 }
+          },
+          {
+            "name": "size",
+            "in": "query",
+            "description": "The number of results per page to retrieve; page size is unset by default.",
+            "schema": { "type": "integer", "minimum": 0, "maximum": 100 }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "The number of initial results to skip; results aren’t offset by default.",
+            "schema": { "type": "integer", "minimum": 0, "maximum": 100 }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "description": "The [two-letter ISO code](https://www.iso.org/obp/ui/#search/code) of the country to search from (these codes are case insensitive); a random country will be used by default.",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "subdivision",
+            "in": "query",
+            "description": "The alphanumeric second part (proceeding the separator) of a [first-level subdivision code](https://www.iso.org/obp/ui/#search/code) in the (prerequisite) country to search from (these codes are case insensitive); a random subdivision will be used by default.",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "description": "The [commonly spelled name](https://www.geonames.org/) of the city in the (prerequisite) country to search from (these names are temporarily case sensitive and required to include form- or URL-encoded spaces and punctuation marks); a random city will be used by default.",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "uule",
+            "in": "query",
+            "description": "The [proprietary encoded string](https://moz.com/blog/geolocation-the-ultimate-tip-to-emulate-local-search) for emulating the location to search from; if possible, the actual location will be searched from not emulated; location emulation is unused by default.",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "language",
+            "in": "query",
+            "description": "The commonly spelled name, [two-letter ISO code](https://www.loc.gov/standards/iso639-2/php/code_list.php), or [Google code](https://www.google.com/advanced_search) of the language to search in (these names and codes are case insensitive but required to include form- or URL-encoded spaces and punctuation marks); the language is unset by default.",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "mode",
+            "in": "query",
+            "description": "The synchronous or asynchronous timing of when to retrieve results (see the [async endpoint](results)).",
+            "schema": { "type": "string", "enum": ["sync", "async"], "default": "sync" }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "The format to output to.",
+            "schema": { "type": "string", "enum": ["html", "json"], "default": "html" }
+          },
+          {
+            "name": "subaccount",
+            "in": "query",
+            "description": "Any unique identifier of up to 255 characters (regardless of character encoding); we’ll bill requests made from subaccounts separately.",
+            "schema": { "type": "string" }
           }
-        }, {
-          "name": "serps",
-          "in": "query",
-          "description": "The number of results pages to retrieve.",
-          "schema": {
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 10,
-            "default": 1
-          }
-        }, {
-          "name": "size",
-          "in": "query",
-          "description": "The number of results per page to retrieve; page size is unset by default.",
-          "schema": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 100
-          }
-        }, {
-          "name": "offset",
-          "in": "query",
-          "description": "The number of initial results to skip; results aren’t offset by default.",
-          "schema": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 100
-          }
-        }, {
-          "name": "country",
-          "in": "query",
-          "description": "The [two-letter ISO code](https://www.iso.org/obp/ui/#search/code) of the country to search from (these codes are case insensitive); a random country will be used by default.",
-          "schema": {
-            "type": "string"
-          }
-        }, {
-          "name": "subdivision",
-          "in": "query",
-          "description": "The alphanumeric second part (proceeding the separator) of a [first-level subdivision code](https://www.iso.org/obp/ui/#search/code) in the (prerequisite) country to search from (these codes are case insensitive); a random subdivision will be used by default.",
-          "schema": {
-            "type": "string"
-          }
-        }, {
-          "name": "city",
-          "in": "query",
-          "description": "The [commonly spelled name](https://www.geonames.org/) of the city in the (prerequisite) country to search from (these names are temporarily case sensitive and required to include form- or URL-encoded spaces and punctuation marks); a random city will be used by default.",
-          "schema": {
-            "type": "string"
-          }
-        }, {
-          "name": "uule",
-          "in": "query",
-          "description": "The [proprietary encoded string](https://moz.com/blog/geolocation-the-ultimate-tip-to-emulate-local-search) for emulating the location to search from; if possible, the actual location will be searched from not emulated; location emulation is unused by default.",
-          "schema": {
-            "type": "string"
-          }
-        }, {
-          "name": "language",
-          "in": "query",
-          "description": "The commonly spelled name, [two-letter ISO code](https://www.loc.gov/standards/iso639-2/php/code_list.php), or [Google code](https://www.google.com/advanced_search) of the language to search in (these names and codes are case insensitive but required to include form- or URL-encoded spaces and punctuation marks); the language is unset by default.",
-          "schema": {
-            "type": "string"
-          }
-        }, {
-          "name": "mode",
-          "in": "query",
-          "description": "The synchronous or asynchronous timing of when to retrieve results (see the [async endpoint](results)).",
-          "schema": {
-            "type": "string",
-            "enum": ["sync", "async"],
-            "default": "sync"
-          }
-        }, {
-          "name": "format",
-          "in": "query",
-          "description": "The format to output to.",
-          "schema": {
-            "type": "string",
-            "enum": ["html", "json"],
-            "default": "html"
-          }
-        }, {
-          "name": "subaccount",
-          "in": "query",
-          "description": "Any unique identifier of up to 255 characters (regardless of character encoding); we’ll bill requests made from subaccounts separately.",
-          "schema": {
-            "type": "string"
-          }
-        }],
+        ],
         "responses": {
           "200": {
             "description": "The search results or a job identifier.",
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [{
-                    "$ref": "#/components/schemas/Results"
-                  }, {
-                    "$ref": "#/components/schemas/SearchJob"
-                  }]
+                  "oneOf": [
+                    { "$ref": "#/components/schemas/Results" },
+                    { "$ref": "#/components/schemas/SearchJob" }
+                  ]
                 }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/paramsError"
-          },
-          "401": {
-            "$ref": "#/components/responses/authenticationError"
-          },
-          "403": {
-            "$ref": "#/components/responses/authorizationError"
-          },
-          "500": {
-            "$ref": "#/components/responses/unknownError"
-          },
-          "504": {
-            "$ref": "#/components/responses/timeoutError"
-          }
+          "400": { "$ref": "#/components/responses/paramsError" },
+          "401": { "$ref": "#/components/responses/authenticationError" },
+          "403": { "$ref": "#/components/responses/authorizationError" },
+          "500": { "$ref": "#/components/responses/unknownError" },
+          "504": { "$ref": "#/components/responses/timeoutError" }
         }
       }
     },
@@ -150,39 +113,32 @@
       "get": {
         "summary": "Async results",
         "description": "Retrieve the results or status of a queued search.",
-        "parameters": [{
-          "name": "id",
-          "in": "query",
-          "description": "The identifier returned by the [search endpoint](../search) of the queued search to retrieve.",
-          "required": true,
-          "schema": {
-            "type": "string"
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "The identifier returned by the [search endpoint](../search) of the queued search to retrieve.",
+            "required": true,
+            "schema": { "type": "string" }
           }
-        }],
+        ],
         "responses": {
           "200": {
             "description": "The job results or status.",
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [{
-                    "$ref": "#/components/schemas/Results"
-                  }, {
-                    "$ref": "#/components/schemas/SearchStatus"
-                  }]
+                  "oneOf": [
+                    { "$ref": "#/components/schemas/Results" },
+                    { "$ref": "#/components/schemas/SearchStatus" }
+                  ]
                 }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/paramsError"
-          },
-          "401": {
-            "$ref": "#/components/responses/authenticationError"
-          },
-          "403": {
-            "$ref": "#/components/responses/authorizationError"
-          }
+          "400": { "$ref": "#/components/responses/paramsError" },
+          "401": { "$ref": "#/components/responses/authenticationError" },
+          "403": { "$ref": "#/components/responses/authorizationError" }
         }
       }
     },
@@ -196,11 +152,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [{
-                    "$ref": "#/components/schemas/Content"
-                  }, {
-                    "$ref": "#/components/schemas/BrowserJob"
-                  }]
+                  "oneOf": [
+                    { "$ref": "#/components/schemas/Content" },
+                    { "$ref": "#/components/schemas/BrowserJob" }
+                  ]
                 }
               }
             }
@@ -212,26 +167,25 @@
       "get": {
         "summary": "Async content",
         "description": "Retrieve the content or status of a queued request.",
-        "parameters": [{
-          "name": "id",
-          "in": "query",
-          "description": "The identifier returned by the [browser endpoint](../browser) of the queued request to retrieve.",
-          "required": true,
-          "schema": {
-            "type": "string"
+        "parameters": [
+          {
+            "name": "id",
+            "in": "query",
+            "description": "The identifier returned by the [browser endpoint](../browser) of the queued request to retrieve.",
+            "required": true,
+            "schema": { "type": "string" }
           }
-        }],
+        ],
         "responses": {
           "200": {
             "description": "The job content or status.",
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [{
-                    "$ref": "#/components/schemas/Content"
-                  }, {
-                    "$ref": "#/components/schemas/BrowserStatus"
-                  }]
+                  "oneOf": [
+                    { "$ref": "#/components/schemas/Content" },
+                    { "$ref": "#/components/schemas/BrowserStatus" }
+                  ]
                 }
               }
             }
@@ -250,33 +204,25 @@
               "application/json": {
                 "schema": {
                   "type": "array",
-                  "items": {
-                    "type": "string"
-                  },
+                  "items": { "type": "string" },
                   "example": [
-                    "Blackberry PlayBook", "Blackberry PlayBook landscape", "BlackBerry Z30", "<string>"
+                    "Blackberry PlayBook",
+                    "Blackberry PlayBook landscape",
+                    "BlackBerry Z30",
+                    "<string>"
                   ]
                 }
               }
             }
           },
-          "400": {
-            "$ref": "#/components/responses/paramsError"
-          },
-          "401": {
-            "$ref": "#/components/responses/authenticationError"
-          }
+          "400": { "$ref": "#/components/responses/paramsError" },
+          "401": { "$ref": "#/components/responses/authenticationError" }
         }
       }
     }
   },
   "components": {
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
-      }
-    },
+    "securitySchemes": { "bearerAuth": { "type": "http", "scheme": "bearer" } },
     "schemas": {
       "Results": {
         "type": "object",
@@ -290,14 +236,11 @@
           "results": {
             "type": "array",
             "items": {
-              "oneOf": [{
-                "$ref": "#/components/schemas/Organic"
-              }, {
-                "$ref": "#/components/schemas/OrganicWithSitelinks"
-              }],
-              "discriminator": {
-                "propertyName": "type"
-              }
+              "oneOf": [
+                { "$ref": "#/components/schemas/Organic" },
+                { "$ref": "#/components/schemas/OrganicWithSitelinks" }
+              ],
+              "discriminator": { "propertyName": "type" }
             }
           },
           "resultsCount": {
@@ -380,56 +323,21 @@
         "type": "object",
         "summary": "Organic result",
         "properties": {
-          "type": {
-            "type": "string",
-            "enum": ["organic"]
-          },
-          "page": {
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 10,
-            "example": 1
-          },
+          "type": { "type": "string", "enum": ["organic"] },
+          "page": { "type": "integer", "minimum": 1, "maximum": 10, "example": 1 },
           "section": {
             "type": "string",
             "enum": ["top", "left", "main", "bottom", "right"],
             "example": "main"
           },
-          "feature": {
-            "type": "integer",
-            "minimum": 1,
-            "example": 1
-          },
-          "position": {
-            "type": "integer",
-            "minimum": 1,
-            "example": 1
-          },
-          "url": {
-            "type": "string",
-            "example": "https://foofighters.com/"
-          },
-          "title": {
-            "type": "string",
-            "example": "Foo Fighters"
-          },
-          "site": {
-            "type": "string",
-            "example": "Foo Fighters"
-          },
-          "visibleUrl": {
-            "type": "string",
-            "example": "https://foofighters.com"
-          },
-          "date": {
-            "type": "string",
-            "nullable": true,
-            "example": null
-          },
-          "snippet": {
-            "type": "string",
-            "example": "Official website of Foo Fighters."
-          },
+          "feature": { "type": "integer", "minimum": 1, "example": 1 },
+          "position": { "type": "integer", "minimum": 1, "example": 1 },
+          "url": { "type": "string", "example": "https://foofighters.com/" },
+          "title": { "type": "string", "example": "Foo Fighters" },
+          "site": { "type": "string", "example": "Foo Fighters" },
+          "visibleUrl": { "type": "string", "example": "https://foofighters.com" },
+          "date": { "type": "string", "nullable": true, "example": null },
+          "snippet": { "type": "string", "example": "Official website of Foo Fighters." },
           "rating": {
             "type": "number",
             "minimum": 0,
@@ -437,24 +345,9 @@
             "nullable": true,
             "example": null
           },
-          "votes": {
-            "type": "integer",
-            "minimum": 0,
-            "nullable": true,
-            "example": null
-          },
-          "sitelinks": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Link"
-            }
-          },
-          "images": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Image"
-            }
-          }
+          "votes": { "type": "integer", "minimum": 0, "nullable": true, "example": null },
+          "sitelinks": { "type": "array", "items": { "$ref": "#/components/schemas/Link" } },
+          "images": { "type": "array", "items": { "$ref": "#/components/schemas/Image" } }
         },
         "required": [
           "type",
@@ -478,48 +371,17 @@
         "type": "object",
         "summary": "Organic result with sitelinks",
         "properties": {
-          "type": {
-            "type": "string",
-            "enum": ["organic-with-sitelinks"]
-          },
-          "page": {
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 10
-          },
-          "section": {
-            "type": "string",
-            "enum": ["top", "left", "main", "bottom", "right"]
-          },
-          "feature": {
-            "type": "integer",
-            "minimum": 1
-          },
-          "position": {
-            "type": "integer",
-            "minimum": 1
-          },
-          "url": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "site": {
-            "type": "string"
-          },
-          "visibleUrl": {
-            "type": "string"
-          },
-          "snippet": {
-            "type": "string"
-          },
-          "sitelinks": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Sitelink"
-            }
-          }
+          "type": { "type": "string", "enum": ["organic-with-sitelinks"] },
+          "page": { "type": "integer", "minimum": 1, "maximum": 10 },
+          "section": { "type": "string", "enum": ["top", "left", "main", "bottom", "right"] },
+          "feature": { "type": "integer", "minimum": 1 },
+          "position": { "type": "integer", "minimum": 1 },
+          "url": { "type": "string" },
+          "title": { "type": "string" },
+          "site": { "type": "string" },
+          "visibleUrl": { "type": "string" },
+          "snippet": { "type": "string" },
+          "sitelinks": { "type": "array", "items": { "$ref": "#/components/schemas/Sitelink" } }
         },
         "required": [
           "type",
@@ -539,19 +401,9 @@
         "type": "object",
         "summary": "Link element",
         "properties": {
-          "position": {
-            "type": "integer",
-            "minimum": 1,
-            "example": 1
-          },
-          "url": {
-            "type": "string",
-            "example": "https://foofighters.com/tour-dates/"
-          },
-          "title": {
-            "type": "string",
-            "example": "Tour Dates"
-          }
+          "position": { "type": "integer", "minimum": 1, "example": 1 },
+          "url": { "type": "string", "example": "https://foofighters.com/tour-dates/" },
+          "title": { "type": "string", "example": "Tour Dates" }
         },
         "required": ["position", "url", "title"]
       },
@@ -559,19 +411,9 @@
         "type": "object",
         "summary": "Image element",
         "properties": {
-          "position": {
-            "type": "integer",
-            "minimum": 1,
-            "example": 1
-          },
-          "source": {
-            "type": "string",
-            "example": "[Image data]"
-          },
-          "altText": {
-            "type": "string",
-            "example": "foo from en.wikipedia.org"
-          }
+          "position": { "type": "integer", "minimum": 1, "example": 1 },
+          "source": { "type": "string", "example": "[Image data]" },
+          "altText": { "type": "string", "example": "foo from en.wikipedia.org" }
         },
         "required": ["position", "source", "altText"]
       },
@@ -579,19 +421,10 @@
         "type": "object",
         "summary": "Sitelink element",
         "properties": {
-          "position": {
-            "type": "integer",
-            "minimum": 1
-          },
-          "url": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "snippet": {
-            "type": "string"
-          }
+          "position": { "type": "integer", "minimum": 1 },
+          "url": { "type": "string" },
+          "title": { "type": "string" },
+          "snippet": { "type": "string" }
         },
         "required": ["position", "url", "title", "snippet"]
       },
@@ -661,10 +494,7 @@
         "description": "One or more parameters were invalid.",
         "content": {
           "text/plain": {
-            "schema": {
-              "type": "string",
-              "example": "One or more parameters were invalid"
-            }
+            "schema": { "type": "string", "example": "One or more parameters were invalid" }
           }
         }
       },
@@ -672,10 +502,7 @@
         "description": "The authorization header was missing.",
         "content": {
           "text/plain": {
-            "schema": {
-              "type": "string",
-              "example": "Authorization header must be provided"
-            }
+            "schema": { "type": "string", "example": "Authorization header must be provided" }
           }
         }
       },
@@ -683,33 +510,20 @@
         "description": "The API token was invalid.",
         "content": {
           "text/plain": {
-            "schema": {
-              "type": "string",
-              "example": "Valid API token must be provided"
-            }
+            "schema": { "type": "string", "example": "Valid API token must be provided" }
           }
         }
       },
       "unknownError": {
         "description": "An unknown error occurred.",
         "content": {
-          "text/plain": {
-            "schema": {
-              "type": "string",
-              "example": "Unknown error occurred"
-            }
-          }
+          "text/plain": { "schema": { "type": "string", "example": "Unknown error occurred" } }
         }
       },
       "timeoutError": {
         "description": "The operation timed out.",
         "content": {
-          "text/plain": {
-            "schema": {
-              "type": "string",
-              "example": "Operation timed out"
-            }
-          }
+          "text/plain": { "schema": { "type": "string", "example": "Operation timed out" } }
         }
       }
     }
