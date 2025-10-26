@@ -1,8 +1,6 @@
-### Sticky sessions
-
 ```bash
 $ curl -H "Authorization: Bearer ${{COMPANY_SLUG}}_TOKEN" \
+  -H 'Cookie: session=12345' \
   'https://{{API_ENDPOINT}}/browser'\
-  '?url=https://www.imdb.com/title/tt0094012'\
-  '&session=12345'
+  '?url=https://www.imdb.com/title/tt0094012'
 ```
