@@ -75,11 +75,11 @@ Then, pass your device name of choice in to your browsing request:
 
 ### Sticky sessions
 
-To share a browser session across requests, set a cookie named `session`:
+To reuse a browser session across requests, set a cookie named `session`:
 
 <Session />
 
-The session value can be any unique identifier of up to **255 characters** (regardless of character
+The cookie value can be any unique identifier of up to **255 characters** (regardless of character
 encoding) and **{companyName}** will make best efforts to route calls in the same session to the
 same egress node for up to **12 minutes**.
 
