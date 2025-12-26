@@ -19,14 +19,14 @@ import Session from '/snippets/whitelabel/browser/session.mdx';
 ## Usage
 
 **{companyName}'s** browser service navigates intelligently on your behalf, rendering JavaScript,
-solving [CAPTCHAs](https://www.ibm.com/topics/captcha), and retrying failed requests. The service
+solving [captchas](https://www.ibm.com/topics/captcha), and retrying failed requests. The service
 has a RESTful interface that accepts `GET` requests at
 **https://&zwj;{apiEndpoint}/browser**.
 
 Webpages can be localized with <Link href='geotargeting'>geotargeting parameters</Link>. They're
 retrieved in real time by default or optionally queued for <Link href='scheduling'>subsequent
 retrieval</Link>. Up to **2 minutes** is allotted per real-time API call to accommodate
-CAPTCHA-solving, multiple retries, and other mitigations.
+captcha-solving, multiple retries, and other mitigations.
 
 <Authentication />
 
@@ -48,7 +48,6 @@ The keys and values **{companyName}** supports are as follows:
 | `format`     | ⬜       | The HTML format to output to, `rendered` or `raw` (see the [section below](#response-format)); `rendered` is the default format                                                                                                                     |
 | `expiration` | ⬜       | The maximum age of cached content in days to accept, where `0` will disable caching; `1` is the default number of days                                                                                                                              |
 | `delay`      | ⬜       | The number of seconds to inject before snapshotting the browsed content, from `.1` to `10` inclusive; no delay is injected by default                                                                                                               |
-| `subaccount` | ⬜       | Any unique identifier of up to 255 characters (regardless of character encoding); **{companyName}** will bill calls made from subaccounts separately                                                                                                |
 
 ### Device emulation
 
