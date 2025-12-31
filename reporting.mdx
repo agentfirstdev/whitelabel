@@ -6,6 +6,7 @@ description: Track API usage and performance.
 ---
 
 import { Reference } from '/snippets/whitelabel/reference.mdx';
+import { Throttling } from '/snippets/whitelabel/throttling.mdx';
 import Dates from '/snippets/whitelabel/reporting/dates.mdx';
 import Datetimes from '/snippets/whitelabel/reporting/datetimes.mdx';
 import Service from '/snippets/whitelabel/reporting/service.mdx';
@@ -75,10 +76,7 @@ Here are the response keys and values:
 | `calls`    | The number of API calls of the service and result type                         |
 | `meanSecs` | The average number of elapsed seconds of the API calls                         |
 
-<Warning>
-  This endpoint is rate limited; if you receive a `429` response, pause for the backoff time given
-  by the `Retry-After` header before making another request.
-</Warning>
+<Throttling />
 
 ## Additional examples
 

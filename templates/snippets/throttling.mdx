@@ -1,0 +1,8 @@
+export const Throttling = () => {
+  return (
+    <Warning>
+      This endpoint is rate limited; if you receive a `429` response, pause for the backoff time
+      given by the `Retry-After` header before making another request.
+    </Warning>
+  );
+};
