@@ -1,6 +1,6 @@
 # ![Agent First](assets/social/logotype-optimized.png) [![X post](assets/social/x-post-optimized.png)](https://x.com/intent/post?text=Enhance%20your%20AI%20agent%20with%20research%20and%20browsing%20abilities%3A&url=https%3A%2F%2Fagentfirst.dev%2F%3Fref%3Dgithub&via=agentfirstdev)
 
-*The missing services for agent-first development*
+_The missing services for agent-first development_
 
 ## Agent First whitelabel documentation
 
@@ -24,7 +24,7 @@ Follow the steps below to host our documentation on **Mintlify**.
    main
    ```
 
-   **Subdirectory/pathname example**
+   _Subdirectory/pathname example_
 
    We chose `endpoints`, as in https://doc.agentfirst.dev/endpoints/search:
 
@@ -56,7 +56,7 @@ Follow the steps below to host our documentation on **Mintlify**.
    --endpoint=[API domain here]
    ```
 
-   **Branding example**
+   _Branding example_
 
    Here’s how we branded our documentation:
 
@@ -71,7 +71,7 @@ Follow the steps below to host our documentation on **Mintlify**.
    Link to whichever tutorial and reference pages you want in your navigation by editing the
    `docs.json` file at the **Mintlify** root.
 
-   **Navigation example**
+   _Navigation example_
 
    Here’s how we link from
    [our configuration file](https://github.com/agentfirstdev/doc/blob/main/docs.json#L13-L50):
