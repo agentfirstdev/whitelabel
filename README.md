@@ -25,17 +25,17 @@ Follow the steps below to host our documentation on **Mintlify**.
    main
    ```
 
-   _Subdirectory/pathname example_
-
-   We chose `endpoints`, as in https://doc.agentfirst.dev/endpoints/search:
-
-   ```shell
-   git subtree add \
-   --prefix=endpoints \
-   --squash \
-   https://github.com/agentfirstdev/whitelabel \
-   main
-   ```
+   > _Subdirectory/pathname example_
+   >
+   > We chose `endpoints`, as in https://doc.agentfirst.dev/endpoints/search:
+   >
+   > ```shell
+   > git subtree add \
+   > --prefix=endpoints \
+   > --squash \
+   > https://github.com/agentfirstdev/whitelabel \
+   > main
+   > ```
 
 2. **Download dependencies**
 
@@ -57,70 +57,70 @@ Follow the steps below to host our documentation on **Mintlify**.
    --endpoint=[API domain here]
    ```
 
-   _Branding example_
-
-   Here’s how we branded our documentation:
-
-   ```shell
-   npm run whitelabel -- \
-   --company='Agent First' \
-   --endpoint=api.agentfirst.dev
-   ```
+   > _Branding example_
+   >
+   > Here’s how we branded our documentation:
+   >
+   > ```shell
+   > npm run whitelabel -- \
+   > --company='Agent First' \
+   > --endpoint=api.agentfirst.dev
+   > ```
 
 4. **Link pages**
 
    Link to whichever tutorial and reference pages you want in your navigation by editing the
    `docs.json` file at the **Mintlify** root.
 
-   _Navigation example_
-
-   Here’s how we link from
-   [our configuration file](https://github.com/agentfirstdev/doc/blob/main/docs.json#L13-L50):
-
-   ```json
-   "...",
-   "navigation": {
-     "groups": [
-       "...",
-       {
-         "group": "API",
-         "pages": [
-           "endpoints/search",
-           "endpoints/browser",
-           "endpoints/geotargeting",
-           "endpoints/scheduling",
-           "endpoints/reporting",
-           {
-             "group": "Reference",
-             "icon": "book",
-             "iconType": "light",
-             "pages": [
-               {
-                 "group": "Search",
-                 "pages": [
-                   "endpoints/reference/search",
-                   "endpoints/reference/search/results"
-                 ]
-               },
-               {
-                 "group": "Browsing",
-                 "pages": [
-                   "endpoints/reference/browser",
-                   "endpoints/reference/browser/content",
-                   "endpoints/reference/browser/devices"
-                 ]
-               },
-               { "group": "Reporting", "pages": ["endpoints/reference/usage"] },
-               "..."
-             ]
-           }
-         ]
-       },
-       "..."
-     ]
-   },
-   "..."
-   ```
+   > _Navigation example_
+   >
+   > Here’s how we link from
+   > [our configuration file](https://github.com/agentfirstdev/doc/blob/main/docs.json#L13-L50):
+   >
+   > ```json
+   > "...",
+   > "navigation": {
+   >   "groups": [
+   >     "...",
+   >     {
+   >       "group": "API",
+   >       "pages": [
+   >         "endpoints/search",
+   >         "endpoints/browser",
+   >         "endpoints/geotargeting",
+   >         "endpoints/scheduling",
+   >         "endpoints/reporting",
+   >         {
+   >           "group": "Reference",
+   >           "icon": "book",
+   >           "iconType": "light",
+   >           "pages": [
+   >             {
+   >               "group": "Search",
+   >               "pages": [
+   >                 "endpoints/reference/search",
+   >                 "endpoints/reference/search/results"
+   >               ]
+   >             },
+   >             {
+   >               "group": "Browsing",
+   >               "pages": [
+   >                 "endpoints/reference/browser",
+   >                 "endpoints/reference/browser/content",
+   >                 "endpoints/reference/browser/devices"
+   >               ]
+   >             },
+   >             { "group": "Reporting", "pages": ["endpoints/reference/usage"] },
+   >             "..."
+   >           ]
+   >         }
+   >       ]
+   >     },
+   >     "..."
+   >   ]
+   > },
+   > "..."
+   > ```
 
 5. **Preview changes**
 
