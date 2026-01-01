@@ -24,7 +24,7 @@ Follow the steps below to host our documentation on **Mintlify**.
    main
    ```
 
-   #### Subdirectory/pathname example
+   **Subdirectory/pathname example**
 
    We chose `endpoints`, as in https://doc.agentfirst.dev/endpoints/search:
 
@@ -56,7 +56,7 @@ Follow the steps below to host our documentation on **Mintlify**.
    --endpoint=[API domain here]
    ```
 
-   #### Branding example
+   **Branding example**
 
    Here’s how we branded our documentation:
 
@@ -71,7 +71,7 @@ Follow the steps below to host our documentation on **Mintlify**.
    Link to whichever tutorial and reference pages you want in your navigation by editing the
    `docs.json` file at the **Mintlify** root.
 
-   #### Navigation example
+   **Navigation example**
 
    Here’s how we link from
    [our configuration file](https://github.com/agentfirstdev/doc/blob/main/docs.json#L13-L50):
