@@ -78,7 +78,7 @@ Follow the steps below to host our documentation on **Mintlify**.
    [our configuration file](https://github.com/agentfirstdev/doc/blob/main/docs.json#L13-L50):
 
    ```json
-   ...
+   "...",
    "navigation": {
      "groups": [
        "...",
@@ -97,7 +97,10 @@ Follow the steps below to host our documentation on **Mintlify**.
              "pages": [
                {
                  "group": "Search",
-                 "pages": ["endpoints/reference/search", "endpoints/reference/search/results"]
+                 "pages": [
+                   "endpoints/reference/search",
+                   "endpoints/reference/search/results"
+                 ]
                },
                {
                  "group": "Browsing",
