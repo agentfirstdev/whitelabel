@@ -5,8 +5,10 @@ iconType: light
 description: Track API usage and performance.
 ---
 
+import { companyName, apiEndpoint } from '/snippets/whitelabel/config.mdx';
 import { Reference } from '/snippets/whitelabel/reference.mdx';
 import { Throttling } from '/snippets/whitelabel/throttling.mdx';
+import Authentication from '/snippets/whitelabel/authentication.mdx';
 import Dates from '/snippets/whitelabel/reporting/dates.mdx';
 import Datetimes from '/snippets/whitelabel/reporting/datetimes.mdx';
 import Service from '/snippets/whitelabel/reporting/service.mdx';
@@ -15,31 +17,37 @@ import Emails from '/snippets/whitelabel/reporting/emails.mdx';
 
 <Reference endpoint='usage' />
 
-## Consumption data
+## Usage
 
-You can monitor hourly metrics by specifying start and end dates or times:
+**{companyName}'s** reporting service buckets and updates volume, success, and latency metrics at
+intervals of **1 hour**. The service has a RESTful interface that accepts `GET` requests at
+**https://&zwj;{apiEndpoint}/usage**.
+
+<Authentication />
 
 <Dates />
 
-<Accordion icon='terminal' title='View time-range example'>
-  <Datetimes />
-</Accordion>
+### Report parameters
 
-The API will return a JSON report:
+You should specify an ISO date or time range to generate a report:
+
+<Datetimes />
+
+The API will return a JSON array:
 
 ```json
 [{
   "email": "user@example.com",
-  "from": "2025-12-24T00:00:00+00:00",
-  "to": "2025-12-25T00:00:00+00:00",
+  "from": "2025-12-25T00:00:00+00:00",
+  "to": "2025-12-25T15:00:00+00:00",
   "service": "browser",
   "result": "success",
   "calls": 17208,
   "meanSecs": 6.78
 }, {
   "email": "user@example.com",
-  "from": "2025-12-24T07:00:00+00:00",
-  "to": "2025-12-24T15:00:00+00:00",
+  "from": "2025-12-25T01:00:00+00:00",
+  "to": "2025-12-25T15:00:00+00:00",
   "service": "browser",
   "result": "failure",
   "calls": 18,
@@ -47,7 +55,7 @@ The API will return a JSON report:
 }]
 ```
 
-You can also filter the metrics by one or more services:
+Your report can optionally be filtered by one or more services:
 
 <Service />
 
@@ -55,7 +63,7 @@ You can also filter the metrics by one or more services:
   <Services />
 </Accordion>
 
-Here are the report request keys and values:
+These are the request keys and values:
 
 | Key       | Required | Value                                                                                                                                                                                                                |
 | :-------- | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -64,7 +72,7 @@ Here are the report request keys and values:
 | `email`   | ⬜       | **[Whitelabelers only]** The (case-insensitive) email address of the user to query data for; multiple email addresses can be provided by repeating the key; data for all email addresses will be included by default |
 | `service` | ⬜       | The service to query data for, `search` or `browser`; multiple services can be provided by repeating the key; data for all services will be included by default                                                      |
 
-Here are the response keys and values:
+These are the response keys and values:
 
 | Key        | Value                                                                          |
 | :--------- | :----------------------------------------------------------------------------- |
