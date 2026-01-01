@@ -2,10 +2,11 @@
 
 _The missing services for agent-first development_
 
-## Agent First whitelabel documentation
+## Whitelabel documentation
 
-**Agent First** documentation has been optimized for whitelabeling on the **Mintlify** platform. If
-you use another documentation platform, [contact us to get help](mailto:brain@agentfirst.dev).
+[Agent First’s documentation](https://doc.agentfirst.dev/) has been optimized for whitelabeling on
+the **Mintlify** platform. If you use another documentation platform,
+[contact us to get help](mailto:brain@agentfirst.dev).
 
 ### Mintlify integration
 
