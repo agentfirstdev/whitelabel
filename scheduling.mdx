@@ -5,7 +5,7 @@ iconType: light
 description: Defer responses for later retrieval.
 ---
 
-import { companyName, apiEndpoint } from '/snippets/whitelabel/config.mdx';
+import { apiEndpoint } from '/snippets/whitelabel/config.mdx';
 import Search from '/snippets/whitelabel/search/mode.mdx';
 import Browser from '/snippets/whitelabel/browser/mode.mdx';
 import Results from '/snippets/whitelabel/search/id.mdx';
@@ -54,9 +54,16 @@ retried:
 { "status": "failed" }
 ```
 
-These are the available scheduling keys and values:
+These are the scheduling request keys and values:
 
 | Key    | Required | Value                                                                                                    |
 | :----- | :------- | :------------------------------------------------------------------------------------------------------- |
 | `mode` | ⬜       | The synchronous or asynchronous mode of content retrieval, `sync` or `async`; `sync` is the default mode |
-| `id`   | ⬜       | The identifier provided by **{companyName}** to reference an asynchronous job                            |
+| `id`   | ⬜       | The identifier provided to reference an asynchronous job                                                 |
+
+These are the response keys and values:
+
+| Key      | Value                                                       |
+| :------- | :---------------------------------------------------------- |
+| `id`     | The identifier that references an asynchronous job          |
+| `status` | The status of an asynchronous job, `retrieving` or `failed` |
