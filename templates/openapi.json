@@ -530,14 +530,26 @@
   "components": {
     "securitySchemes": { "bearerAuth": { "type": "http", "scheme": "bearer" } },
     "schemas": {
-      "Mode": { "type": "string", "enum": ["sync", "async"], "default": "sync", "example": "sync" },
+      "Mode": {
+        "summary": "Retrieval mode",
+        "type": "string",
+        "enum": ["sync", "async"],
+        "default": "sync",
+        "example": "sync"
+      },
       "Services": {
+        "summary": "API services",
         "type": "array",
         "items": { "$ref": "#/components/schemas/Service" },
         "minItems": 1,
         "example": ["search", "browser"]
       },
-      "Service": { "type": "string", "enum": ["search", "browser"], "example": "browser" },
+      "Service": {
+        "summary": "API service",
+        "type": "string",
+        "enum": ["search", "browser"],
+        "example": "browser"
+      },
       "Results": {
         "summary": "Search results",
         "type": "object",
@@ -699,6 +711,7 @@
         ]
       },
       "Section": {
+        "summary": "Result section",
         "type": "string",
         "enum": ["top", "left", "main", "bottom", "right"],
         "example": "main"
@@ -734,7 +747,12 @@
         },
         "required": ["position", "url", "title", "snippet"]
       },
-      "Status": { "type": "string", "enum": ["retrieving", "failed"], "example": "retrieving" }
+      "Status": {
+        "summary": "Job status",
+        "type": "string",
+        "enum": ["retrieving", "failed"],
+        "example": "retrieving"
+      }
     },
     "responses": {
       "authenticationError": {
