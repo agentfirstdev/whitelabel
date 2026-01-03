@@ -11,7 +11,7 @@
     "/search": {
       "get": {
         "summary": "Results",
-        "description": "Retrieve Google search results or queue results for later retrieval.",
+        "description": "Retrieve popular search results or queue results for later retrieval.",
         "parameters": [
           {
             "name": "terms",
@@ -69,43 +69,44 @@
             "schema": { "type": "string" }
           },
           {
-            "name": "mode",
-            "in": "query",
-            "description": "The synchronous or asynchronous timing of when to retrieve results (see the [async endpoint](results)).",
-            "schema": { "type": "string", "enum": ["sync", "async"], "default": "sync" }
-          },
-          {
             "name": "format",
             "in": "query",
             "description": "The format to output to.",
             "schema": { "type": "string", "enum": ["html", "json"], "default": "html" }
           },
           {
-            "name": "subaccount",
+            "name": "mode",
             "in": "query",
-            "description": "Any unique identifier of up to 255 characters (regardless of character encoding); we’ll bill requests made from subaccounts separately.",
-            "schema": { "type": "string" }
+            "description": "The synchronous or asynchronous mode of results retrieval (see the [async resource](search/results)).",
+            "schema": { "type": "string", "enum": ["sync", "async"], "default": "sync" }
+          },
+          {
+            "name": "expiration",
+            "in": "query",
+            "description": "The maximum age of cached results in days to accept, where `0` will disable caching.",
+            "schema": { "type": "integer", "minimum": 0, "maximum": 1, "default": 1 }
           }
         ],
         "responses": {
           "200": {
-            "description": "The search results or a job identifier.",
+            "description": "The search results.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    { "$ref": "#/components/schemas/Results" },
-                    { "$ref": "#/components/schemas/SearchJob" }
-                  ]
-                }
-              }
+              "application/json": { "schema": { "$ref": "#/components/schemas/Results" } },
+              "text/html": { "schema": { "type": "string" } }
             }
           },
-          "400": { "$ref": "#/components/responses/paramsError" },
+          "202": {
+            "description": "A job identifier.",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/SearchJob" } }
+            }
+          },
           "401": { "$ref": "#/components/responses/authenticationError" },
           "403": { "$ref": "#/components/responses/authorizationError" },
-          "500": { "$ref": "#/components/responses/unknownError" },
-          "504": { "$ref": "#/components/responses/timeoutError" }
+          "422": { "$ref": "#/components/responses/paramsError" },
+          "504": { "$ref": "#/components/responses/timeoutError" },
+          "503": { "$ref": "#/components/responses/unavailableError" },
+          "500": { "$ref": "#/components/responses/unknownError" }
         }
       }
     },
@@ -124,21 +125,22 @@
         ],
         "responses": {
           "200": {
-            "description": "The job results or status.",
+            "description": "The search results.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    { "$ref": "#/components/schemas/Results" },
-                    { "$ref": "#/components/schemas/SearchStatus" }
-                  ]
-                }
-              }
+              "application/json": { "schema": { "$ref": "#/components/schemas/Results" } },
+              "text/html": { "schema": { "type": "string" } }
             }
           },
-          "400": { "$ref": "#/components/responses/paramsError" },
+          "202": {
+            "description": "The search status.",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/SearchStatus" } }
+            }
+          },
           "401": { "$ref": "#/components/responses/authenticationError" },
-          "403": { "$ref": "#/components/responses/authorizationError" }
+          "403": { "$ref": "#/components/responses/authorizationError" },
+          "422": { "$ref": "#/components/responses/paramsError" },
+          "500": { "$ref": "#/components/responses/unknownError" }
         }
       }
     },
@@ -146,20 +148,102 @@
       "get": {
         "summary": "Content",
         "description": "Retrieve webpage content or queue content for later retrieval.",
+        "parameters": [
+          {
+            "name": "url",
+            "in": "query",
+            "description": "The URL of the page to browse; the terms require [form or URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding) (with any space character being replaced by a `+` character or `%20` sequence).",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "difficulty",
+            "in": "query",
+            "description": "The difficulty pool to attempt to access the page from.",
+            "schema": {
+              "type": "string",
+              "enum": ["high (coming soon)", "medium", "low"],
+              "default": "low"
+            }
+          },
+          {
+            "name": "device",
+            "in": "query",
+            "description": "The name as returned by the [devices resource](browser/devices) of the device to emulate browsing on (these names are case insensitive but must include form- or URL-encoded spaces and punctuation marks); device emulation is unused by default.",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "ip",
+            "in": "query",
+            "description": "The type of IP address to browse from.",
+            "schema": {
+              "type": "string",
+              "enum": ["residential", "isp", "datacenter (coming soon)"],
+              "default": "residential"
+            }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "description": "The [two-letter ISO code](https://www.iso.org/obp/ui/#search/code) of the country to browse from (these codes are case insensitive); a random country will be used by default.",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "subdivision",
+            "in": "query",
+            "description": "The alphanumeric second part (proceeding the separator) of a [first-level subdivision code](https://www.iso.org/obp/ui/#search/code) in the (prerequisite) country to browse from (these codes are case insensitive); a random subdivision will be used by default.",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "city",
+            "in": "query",
+            "description": "The [commonly spelled name](https://www.geonames.org/) of the city in the (prerequisite) country to browse from (these names are temporarily case sensitive and required to include form- or URL-encoded spaces and punctuation marks); a random city will be used by default.",
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "description": "The HTML format to output to.",
+            "schema": { "type": "string", "enum": ["rendered", "raw"], "default": "rendered" }
+          },
+          {
+            "name": "mode",
+            "in": "query",
+            "description": "The synchronous or asynchronous mode of content retrieval (see the [async resource](browser/content)).",
+            "schema": { "type": "string", "enum": ["sync", "async"], "default": "sync" }
+          },
+          {
+            "name": "expiration",
+            "in": "query",
+            "description": "The maximum age of cached content in days to accept, where `0` will disable caching.",
+            "schema": { "type": "integer", "minimum": 0, "maximum": 1, "default": 1 }
+          },
+          {
+            "name": "delay",
+            "in": "query",
+            "description": "The number of seconds to inject before snapshotting the browsed content; no delay is injected by default.",
+            "schema": { "type": "number", "minimum": 0.1, "maximum": 10 }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "The page content or a job identifier.",
+            "description": "The page content.",
+            "content": { "text/html": { "schema": { "type": "string" } } }
+          },
+          "202": {
+            "description": "A job identifier.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    { "$ref": "#/components/schemas/Content" },
-                    { "$ref": "#/components/schemas/BrowserJob" }
-                  ]
-                }
-              }
+              "application/json": { "schema": { "$ref": "#/components/schemas/BrowserJob" } }
             }
-          }
+          },
+          "401": { "$ref": "#/components/responses/authenticationError" },
+          "403": { "$ref": "#/components/responses/authorizationError" },
+          "422": { "$ref": "#/components/responses/paramsError" },
+          "429": { "$ref": "#/components/responses/throttlingError" },
+          "504": { "$ref": "#/components/responses/timeoutError" },
+          "404": { "$ref": "#/components/responses/unsupportedError" },
+          "503": { "$ref": "#/components/responses/unavailableError" },
+          "500": { "$ref": "#/components/responses/unknownError" }
         }
       }
     },
@@ -178,18 +262,19 @@
         ],
         "responses": {
           "200": {
-            "description": "The job content or status.",
+            "description": "The request content.",
+            "content": { "text/html": { "schema": { "type": "string" } } }
+          },
+          "202": {
+            "description": "The request status.",
             "content": {
-              "application/json": {
-                "schema": {
-                  "oneOf": [
-                    { "$ref": "#/components/schemas/Content" },
-                    { "$ref": "#/components/schemas/BrowserStatus" }
-                  ]
-                }
-              }
+              "application/json": { "schema": { "$ref": "#/components/schemas/BrowserStatus" } }
             }
-          }
+          },
+          "401": { "$ref": "#/components/responses/authenticationError" },
+          "403": { "$ref": "#/components/responses/authorizationError" },
+          "422": { "$ref": "#/components/responses/paramsError" },
+          "500": { "$ref": "#/components/responses/unknownError" }
         }
       }
     },
@@ -215,8 +300,176 @@
               }
             }
           },
-          "400": { "$ref": "#/components/responses/paramsError" },
-          "401": { "$ref": "#/components/responses/authenticationError" }
+          "401": { "$ref": "#/components/responses/authenticationError" },
+          "403": { "$ref": "#/components/responses/authorizationError" }
+        }
+      }
+    },
+    "/users": {
+      "post": {
+        "summary": "New user",
+        "description": "Create a whitelabel account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "description": "The email address of the user to create an account for; the address is case insensitive and can be up to 255 characters, regardless of character encoding.",
+                    "example": "user@example.com"
+                  },
+                  "services": {
+                    "type": "array",
+                    "items": { "type": "string", "enum": ["search", "browser"] },
+                    "description": "At least one of the API services to grant the account access to.",
+                    "example": ["search", "browser"]
+                  }
+                },
+                "required": ["email", "services"]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "The metadata of the account.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "type": "string",
+                      "description": "The email address of the new user account as recorded by the API.",
+                      "example": "user@example.com"
+                    },
+                    "token": {
+                      "type": "string",
+                      "description": "The bearer token issued by the API for authentication.",
+                      "example": "a1-0dF6qKHYD7SNU5kAtjOmwHpH3iFgpylA"
+                    },
+                    "services": {
+                      "type": "array",
+                      "items": { "type": "string", "enum": ["search", "browser"] },
+                      "description": "The API services that the account has been granted access to.",
+                      "example": ["search", "browser"]
+                    }
+                  },
+                  "required": ["id"]
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/authenticationError" },
+          "403": { "$ref": "#/components/responses/authorizationError" },
+          "400": { "$ref": "#/components/responses/malformedError" },
+          "422": { "$ref": "#/components/responses/paramsError" },
+          "409": { "$ref": "#/components/responses/conflictError" },
+          "429": { "$ref": "#/components/responses/throttlingError" },
+          "500": { "$ref": "#/components/responses/unknownError" }
+        }
+      }
+    },
+    "/usage": {
+      "get": {
+        "summary": "Usage data",
+        "description": "Generate an hourly consumption report.",
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "schema": { "type": "string" },
+            "description": "The [ISO datetime](https://www.w3.org/TR/NOTE-datetime) to select data starting from, inclusively.",
+            "example": "2025-12-24T18:00:00-06:00",
+            "required": true
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "schema": { "type": "string" },
+            "description": "The [ISO datetime](https://www.w3.org/TR/NOTE-datetime) to select data up to, inclusively.",
+            "example": "2025-12-25T9:00:00-06:00",
+            "required": true
+          },
+          {
+            "name": "email",
+            "in": "query",
+            "schema": { "type": "string" },
+            "description": "**[Whitelabelers only]** The (case-insensitive) email address of the user to select data for; multiple email addresses can be provided by repeating the key; data for all email addresses will be included by default.",
+            "example": "user@example.com"
+          },
+          {
+            "name": "service",
+            "in": "query",
+            "schema": { "type": "string", "enum": ["search", "browser"] },
+            "description": "The service to select data for; multiple services can be provided by repeating the key; data for all services will be included by default.",
+            "example": "browser"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The hourly report.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "description": "The email address of the user whose data is selected.",
+                        "example": "user@example.com"
+                      },
+                      "from": {
+                        "type": "string",
+                        "description": "The ISO datetime of the first datapoint.",
+                        "example": "2025-12-25T00:00:00+00:00"
+                      },
+                      "to": {
+                        "type": "string",
+                        "description": "The ISO datetime of the last datapoint.",
+                        "example": "2025-12-25T15:00:00+00:00"
+                      },
+                      "service": {
+                        "type": "string",
+                        "enum": ["search", "browser"],
+                        "description": "The service included in the data.",
+                        "example": "browser"
+                      },
+                      "result": {
+                        "type": "string",
+                        "enum": ["success", "failure"],
+                        "description": "The type of result included in the data.",
+                        "example": "success"
+                      },
+                      "calls": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "description": "The number of API calls of the service and result type.",
+                        "example": 17208
+                      },
+                      "meanSecs": {
+                        "type": "number",
+                        "minimum": 0,
+                        "description": "The average number of elapsed seconds of the API calls.",
+                        "example": 6.78
+                      }
+                    },
+                    "required": ["email", "from", "to", "service", "result", "calls", "meanSecs"]
+                  }
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/authenticationError" },
+          "403": { "$ref": "#/components/responses/authorizationError" },
+          "422": { "$ref": "#/components/responses/paramsError" },
+          "429": { "$ref": "#/components/responses/throttlingError" },
+          "500": { "$ref": "#/components/responses/unknownError" }
         }
       }
     }
@@ -226,12 +479,33 @@
     "schemas": {
       "Results": {
         "type": "object",
-        "summary": "Google search results",
+        "summary": "Search results",
         "properties": {
+          "engine": {
+            "type": "string",
+            "enum": ["google"],
+            "description": "The queried search engine.",
+            "example": "google"
+          },
           "terms": {
             "type": "string",
             "description": "The queried word or phrase.",
             "example": "foo"
+          },
+          "pageCount": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10,
+            "description": "The number of retrieved results pages.",
+            "example": 1
+          },
+          "pageSize": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "nullable": true,
+            "description": "The number of retrieved results per page.",
+            "example": null
           },
           "results": {
             "type": "array",
@@ -263,37 +537,22 @@
             "description": "The number of skipped initial results.",
             "example": null
           },
-          "pageCount": {
-            "type": "integer",
-            "minimum": 1,
-            "maximum": 10,
-            "description": "The number of retrieved results pages.",
-            "example": 1
-          },
-          "pageSize": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 100,
-            "nullable": true,
-            "description": "The number of retrieved results per page.",
-            "example": null
-          },
           "country": {
             "type": "string",
             "nullable": true,
-            "description": "The ISO code of the requested country.",
+            "description": "The ISO code of the targeted country.",
             "example": null
           },
           "subdivision": {
             "type": "string",
             "nullable": true,
-            "description": "The partial ISO code of the requested subdivision.",
+            "description": "The partial ISO code of the targeted subdivision.",
             "example": null
           },
           "city": {
             "type": "string",
             "nullable": true,
-            "description": "The name of the requested city.",
+            "description": "The common name of the targeted city.",
             "example": null
           },
           "uule": {
@@ -305,19 +564,11 @@
           "language": {
             "type": "string",
             "nullable": true,
-            "description": "The name, ISO code, or Google code of the requested language.",
+            "description": "The common name, ISO code, or Google code of the targeted language.",
             "example": null
           }
         },
-        "required": [
-          "terms",
-          "results",
-          "resultsCount",
-          "pageCount",
-          "country",
-          "subdivision",
-          "city"
-        ]
+        "required": ["engine", "terms", "pageCount", "results", "resultsCount"]
       },
       "Organic": {
         "type": "object",
@@ -434,7 +685,7 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": "The identifier to retrieve a queued search with.",
+            "description": "The identifier to retrieve the queued search with.",
             "example": "078fd246-f0f7-44a0-aabb-cadd7b12454f"
           }
         },
@@ -442,27 +693,15 @@
       },
       "SearchStatus": {
         "type": "object",
-        "summary": "Job status",
+        "summary": "Search status",
         "properties": {
           "status": {
             "type": "string",
             "enum": ["retrieving", "failed"],
-            "description": "The status of a queued search."
+            "description": "The status of the queued search."
           }
         },
         "required": ["status"]
-      },
-      "Content": {
-        "type": "object",
-        "summary": "Webpage content",
-        "properties": {
-          "device": {
-            "type": "string",
-            "nullable": true,
-            "description": "The name of the emulated device.",
-            "example": null
-          }
-        }
       },
       "BrowserJob": {
         "type": "object",
@@ -470,8 +709,8 @@
         "properties": {
           "id": {
             "type": "string",
-            "description": "The identifier to retrieve a queued request with.",
-            "example": "078fd246-f0f7-44a0-aabb-cadd7b12454f"
+            "description": "The identifier to retrieve the queued request with.",
+            "example": "1851dab8-4619-409f-893f-47dd3a180bc3"
           }
         },
         "required": ["id"]
@@ -483,21 +722,13 @@
           "status": {
             "type": "string",
             "enum": ["retrieving", "failed"],
-            "description": "The status of a queued request."
+            "description": "The status of the queued request."
           }
         },
         "required": ["status"]
       }
     },
     "responses": {
-      "paramsError": {
-        "description": "One or more parameters were invalid.",
-        "content": {
-          "text/plain": {
-            "schema": { "type": "string", "example": "One or more parameters were invalid" }
-          }
-        }
-      },
       "authenticationError": {
         "description": "The authorization header was missing.",
         "content": {
@@ -514,16 +745,64 @@
           }
         }
       },
-      "unknownError": {
-        "description": "An unknown error occurred.",
+      "malformedError": {
+        "description": "The request was malformed.",
         "content": {
-          "text/plain": { "schema": { "type": "string", "example": "Unknown error occurred" } }
+          "text/plain": { "schema": { "type": "string", "example": "JSON was malformed" } }
+        }
+      },
+      "paramsError": {
+        "description": "One or more parameters were invalid.",
+        "content": {
+          "text/plain": {
+            "schema": { "type": "string", "example": "Character counts must be no more than 255" }
+          }
+        }
+      },
+      "conflictError": {
+        "description": "One or more resources already exists.",
+        "content": {
+          "text/plain": { "schema": { "type": "string", "example": "Email already exists" } }
+        }
+      },
+      "throttlingError": {
+        "description": "The rate limit was exceeded.",
+        "content": {
+          "text/plain": {
+            "schema": {
+              "type": "string",
+              "example": "Rate limit was exceeded; please retry in 180 seconds"
+            }
+          }
         }
       },
       "timeoutError": {
         "description": "The operation timed out.",
         "content": {
-          "text/plain": { "schema": { "type": "string", "example": "Operation timed out" } }
+          "text/plain": { "schema": { "type": "string", "example": "Request(s) timed out" } }
+        }
+      },
+      "unsupportedError": {
+        "description": "One or more resources is nonexistant.",
+        "content": {
+          "text/plain": { "schema": { "type": "string", "example": "Domain is nonexistant" } }
+        }
+      },
+      "unavailableError": {
+        "description": "The service is unavailable.",
+        "content": {
+          "text/plain": {
+            "schema": {
+              "type": "string",
+              "example": "Service is autoscaling; please retry in 180 seconds"
+            }
+          }
+        }
+      },
+      "unknownError": {
+        "description": "An unknown error occurred.",
+        "content": {
+          "text/plain": { "schema": { "type": "string", "example": "Unknown error occurred" } }
         }
       }
     }
