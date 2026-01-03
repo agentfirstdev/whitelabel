@@ -56,14 +56,14 @@ retried:
 
 These are the scheduling request parameters:
 
-| Key    | Required | Value                                                                                                    |
-| :----- | :------- | :------------------------------------------------------------------------------------------------------- |
-| `mode` | ⬜       | The synchronous or asynchronous mode of content retrieval, `sync` or `async`; `sync` is the default mode |
-| `id`   | ⬜       | The identifier provided to reference an asynchronous job                                                 |
+| Key    | Required | Value                                                                                                                                                |
+| :----- | :------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `mode` | ⬜       | The synchronous or asynchronous mode of content retrieval, `sync` or `async`; `sync` is the default mode                                             |
+| `id`   | ⬜       | The identifier provided by the <Link href='search'>search</Link> or <Link href='browser'>browser endpoints</Link> of an asynchronous job to retrieve |
 
 These are the response parameters:
 
 | Key      | Value                                                       |
 | :------- | :---------------------------------------------------------- |
-| `id`     | The identifier that references an asynchronous job          |
+| `id`     | The identifier to retrieve an asynchronous job with         |
 | `status` | The status of an asynchronous job, `retrieving` or `failed` |
