@@ -67,12 +67,12 @@ Your report can optionally be filtered by one or more services:
 
 These are the request keys and values:
 
-| Key       | Required | Value                                                                                                                                                                                                                 |
-| :-------- | :------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `from`    | ✅       | The [ISO datetime](https://www.w3.org/TR/NOTE-datetime) to select data starting from, inclusively                                                                                                                     |
-| `to`      | ✅       | The [ISO datetime](https://www.w3.org/TR/NOTE-datetime) to select data up to, inclusively                                                                                                                             |
-| `email`   | ⬜       | **[Whitelabelers only]** The (case-insensitive) email address of the user to select data for; multiple email addresses can be provided by repeating the key; data for all email addresses will be included by default |
-| `service` | ⬜       | The service to select data for, `search` or `browser`; multiple services can be provided by repeating the key; data for all services will be included by default                                                      |
+| Key       | Required | Value                                                                                                                                                                                                            |
+| :-------- | :------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `from`    | ✅       | The [ISO datetime](https://www.w3.org/TR/NOTE-datetime) to select data starting from, inclusively                                                                                                                |
+| `to`      | ✅       | The [ISO datetime](https://www.w3.org/TR/NOTE-datetime) to select data up to, inclusively                                                                                                                        |
+| `email`   | ⬜       | **[Whitelabelers only]** The (case-insensitive) email address of the user to select data for; multiple email addresses can be provided by repeating the key; data for all email addresses is included by default |
+| `service` | ⬜       | The service to select data for, `search` or `browser`; multiple services can be provided by repeating the key; data for all services is included by default                                                      |
 
 These are the response keys and values:
 
