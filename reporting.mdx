@@ -67,24 +67,24 @@ Your report can optionally be filtered by one or more services:
 
 These are the request keys and values:
 
-| Key       | Required | Value                                                                                                                                                                                                                |
-| :-------- | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `from`    | ✅       | The [ISO datetime](https://www.w3.org/TR/NOTE-datetime) to query data starting from, inclusively                                                                                                                     |
-| `to`      | ✅       | The [ISO datetime](https://www.w3.org/TR/NOTE-datetime) to query data up to, inclusively                                                                                                                             |
-| `email`   | ⬜       | **[Whitelabelers only]** The (case-insensitive) email address of the user to query data for; multiple email addresses can be provided by repeating the key; data for all email addresses will be included by default |
-| `service` | ⬜       | The service to query data for, `search` or `browser`; multiple services can be provided by repeating the key; data for all services will be included by default                                                      |
+| Key       | Required | Value                                                                                                                                                                                                                 |
+| :-------- | :------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `from`    | ✅       | The [ISO datetime](https://www.w3.org/TR/NOTE-datetime) to select data starting from, inclusively                                                                                                                     |
+| `to`      | ✅       | The [ISO datetime](https://www.w3.org/TR/NOTE-datetime) to select data up to, inclusively                                                                                                                             |
+| `email`   | ⬜       | **[Whitelabelers only]** The (case-insensitive) email address of the user to select data for; multiple email addresses can be provided by repeating the key; data for all email addresses will be included by default |
+| `service` | ⬜       | The service to select data for, `search` or `browser`; multiple services can be provided by repeating the key; data for all services will be included by default                                                      |
 
 These are the response keys and values:
 
-| Key        | Value                                                                          |
-| :--------- | :----------------------------------------------------------------------------- |
-| `email`    | The email address of the user whose data has been queried                      |
-| `from`     | The [ISO datetime](https://www.w3.org/TR/NOTE-datetime) of the first datapoint |
-| `to`       | The [ISO datetime](https://www.w3.org/TR/NOTE-datetime) of the last datapoint  |
-| `service`  | The service included in the data, `search` or `browser`                        |
-| `result`   | The type of result included in the data, `success` or `failure`                |
-| `calls`    | The number of API calls of the service and result type                         |
-| `meanSecs` | The average number of elapsed seconds of the API calls                         |
+| Key        | Value                                                           |
+| :--------- | :-------------------------------------------------------------- |
+| `email`    | The email address of the user whose data is selected            |
+| `from`     | The ISO datetime of the first datapoint                         |
+| `to`       | The ISO datetime of the last datapoint                          |
+| `service`  | The service included in the data, `search` or `browser`         |
+| `result`   | The type of result included in the data, `success` or `failure` |
+| `calls`    | The number of API calls of the service and result type          |
+| `meanSecs` | The average number of elapsed seconds of the API calls          |
 
 ## Additional examples
 
