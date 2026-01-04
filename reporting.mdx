@@ -11,9 +11,10 @@ import { Throttling } from '/snippets/whitelabel/throttling.mdx';
 import Authentication from '/snippets/whitelabel/authentication.mdx';
 import Dates from '/snippets/whitelabel/reporting/dates.mdx';
 import Datetimes from '/snippets/whitelabel/reporting/datetimes.mdx';
+import Emails from '/snippets/whitelabel/reporting/emails.mdx';
 import Service from '/snippets/whitelabel/reporting/service.mdx';
 import Services from '/snippets/whitelabel/reporting/services.mdx';
-import Emails from '/snippets/whitelabel/reporting/emails.mdx';
+import Hour from '/snippets/whitelabel/reporting/hour.mdx';
 
 <Reference endpoint='usage' />
 
@@ -64,6 +65,10 @@ Your report can optionally be filtered by one or more services:
 <Accordion icon='terminal' title='View multiple-service example'>
   <Services />
 </Accordion>
+
+You can also change how the data is aggregated:
+
+<Hour />
 
 These are the request keys and values:
 
