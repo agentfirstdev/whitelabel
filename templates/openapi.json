@@ -462,6 +462,17 @@
             "description": "The service to select data for; multiple services can be provided by repeating the key; data for all services is included by default.",
             "schema": { "$ref": "#/components/schemas/Service" },
             "in": "query"
+          },
+          {
+            "name": "by",
+            "description": "The time unit to group the data by.",
+            "schema": {
+              "type": "string",
+              "enum": ["hour", "day (planned)", "total"],
+              "default": "total",
+              "example": "total"
+            },
+            "in": "query"
           }
         ],
         "responses": {
