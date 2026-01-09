@@ -5,7 +5,7 @@ iconType: light
 description: Unblock difficult-to-crawl websites.
 ---
 
-import { companyName, apiEndpoint } from '/snippets/whitelabel/config.mdx';
+import { companyName, emailAddress, apiEndpoint } from '/snippets/whitelabel/config.mdx';
 import { Reference } from '/snippets/whitelabel/reference.mdx';
 import { Autoscaling } from '/snippets/whitelabel/autoscaling.mdx';
 import Authentication from '/snippets/whitelabel/authentication.mdx';
@@ -29,6 +29,12 @@ retrieved in real time by default or optionally queued for <Link href='schedulin
 retrieval</Link>. Up to **2 minutes** is allotted per real-time API call to accommodate
 captcha-solving, multiple retries, and other mitigations. <Link href='reporting'>Usage data</Link>
 is published regularly.
+
+<Tip>
+  If a website you're targeting remains blocked, even with different browsing parameters, <a
+  href={`mailto:${emailAddress}`}>just let us know</a>. We can help you unblock most any website
+  within **48 hours**.
+</Tip>
 
 <Authentication />
 
