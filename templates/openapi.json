@@ -75,6 +75,12 @@
             "in": "query"
           },
           {
+            "name": "display",
+            "description": "The commonly spelled name, [two-letter ISO code](https://www.loc.gov/standards/iso639-2/php/code_list.php), or [Google code](https://www.google.com/advanced_search) of the search interface’s display language (these names and codes are case insensitive but required to include form- or URL-encoded spaces and punctuation marks); the display language is unset by default or set to the language if given.",
+            "schema": { "type": "string", "example": null },
+            "in": "query"
+          },
+          {
             "name": "format",
             "description": "The format to output to.",
             "schema": {
@@ -641,6 +647,11 @@
           },
           "language": {
             "description": "The common name, ISO code, or Google code of the targeted language.",
+            "type": "string",
+            "example": null
+          },
+          "display": {
+            "description": "The common name, ISO code, or Google code of the targeted display language.",
             "type": "string",
             "example": null
           }
