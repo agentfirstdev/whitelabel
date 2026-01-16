@@ -31,9 +31,9 @@ captcha-solving, multiple retries, and other mitigations. <Link href='usage'>Usa
 published regularly.
 
 <Tip>
-  If a website you're targeting remains blocked, even with different browsing parameters, <a
-  href={`mailto:${emailAddress}`}>let us know</a>. We can usually help unblock any website within
-  **48 hours**.
+  If a site you're targeting remains blocked, even with different browsing params, <a
+  href={`mailto:${emailAddress}`}>let us know</a>. We can usually help unblock any site within **48
+  hours**.
 </Tip>
 
 <Authentication />
@@ -44,28 +44,29 @@ published regularly.
 
 ### Browsing parameters
 
-Besides the [geotargeting and scheduling parameters](#usage) linked above, required and optional
-browsing parameters can be added in a
+Besides the [geotargeting and scheduling params](#usage) linked above, required and optional
+browsing params can be added in a
 [standard query string](https://developer.mozilla.org/en-US/docs/Learn/Common_questions/What_is_a_URL#parameters).
-The keys and values **{companyName}** supports are as follows:
+See <Link href='pricing'>our rate card</Link> for the prices of premium params. The keys and values
+**{companyName}** supports are as follows:
 
-| Key          | Required | Value                                                                                                                                                                                                                                                       |
-| :----------- | :------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `url`        | ✅       | The URL of the page to browse; any unsafe characters require [URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding)                                                                                                             |
-| `difficulty` | ⬜       | The difficulty pool to attempt to access the URL from, `high` (coming soon), `medium`, or `low`; `low` is the default difficulty                                                                                                                            |
-| `speed`      | ⬜       | The speed to attempt to access the URL at, `light`, `ridiculous`, or `ludicrous` (planned), where `ridiculous` is 30 percent faster on average than `light`; `light` is the default speed                                                                   |
-| `device`     | ⬜       | The name as returned by the [devices endpoint](#device-emulation) of the device to emulate browsing the URL on (these names are case insensitive but must include form- or URL-encoded spaces and punctuation marks); device emulation is unused by default |
-| `ip`         | ⬜       | The type of IP address to browse the URL from, `residential`, `isp`, or `datacenter` (planned); a random IP type is used by default                                                                                                                         |
-| `readiness`  | ⬜       | The standard ready event to await before snapshotting browsed content, `load` or `domcontentloaded`; `load` is the default ready event                                                                                                                      |
-| `delay`      | ⬜       | The number of supplemental seconds to delay before snapshotting browsed content, from `.1` to `10` inclusive; no delay is used by default                                                                                                                   |
-| `expiration` | ⬜       | The age in days of when to consider cached content expired, where `0` disables caching; `1` is the default number of days before expiration                                                                                                                 |
-| `format`     | ⬜       | The HTML format to output to, `rendered` or `raw` (see the [section below](#response-format)); `rendered` is the default format                                                                                                                             |
+| Key          | Required | Premium | Value                                                                                                                                                                                                                                               |
+| :----------- | :------- | :------ | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `url`        | ✅       | ⬜      | The URL of the page to browse; any unsafe characters require [URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding)                                                                                                     |
+| `difficulty` | ⬜       | ✅      | The difficulty pool to attempt to access the URL from, `high` (coming soon), `medium`, or `low`; `low` is the default difficulty                                                                                                                    |
+| `speed`      | ⬜       | ✅      | The speed to attempt to access the URL at, `light`, `ridiculous`, or `ludicrous` (planned), where `ridiculous` is 30 percent faster on average than `light` speed; `light` is the default speed                                                     |
+| `device`     | ⬜       | ⬜      | The name as returned by the [devices resource](#device-emulation) of the device to emulate browsing on (these names are case insensitive but must include form- or URL-encoded spaces and punctuation marks); device emulation is unused by default |
+| `ip`         | ⬜       | ⬜      | The type of IP address to browse from, `residential`, `isp`, or `datacenter` (planned); a random IP type is used by default                                                                                                                         |
+| `readiness`  | ⬜       | ⬜      | The standard ready event to await before snapshotting browsed content, `load` or `domcontentloaded`; `load` is the default ready event                                                                                                              |
+| `delay`      | ⬜       | ⬜      | The number of supplemental seconds to delay before snapshotting browsed content, from `.1` to `10` inclusive; no delay is used by default                                                                                                           |
+| `format`     | ⬜       | ⬜      | The HTML format to output to, `rendered` or `raw` (see the [section below](#response-format)); `rendered` is the default format                                                                                                                     |
+| `expiration` | ⬜       | ⬜      | The age in days of when to consider cached content expired, where `0` disables caching; `1` is the default number of days before expiration                                                                                                         |
 
 ### Device emulation
 
-The `device` parameter lets you fetch device-specific content, rather than the default desktop
-content. For a list of supported smartphone and tablet devices, make a request with your API token
-and no parameters to **https://&zwj;{apiEndpoint}/browser/devices**:
+The `device` param lets you fetch device-specific content, rather than the default desktop content.
+For a list of supported smartphone and tablet devices, make a request with your API token and no
+params to **https://&zwj;{apiEndpoint}/browser/devices**:
 
 <Devices />
 

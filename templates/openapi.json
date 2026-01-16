@@ -22,7 +22,7 @@
           },
           {
             "name": "serps",
-            "description": "The number of results pages to retrieve.",
+            "description": "The number of results pages to fetch.",
             "schema": {
               "type": "integer",
               "minimum": 1,
@@ -34,7 +34,7 @@
           },
           {
             "name": "size",
-            "description": "The number of results per page to retrieve; page size is unset by default.",
+            "description": "The number of results per page to fetch; page size is unset by default.",
             "schema": { "type": "integer", "minimum": 0, "maximum": 100, "example": null },
             "in": "query"
           },
@@ -92,15 +92,15 @@
             "in": "query"
           },
           {
-            "name": "mode",
-            "description": "The synchronous or asynchronous mode of results retrieval (see the [async resource](search/results)).",
-            "schema": { "$ref": "#/components/schemas/Mode" },
+            "name": "expiration",
+            "description": "The age in days of when to consider cached results expired, where `0` disables caching.",
+            "schema": { "type": "integer", "minimum": 0, "maximum": 1, "default": 1, "example": 0 },
             "in": "query"
           },
           {
-            "name": "expiration",
-            "description": "The maximum age of cached results in days to accept, where `0` disables caching.",
-            "schema": { "type": "integer", "minimum": 0, "maximum": 1, "default": 1, "example": 0 },
+            "name": "mode",
+            "description": "The synchronous or asynchronous mode of results retrieval (see the [async resource](search/results)).",
+            "schema": { "$ref": "#/components/schemas/Mode" },
             "in": "query"
           }
         ],
@@ -191,19 +191,30 @@
         "parameters": [
           {
             "name": "url",
-            "description": "The URL of the page to browse; the terms require [form or URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding) (with any space character being replaced by a `+` character or `%20` sequence).",
+            "description": "The URL of the page to browse; any unsafe characters require [URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding).",
             "schema": { "type": "string", "example": "https://example.com/" },
             "in": "query",
             "required": true
           },
           {
             "name": "difficulty",
-            "description": "The difficulty pool to attempt to access the page from.",
+            "description": "The difficulty pool to attempt to access the URL from.",
             "schema": {
               "type": "string",
               "enum": ["high (coming soon)", "medium", "low"],
               "default": "low",
               "example": "low"
+            },
+            "in": "query"
+          },
+          {
+            "name": "speed",
+            "description": "The speed to attempt to access the URL at, where `ridiculous` is 30 percent faster on average than `light` speed.",
+            "schema": {
+              "type": "string",
+              "enum": ["light", "ridiculous", "ludicrous (planned)"],
+              "default": "light",
+              "example": "light"
             },
             "in": "query"
           },
@@ -242,6 +253,23 @@
             "in": "query"
           },
           {
+            "name": "readiness",
+            "description": "The standard ready event to await before snapshotting browsed content.",
+            "schema": {
+              "type": "string",
+              "enum": ["load", "domcontentloaded"],
+              "default": "load",
+              "example": "load"
+            },
+            "in": "query"
+          },
+          {
+            "name": "delay",
+            "description": "The number of supplemental seconds to delay before snapshotting browsed content; no delay is used by default.",
+            "schema": { "type": "number", "minimum": 0.1, "maximum": 10, "example": null },
+            "in": "query"
+          },
+          {
             "name": "format",
             "description": "The HTML format to output to.",
             "schema": {
@@ -253,21 +281,15 @@
             "in": "query"
           },
           {
-            "name": "mode",
-            "description": "The synchronous or asynchronous mode of content retrieval (see the [async resource](browser/content)).",
-            "schema": { "$ref": "#/components/schemas/Mode" },
-            "in": "query"
-          },
-          {
             "name": "expiration",
-            "description": "The maximum age of cached content in days to accept, where `0` disables caching.",
+            "description": "The age in days of when to consider cached content expired, where `0` disables caching.",
             "schema": { "type": "integer", "minimum": 0, "maximum": 1, "default": 1, "example": 0 },
             "in": "query"
           },
           {
-            "name": "delay",
-            "description": "The number of seconds to inject before snapshotting the browsed content; no delay is injected by default.",
-            "schema": { "type": "number", "minimum": 0.1, "maximum": 10, "example": null },
+            "name": "mode",
+            "description": "The synchronous or asynchronous mode of content retrieval (see the [async resource](browser/content)).",
+            "schema": { "$ref": "#/components/schemas/Mode" },
             "in": "query"
           }
         ],
