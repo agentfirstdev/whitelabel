@@ -201,7 +201,7 @@
             "description": "The difficulty pool to attempt to access the URL from.",
             "schema": {
               "type": "string",
-              "enum": ["high (coming soon)", "medium", "low"],
+              "enum": ["low", "medium", "high (coming soon)"],
               "default": "low",
               "example": "low"
             },
