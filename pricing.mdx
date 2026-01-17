@@ -2,15 +2,15 @@
 title: Pricing
 icon: credit-card
 iconType: light
-description: Understand credit rates and billing.
+description: Understand API credits and billing.
 ---
 
 import { companyName, checkoutUrl } from '/snippets/whitelabel/config.mdx';
 
 ## Credit system
 
-API access is based on prepaid credits. **{companyName}** decrements your balance only for
-successful API calls. Most calls cost **1 credit** each or are **free**:
+Access to **{companyName}** services is based on prepaid credits. Your credit balance is decremented
+only for successful API calls. Most calls cost **1 credit** each or are **free**:
 
 | Service                             | Base credits |
 | :---------------------------------- | :----------- |
@@ -26,11 +26,11 @@ A few premium parameters multiply the base cost of calls that use them:
 | Browser | `difficulty` | `medium`     | 2                 |
 | Browser | `speed`      | `ridiculous` | 1.5               |
 
-For example, successfully calling the browser service with both `difficulty=medium` and
+For example, calling the browser service successfully with both `difficulty=medium` and
 `speed=ridiculous` params would cost **3 credits** in total:
 
 <Latex>1 base credit x 2 x 1.5 = 3 total credits</Latex>
 
-<Card title='Your API credits' icon='piggy-bank' href={checkoutUrl} horizontal>
+<Card title='Your API credits' icon='link' href={checkoutUrl} horizontal>
   Create or fund an account.
 </Card>
