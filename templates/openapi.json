@@ -45,6 +45,16 @@
             "in": "query"
           },
           {
+            "name": "ip",
+            "description": "The type of IP address to search from; a random IP type is used by default.",
+            "schema": {
+              "type": "string",
+              "enum": ["residential", "isp"],
+              "example": null
+            },
+            "in": "query"
+          },
+          {
             "name": "country",
             "description": "The [two-letter ISO code](https://www.iso.org/obp/ui/#search/code) of the country to search from (these codes are case insensitive); a random country is used by default.",
             "schema": { "type": "string", "example": null },
