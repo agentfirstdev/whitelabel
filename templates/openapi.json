@@ -281,12 +281,12 @@
           },
           {
             "name": "format",
-            "description": "The HTML format to output to.",
+            "description": "The format to output to.",
             "schema": {
               "type": "string",
-              "enum": ["rendered", "raw"],
+              "enum": ["rendered", "raw", "markdown"],
               "default": "rendered",
-              "example": "rendered"
+              "example": "markdown"
             },
             "in": "query"
           },

@@ -59,7 +59,7 @@ See <Link href='pricing'>our rate card</Link> for the prices of premium params. 
 | `ip`         | ⬜       | ⬜      | The type of IP address to browse from, `residential`, `isp`, or `datacenter` (planned); a random IP type is used by default                                                                                                                         |
 | `readiness`  | ⬜       | ⬜      | The standard ready event to await before snapshotting browsed content, `load` or `domcontentloaded`; `load` is the default ready event                                                                                                              |
 | `delay`      | ⬜       | ⬜      | The number of supplemental seconds to delay before snapshotting browsed content, from `.1` to `10` inclusive; no delay is used by default                                                                                                           |
-| `format`     | ⬜       | ⬜      | The HTML format to output to, `rendered` or `raw` (see the [section below](#response-format)); `rendered` is the default format                                                                                                                     |
+| `format`     | ⬜       | ⬜      | The format to output to, `rendered`, `raw`, or `markdown` (see the [section below](#response-format)); `rendered` is the default format                                                                                                             |
 | `expiration` | ⬜       | ⬜      | The age in days of when to consider cached content expired, where `0` disables caching; `1` is the default number of days before expiration                                                                                                         |
 
 ### Device emulation
@@ -97,7 +97,7 @@ same egress node for up to **12 minutes**.
 
 ### Response format
 
-Pages are returned as rendered HTML or raw (unrendered) HTML.
+Pages are returned as rendered HTML, raw (unrendered) HTML, or Markdown optimized for LLM prompts.
 
 ## Additional examples
 
