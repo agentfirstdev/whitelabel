@@ -12,9 +12,9 @@ the **Mintlify** platform. If you use another documentation platform,
 
 Follow the steps below to host our documentation on **Mintlify**.
 
-1. **Download submodule**
+1. **Import submodule**
 
-   Go to your **Mintlify** directory then download this project:
+   Go to your **Mintlify** directory then import this project:
 
    ```shell
    git submodule add https://github.com/agentfirstdev/whitelabel
@@ -127,7 +127,7 @@ Follow the steps below to host our documentation on **Mintlify**.
 6. **Incorporate updates**
 
    To incorporate documentation updates later, resync this project from your **Mintlify** directory
-   then execute the whitelabel script again:
+   then invoke the whitelabel script again:
 
    ```shell
    git submodule update --remote
