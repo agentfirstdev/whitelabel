@@ -141,9 +141,9 @@
             }
           },
           "401": { "$ref": "#/components/responses/authenticationError" },
-          "403": { "$ref": "#/components/responses/authorizationError" },
           "422": { "$ref": "#/components/responses/paramsError" },
           "504": { "$ref": "#/components/responses/timeoutError" },
+          "403": { "$ref": "#/components/responses/captchaError" },
           "503": { "$ref": "#/components/responses/unavailableError" },
           "500": { "$ref": "#/components/responses/unknownError" }
         }
@@ -338,10 +338,10 @@
             }
           },
           "401": { "$ref": "#/components/responses/authenticationError" },
-          "403": { "$ref": "#/components/responses/authorizationError" },
           "422": { "$ref": "#/components/responses/paramsError" },
           "429": { "$ref": "#/components/responses/throttlingError" },
           "504": { "$ref": "#/components/responses/timeoutError" },
+          "403": { "$ref": "#/components/responses/captchaError" },
           "404": { "$ref": "#/components/responses/unsupportedError" },
           "503": { "$ref": "#/components/responses/unavailableError" },
           "500": { "$ref": "#/components/responses/unknownError" }
@@ -871,6 +871,12 @@
         "description": "The operation timed out.",
         "content": {
           "text/plain": { "schema": { "type": "string", "example": "Request(s) timed out" } }
+        }
+      },
+      "captchaError": {
+        "description": "The content was captcha’d.",
+        "content": {
+          "text/plain": { "schema": { "type": "string", "example": "Captcha was detected" } }
         }
       },
       "unsupportedError": {
