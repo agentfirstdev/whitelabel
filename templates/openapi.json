@@ -263,6 +263,17 @@
             "in": "query"
           },
           {
+            "name": "captcha",
+            "description": "The intended resolution of any detected captcha, where `rejected` results in a `403` response.",
+            "schema": {
+              "type": "string",
+              "enum": ["solved", "ignored", "rejected"],
+              "default": "solved",
+              "example": "rejected"
+            },
+            "in": "query"
+          },
+          {
             "name": "readiness",
             "description": "The standard ready event to await before snapshotting browsed content.",
             "schema": {
