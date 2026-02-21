@@ -55,7 +55,7 @@ Follow the steps below to host our documentation on **Mintlify**.
    > _Navigation example_
    >
    > Here’s how we link from
-   > [our configuration file](https://github.com/agentfirstdev/doc/blob/main/docs.json#L13-L50):
+   > [our configuration file](https://github.com/agentfirstdev/doc/blob/main/docs.json#L13-L53):
    >
    > ```json
    > "...",
