@@ -45,20 +45,6 @@ const fromApiSpec = path.join(templateDirectory, 'openapi.json');
 const toApiSpec = path.join(docRoot, 'openapi.json');
 const companySlug = companyName.toUpperCase().replaceAll(' ', '_');
 const templateVals = { companyName, companySlug, apiEndpoint };
-const copyDirectory = async (from, to) => {
-  await filesystem.mkdir(to, { recursive: true });
-
-  for (const entry of await filesystem.readdir(from, { withFileTypes: true })) {
-    const fromPath = path.join(from, entry.name);
-    const toPath = path.join(to, entry.name);
-
-    if (entry.isDirectory()) {
-      await copyDirectory(fromPath, toPath);
-    } else {
-      await filesystem.copyFile(fromPath, toPath);
-    }
-  }
-};
 const renderTemplate = async (from, to, vals) => {
   await filesystem.writeFile(
     to,
@@ -68,7 +54,7 @@ const renderTemplate = async (from, to, vals) => {
       .replaceAll('{{API_ENDPOINT}}', vals.apiEndpoint)
   );
 };
-const renderDirectory = async (from, to, vals) => {
+const copyDirectory = async (from, to, copyFile = filesystem.copyFile) => {
   await filesystem.mkdir(to, { recursive: true });
 
   for (const entry of await filesystem.readdir(from, { withFileTypes: true })) {
@@ -76,9 +62,9 @@ const renderDirectory = async (from, to, vals) => {
     const toPath = path.join(to, entry.name);
 
     if (entry.isDirectory()) {
-      await renderDirectory(fromPath, toPath, vals);
+      await copyDirectory(fromPath, toPath, copyFile);
     } else {
-      await renderTemplate(fromPath, toPath, vals);
+      await copyFile(fromPath, toPath);
     }
   }
 };
@@ -104,7 +90,9 @@ const renderDirectory = async (from, to, vals) => {
   await copyDirectory(path.join(whitelabelRoot, 'reference'), path.join(docRoot, 'reference'));
 
   // Mintlify-snippet customization
-  await renderDirectory(fromSnippetDirectory, toSnippetDirectory, templateVals);
+  await copyDirectory(fromSnippetDirectory, toSnippetDirectory, (from, to) => {
+    return renderTemplate(from, to, templateVals);
+  });
 
   // OpenAPI-spec customization
   await renderTemplate(fromApiSpec, toApiSpec, templateVals);
