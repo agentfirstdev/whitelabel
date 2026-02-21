@@ -10,7 +10,7 @@ it to rebrand Agent First's Search, Browser, and Reporting API docs under their 
 
 ## Commands
 
-- **Whitelabel**: `npm run whitelabel -- --company='Company Name' --endpoint=api.example.com`
+- **Whitelabel**: `npm run whitelabel -- --path=endpoints --company='Company Name' --endpoint=api.example.com`
 - **Lint JS/JSON**: `npx eslint -c linter/eslint.config.js [files]`
 - **Lint SQL**: `npm run lint-sql -- [file]`
 
@@ -23,10 +23,15 @@ There are no tests.
 The core mechanism is placeholder replacement. Template files in `templates/` contain variables like
 `{{COMPANY_NAME}}`, `{{COMPANY_SLUG}}`, and `{{API_ENDPOINT}}`. The whitelabel script
 (`scripts/whitelabel.js`) replaces these with company-specific values and writes output to the parent
-Mintlify project:
+Mintlify project. The required `--path` parameter controls the output path (e.g., `endpoints`):
 
-- `templates/snippets/` -> `{mintlify-root}/snippets/whitelabel/` (MDX snippet components)
-- `templates/openapi.json` -> `openapi.json` in this directory (OpenAPI 3.1.0 spec)
+- `*.mdx` (whitelabel root) -> `{mintlify-root}/{path}/` (copied as-is)
+- `reference/` -> `{mintlify-root}/{path}/reference/` (copied as-is)
+- `templates/snippets/` -> `{mintlify-root}/snippets/whitelabel/` (rendered MDX snippet components)
+- `templates/openapi.json` -> `{mintlify-root}/{path}/openapi.json` (rendered OpenAPI 3.1.0 spec)
+
+The script cleans `{mintlify-root}/{path}/` and `{mintlify-root}/snippets/whitelabel/` before each
+run so stale files from a previous run don't linger.
 
 `COMPANY_SLUG` is derived as `COMPANY_NAME.toUpperCase().replaceAll(' ', '_')`.
 
@@ -40,8 +45,10 @@ Mintlify project:
 
 ### Integration Model
 
-This repo is consumed as a **git subtree** within a parent Mintlify documentation project. The
-whitelabel script detects the Mintlify root by running `git rev-parse --show-toplevel` from the
+This repo is consumed as a **git submodule** within a parent Mintlify documentation project (e.g.,
+at `whitelabel/` rather than inside the content path). The whitelabel script generates all content
+files into the consumer's Mintlify tree under the `--path` path, so the submodule is purely a
+source/tool. The script detects the Mintlify root by running `git rev-parse --show-toplevel` from the
 parent directory.
 
 ## Code Style

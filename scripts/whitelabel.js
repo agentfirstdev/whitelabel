@@ -17,11 +17,14 @@ const args = Object.fromEntries(
     return [key, val.join('=')];
   })
 );
+const docPath = args.path || args.p;
 const companyName = args.company || args.c;
 const apiEndpoint = args.endpoint || args.e;
 
-if (!companyName || !apiEndpoint) {
-  console.error("Usage: npm run whitelabel -- --company='[name]' --endpoint=[domain]");
+if (!docPath || !companyName || !apiEndpoint) {
+  console.error(
+    "Usage: npm run whitelabel -- --path='[name]' --company='[name]' --endpoint=[domain]"
+  );
 
   process.exit(1);
 }
@@ -34,12 +37,28 @@ const mintlifyRoot = childProcess
   })
   .toString()
   .trim();
+const docRoot = path.join(mintlifyRoot, docPath);
 const templateDirectory = path.join(whitelabelRoot, 'templates');
 const fromSnippetDirectory = path.join(templateDirectory, 'snippets');
 const toSnippetDirectory = path.join(mintlifyRoot, 'snippets', 'whitelabel');
 const fromApiSpec = path.join(templateDirectory, 'openapi.json');
-const toApiSpec = path.join(whitelabelRoot, 'openapi.json');
+const toApiSpec = path.join(docRoot, 'openapi.json');
 const companySlug = companyName.toUpperCase().replaceAll(' ', '_');
+const templateVals = { companyName, companySlug, apiEndpoint };
+const copyDirectory = async (from, to) => {
+  await filesystem.mkdir(to, { recursive: true });
+
+  for (const entry of await filesystem.readdir(from, { withFileTypes: true })) {
+    const fromPath = path.join(from, entry.name);
+    const toPath = path.join(to, entry.name);
+
+    if (entry.isDirectory()) {
+      await copyDirectory(fromPath, toPath);
+    } else {
+      await filesystem.copyFile(fromPath, toPath);
+    }
+  }
+};
 const renderTemplate = async (from, to, vals) => {
   await filesystem.writeFile(
     to,
@@ -57,7 +76,6 @@ const renderDirectory = async (from, to, vals) => {
     const toPath = path.join(to, entry.name);
 
     if (entry.isDirectory()) {
-      await filesystem.mkdir(toPath, { recursive: true });
       await renderDirectory(fromPath, toPath, vals);
     } else {
       await renderTemplate(fromPath, toPath, vals);
@@ -66,11 +84,30 @@ const renderDirectory = async (from, to, vals) => {
 };
 
 (async () => {
-  await renderDirectory(fromSnippetDirectory, toSnippetDirectory, {
-    companyName,
-    companySlug,
-    apiEndpoint
-  });
-  await renderTemplate(fromApiSpec, toApiSpec, { companyName, companySlug, apiEndpoint });
+  // Cleanup of any subtree artifacts
+  await filesystem.rm(docRoot, { recursive: true, force: true });
+  await filesystem.rm(toSnippetDirectory, { recursive: true, force: true });
+
+  // MDX file transfer
+  await filesystem.mkdir(docRoot, { recursive: true });
+
+  for (const entry of await filesystem.readdir(whitelabelRoot, { withFileTypes: true })) {
+    if (entry.isFile() && entry.name.endsWith('.mdx')) {
+      await filesystem.copyFile(
+        path.join(whitelabelRoot, entry.name),
+        path.join(docRoot, entry.name)
+      );
+    }
+  }
+
+  // Reference file transfer
+  await copyDirectory(path.join(whitelabelRoot, 'reference'), path.join(docRoot, 'reference'));
+
+  // Mintlify-snippet customization
+  await renderDirectory(fromSnippetDirectory, toSnippetDirectory, templateVals);
+
+  // OpenAPI-spec customization
+  await renderTemplate(fromApiSpec, toApiSpec, templateVals);
+
   console.log('Doc whitelabeled successfully!\n');
 })();

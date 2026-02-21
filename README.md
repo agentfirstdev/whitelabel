@@ -12,62 +12,42 @@ the **Mintlify** platform. If you use another documentation platform,
 
 Follow the steps below to host our documentation on **Mintlify**.
 
-1. **Import project**
+1. **Download submodule**
 
-   Go to your **Mintlify** directory then import this project by choosing a subdirectory name and
-   URL path to nest the documentation under:
+   Go to your **Mintlify** directory then download this project:
 
    ```shell
-   git subtree add \
-   --prefix='[subdirectory/pathname here]' \
-   --squash \
-   https://github.com/agentfirstdev/whitelabel \
-   main
+   git submodule add https://github.com/agentfirstdev/whitelabel
    ```
 
-   > _Subdirectory/pathname example_
-   >
-   > We chose `endpoints`, as in https://doc.agentfirst.dev/endpoints/search:
-   >
-   > ```shell
-   > git subtree add \
-   > --prefix=endpoints \
-   > --squash \
-   > https://github.com/agentfirstdev/whitelabel \
-   > main
-   > ```
+2. **Customize documentation**
 
-2. **Download dependencies**
-
-   Switch to your new subdirectory then download the Node.js dependencies:
+   Switch to the whitelabel subdirectory then customize the documentation by calling the whitelabel
+   script with a subdirectory name and URL path to nest the documentation under, as well as your
+   company name and API domain:
 
    ```shell
-   cd '[subdirectory/pathname here]'
-   npm i
-   ```
-
-3. **Brand documentation**
-
-   Brand the documentation by calling the whitelabel script with your company name and API domain of
-   choice:
-
-   ```shell
+   cd whitelabel
    npm run whitelabel -- \
-   --company='[company name here]'\
+   --path='[subdirectory/pathname here]' \
+   --company='[company name here]' \
    --endpoint=[API domain here]
    ```
 
-   > _Branding example_
+   > _Customization example_
    >
-   > Here’s how we branded our documentation:
+   > We used `endpoints`, as in https://doc.agentfirst.dev/endpoints/search, `Agent First`, and
+   > `api.agentfirst.dev`:
    >
    > ```shell
+   > cd whitelabel
    > npm run whitelabel -- \
+   > --path=endpoints \
    > --company='Agent First' \
    > --endpoint=api.agentfirst.dev
    > ```
 
-4. **Link pages**
+3. **Link pages**
 
    Link to whichever tutorial and reference pages you want in your navigation by editing the
    `docs.json` file at the **Mintlify** root.
@@ -122,9 +102,9 @@ Follow the steps below to host our documentation on **Mintlify**.
    > "..."
    > ```
 
-5. **Preview changes**
+4. **Preview changes**
 
-   Switch to the **Mintlify** root then preview your changes as usual:
+   Switch back to the **Mintlify** root then preview your changes as usual:
 
    ```shell
    cd ..
@@ -133,7 +113,7 @@ Follow the steps below to host our documentation on **Mintlify**.
 
    A local copy of your documentation will be hosted at http://localhost:3000/.
 
-6. **Publish changes**
+5. **Publish changes**
 
    Publish your changes after reviewing them:
 
@@ -144,19 +124,19 @@ Follow the steps below to host our documentation on **Mintlify**.
    If you’ve connected your repository to **Mintlify**, your documentation will be automatically
    deployed.
 
-7. **Incorporate updates**
+6. **Incorporate updates**
 
-   To incorporate documentation updates later, sync this project again:
+   To incorporate documentation updates later, resync this project from your **Mintlify** directory
+   then execute the whitelabel script again:
 
    ```shell
-   git subtree pull \
-   --prefix='[subdirectory/pathname here]' \
-   --squash \
-   https://github.com/agentfirstdev/whitelabel \
-   main
+   git submodule update --remote
+   cd whitelabel
+   npm run whitelabel -- \
+   --path='[subdirectory/pathname here]' \
+   --company='[company name here]' \
+   --endpoint=[API domain here]
    ```
-
-   Then, repeat the directions from **step 2**.
 
 ## License
 
