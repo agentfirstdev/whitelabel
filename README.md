@@ -24,27 +24,34 @@ Follow the steps below to host our documentation on **Mintlify**.
 
    Switch to the whitelabel subdirectory then customize the documentation by calling the whitelabel
    script with a subdirectory name and URL path to nest the documentation under, as well as your
-   company name and API domain:
+   company name, support email address, API domain, usage dashboard URL, and checkout URL:
 
    ```shell
    cd whitelabel
    npm run whitelabel -- \
-   --path='[subdirectory/pathname here]' \
-   --company='[company name here]' \
-   --endpoint=[API domain here]
+   --path '[subdirectory/pathname here]' \
+   --company '[company name here]' \
+   --email [support address here] \
+   --endpoint [API domain here] \
+   --dashboard [dashboard URL here] \
+   --checkout [top-up URL here]
    ```
 
    > _Customization example_
    >
-   > We used `endpoints`, as in https://doc.agentfirst.dev/endpoints/search, `Agent First`, and
-   > `api.agentfirst.dev`:
+   > We used `endpoints`, as in https://doc.agentfirst.dev/endpoints/search, `Agent First`,
+   > `brain@agentfirst.dev`, `api.agentfirst.dev`, `https://agentfirst.dev/dashboard`, and
+   > `https://agentfirst.dev/#pricing`:
    >
    > ```shell
    > cd whitelabel
    > npm run whitelabel -- \
-   > --path=endpoints \
-   > --company='Agent First' \
-   > --endpoint=api.agentfirst.dev
+   > --path endpoints \
+   > --company 'Agent First' \
+   > --email brain@agentfirst.dev \
+   > --endpoint api.agentfirst.dev \
+   > --dashboard https://agentfirst.dev/dashboard \
+   > --checkout https://agentfirst.dev/#pricing
    > ```
 
 3. **Link pages**
