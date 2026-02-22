@@ -141,6 +141,7 @@
             }
           },
           "401": { "$ref": "#/components/responses/authenticationError" },
+          "402": { "$ref": "#/components/responses/creditsError" },
           "422": { "$ref": "#/components/responses/paramsError" },
           "504": { "$ref": "#/components/responses/timeoutError" },
           "403": { "$ref": "#/components/responses/captchaError" },
@@ -338,6 +339,7 @@
             }
           },
           "401": { "$ref": "#/components/responses/authenticationError" },
+          "402": { "$ref": "#/components/responses/creditsError" },
           "422": { "$ref": "#/components/responses/paramsError" },
           "429": { "$ref": "#/components/responses/throttlingError" },
           "504": { "$ref": "#/components/responses/timeoutError" },
@@ -413,7 +415,8 @@
             }
           },
           "401": { "$ref": "#/components/responses/authenticationError" },
-          "403": { "$ref": "#/components/responses/authorizationError" }
+          "403": { "$ref": "#/components/responses/authorizationError" },
+          "402": { "$ref": "#/components/responses/creditsError" }
         }
       }
     },
@@ -833,6 +836,17 @@
         "content": {
           "text/plain": {
             "schema": { "type": "string", "example": "Valid API token must be provided" }
+          }
+        }
+      },
+      "creditsError": {
+        "description": "No more credits are available.",
+        "content": {
+          "text/plain": {
+            "schema": {
+              "type": "string",
+              "example": "Credit balance is 0; top up at {{CHECKOUT_URL}}"
+            }
           }
         }
       },
