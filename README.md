@@ -140,9 +140,12 @@ Follow the steps below to host our documentation on **Mintlify**.
    git submodule update --remote
    cd whitelabel
    npm run whitelabel -- \
-   --path='[subdirectory/pathname here]' \
-   --company='[company name here]' \
-   --endpoint=[API domain here]
+   --path '[subdirectory/pathname here]' \
+   --company '[company name here]' \
+   --email [support address here] \
+   --endpoint [API domain here] \
+   --dashboard [dashboard URL here] \
+   --checkout [top-up URL here]
    ```
 
 ## License
