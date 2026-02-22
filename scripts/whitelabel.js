@@ -10,20 +10,22 @@ process.on('unhandledRejection', (reason) => {
   process.exit(1);
 });
 
-const args = Object.fromEntries(
-  process.argv.slice(2).map((arg) => {
-    const [key, ...val] = arg.replace(/^--/, '').split('=');
+const args = process.argv.slice(2);
+const parsedArgs = {};
 
-    return [key, val.join('=')];
-  })
-);
-const docPath = args.path || args.p;
-const companyName = args.company || args.c;
-const apiEndpoint = args.endpoint || args.e;
+for (let i = 0; i < args.length; i++) parsedArgs[args[i].replace(/^-{1,2}/, '')] = args[++i];
 
-if (!docPath || !companyName || !apiEndpoint) {
+const docPath = parsedArgs.path || parsedArgs.p;
+const companyName = parsedArgs.company || parsedArgs.c;
+const emailAddress = parsedArgs.email || parsedArgs.e;
+const apiEndpoint = parsedArgs.endpoint;
+const dashboardUrl = parsedArgs.dashboard || parsedArgs.d;
+const checkoutUrl = parsedArgs.checkout;
+
+if (!docPath || !companyName || !emailAddress || !apiEndpoint || !dashboardUrl || !checkoutUrl) {
   console.error(
-    "Usage: npm run whitelabel -- --path='[name]' --company='[name]' --endpoint=[domain]"
+    "Usage: npm run whitelabel -- --path '[name]' --company '[name]' --email [address] " +
+      '--endpoint [domain] --dashboard [URL] --checkout [URL]'
   );
 
   process.exit(1);
@@ -44,14 +46,24 @@ const toSnippetDirectory = path.join(mintlifyRoot, 'snippets', 'whitelabel');
 const fromApiSpec = path.join(templateDirectory, 'openapi.json');
 const toApiSpec = path.join(docRoot, 'openapi.json');
 const companySlug = companyName.toUpperCase().replaceAll(' ', '_');
-const templateVals = { companyName, companySlug, apiEndpoint };
+const templateVals = {
+  companyName,
+  companySlug,
+  emailAddress,
+  apiEndpoint,
+  dashboardUrl,
+  checkoutUrl
+};
 const renderTemplate = async (from, to, vals) => {
   await filesystem.writeFile(
     to,
     (await filesystem.readFile(from, 'utf8'))
       .replaceAll('{{COMPANY_NAME}}', vals.companyName)
       .replaceAll('{{COMPANY_SLUG}}', vals.companySlug)
+      .replaceAll('{{EMAIL_ADDRESS}}', vals.emailAddress)
       .replaceAll('{{API_ENDPOINT}}', vals.apiEndpoint)
+      .replaceAll('{{DASHBOARD_URL}}', vals.dashboardUrl)
+      .replaceAll('{{CHECKOUT_URL}}', vals.checkoutUrl)
   );
 };
 const copyDirectory = async (from, to, copyFile = filesystem.copyFile) => {
