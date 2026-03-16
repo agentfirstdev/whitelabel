@@ -47,11 +47,7 @@
           {
             "name": "ip",
             "description": "The type of IP address to search from; a random IP type is used by default.",
-            "schema": {
-              "type": "string",
-              "enum": ["residential", "isp"],
-              "example": null
-            },
+            "schema": { "type": "string", "enum": ["residential", "isp"], "example": null },
             "in": "query"
           },
           {
@@ -434,6 +430,11 @@
                     "description": "The email address of the user to create an account for; the address is case insensitive and can be up to 255 characters, regardless of character encoding.",
                     "type": "string",
                     "example": "user@example.com"
+                  },
+                  "credits": {
+                    "description": "The number of credits to grant the account.",
+                    "type": "integer",
+                    "example": 1000
                   }
                 },
                 "required": ["email"]
@@ -476,6 +477,63 @@
         }
       },
       "patch": {
+        "summary": "Credit grant",
+        "description": "Allocate credits to an account.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "description": "The (case-insensitive) email address of the user whose account to grant credits to.",
+                    "type": "string",
+                    "example": "user@example.com"
+                  },
+                  "credits": {
+                    "description": "The number of credits to grant the account.",
+                    "type": "integer",
+                    "example": 1000
+                  }
+                },
+                "required": ["email", "credits"]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "The account credits.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "description": "The account email address.",
+                      "type": "string",
+                      "example": "user@example.com"
+                    },
+                    "credits": {
+                      "description": "The number of granted credits as recorded by the API.",
+                      "type": "integer",
+                      "example": 1000
+                    }
+                  },
+                  "required": ["email", "credits"]
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/authenticationError" },
+          "403": { "$ref": "#/components/responses/authorizationError" },
+          "400": { "$ref": "#/components/responses/malformedError" },
+          "422": { "$ref": "#/components/responses/paramsError" },
+          "429": { "$ref": "#/components/responses/throttlingError" },
+          "404": { "$ref": "#/components/responses/unsupportedError" },
+          "500": { "$ref": "#/components/responses/unknownError" }
+        }
       },
       "get": {
         "summary": "Credit balances",
