@@ -481,14 +481,14 @@
         "parameters": [
           {
             "name": "email",
-            "description": "The (case-insensitive) email address of the user to look up; multiple email addresses can be provided by repeating the key; settings and remaining credits for all email addresses is included by default.",
+            "description": "The (case-insensitive) email address of the user whose profile to fetch; multiple addresses can be provided by repeating the key; profiles for all addresses are included by default.",
             "schema": { "type": "string", "example": "user@example.com" },
             "in": "query"
           }
         ],
         "responses": {
           "200": {
-            "description": "The account settings and remaining credits.",
+            "description": "The account settings and credits.",
             "content": {
               "application/json": {
                 "schema": {
@@ -523,7 +523,7 @@
         "description": "Retrieve the settings and remaining credits of an account.",
         "responses": {
           "200": {
-            "description": "The account settings and remaining credits.",
+            "description": "The account settings and credits.",
             "content": {
               "application/json": {
                 "schema": {
@@ -573,7 +573,7 @@
           },
           {
             "name": "email",
-            "description": "**[Whitelabelers only]** The (case-insensitive) email address of the user to select data for; multiple email addresses can be provided by repeating the key; data for all email addresses is included by default.",
+            "description": "**[Whitelabelers only]** The (case-insensitive) email address of the user whose data to select; multiple addresses can be provided by repeating the key; data for all addresses is included by default.",
             "schema": { "type": "string", "example": "user@example.com" },
             "in": "query"
           },
