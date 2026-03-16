@@ -434,13 +434,9 @@
                     "description": "The email address of the user to create an account for; the address is case insensitive and can be up to 255 characters, regardless of character encoding.",
                     "type": "string",
                     "example": "user@example.com"
-                  },
-                  "services": {
-                    "description": "The API services to grant the account access to.",
-                    "allOf": [{ "$ref": "#/components/schemas/Services" }]
                   }
                 },
-                "required": ["email", "services"]
+                "required": ["email"]
               }
             }
           },
@@ -448,28 +444,24 @@
         },
         "responses": {
           "201": {
-            "description": "The metadata of the account.",
+            "description": "The new account metadata.",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "email": {
-                      "description": "The email address of the new user account as recorded by the API.",
+                      "description": "The account email address as recorded by the API.",
                       "type": "string",
                       "example": "user@example.com"
                     },
                     "token": {
-                      "description": "The bearer token issued by the API for authentication.",
+                      "description": "The bearer token issued to the account for authentication.",
                       "type": "string",
                       "example": "a1-0dF6qKHYD7SNU5kAtjOmwHpH3iFgpylA"
-                    },
-                    "services": {
-                      "description": "The API services that the account has been granted access to.",
-                      "allOf": [{ "$ref": "#/components/schemas/Services" }]
                     }
                   },
-                  "required": ["email", "token", "services"]
+                  "required": ["email", "token"]
                 }
               }
             }
@@ -479,6 +471,82 @@
           "400": { "$ref": "#/components/responses/malformedError" },
           "422": { "$ref": "#/components/responses/paramsError" },
           "409": { "$ref": "#/components/responses/conflictError" },
+          "429": { "$ref": "#/components/responses/throttlingError" },
+          "500": { "$ref": "#/components/responses/unknownError" }
+        }
+      },
+      "get": {
+        "summary": "User profiles",
+        "description": "Retrieve the settings and credit balances of multiple accounts.",
+        "parameters": [
+          {
+            "name": "email",
+            "description": "The (case-insensitive) email address of the user to look up; multiple email addresses can be provided by repeating the key; data for all email addresses is included by default.",
+            "schema": { "type": "string", "example": "user@example.com" },
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The account settings and credit balances.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "description": "The account email address.",
+                      "type": "string",
+                      "example": "user@example.com"
+                    },
+                    "credits": {
+                      "description": "The number of remaining credits allocated to the account.",
+                      "type": "integer",
+                      "example": "1000"
+                    }
+                  },
+                  "required": ["email", "credits"]
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/authenticationError" },
+          "403": { "$ref": "#/components/responses/authorizationError" },
+          "429": { "$ref": "#/components/responses/throttlingError" },
+          "500": { "$ref": "#/components/responses/unknownError" }
+        }
+      }
+    },
+    "/user": {
+      "get": {
+        "summary": "User profile",
+        "description": "Retrieve the settings and credit balance of an account.",
+        "responses": {
+          "200": {
+            "description": "The account settings and credit balance.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "email": {
+                      "description": "The account email address.",
+                      "type": "string",
+                      "example": "user@example.com"
+                    },
+                    "credits": {
+                      "description": "The number of remaining credits allocated to the account.",
+                      "type": "integer",
+                      "example": "1000"
+                    }
+                  },
+                  "required": ["email", "credits"]
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/authenticationError" },
+          "403": { "$ref": "#/components/responses/authorizationError" },
           "429": { "$ref": "#/components/responses/throttlingError" },
           "500": { "$ref": "#/components/responses/unknownError" }
         }
