@@ -475,14 +475,19 @@
           "500": { "$ref": "#/components/responses/unknownError" }
         }
       },
+      "patch": {
+      },
       "get": {
         "summary": "Credit balances",
         "description": "Retrieve the settings and remaining credits of one or more accounts.",
         "parameters": [
           {
             "name": "email",
-            "description": "The (case-insensitive) email address of the user whose profile to fetch; multiple addresses can be provided by repeating the key; profiles for all addresses are included by default.",
-            "schema": { "type": "string", "example": "user@example.com" },
+            "description": "The (case-insensitive) email address of the user whose profile to fetch; multiple addresses can be provided by repeating the key; profiles for all addresses are fetched by default.",
+            "schema": {
+              "type": "array",
+              "items": { "type": "string", "example": "user@example.com" }
+            },
             "in": "query"
           }
         ],
@@ -492,20 +497,23 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "email": {
-                      "description": "The account email address.",
-                      "type": "string",
-                      "example": "user@example.com"
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "description": "The account email address.",
+                        "type": "string",
+                        "example": "user@example.com"
+                      },
+                      "credits": {
+                        "description": "The number of remaining credits allocated to the account.",
+                        "type": "integer",
+                        "example": 1000
+                      }
                     },
-                    "credits": {
-                      "description": "The number of remaining credits allocated to the account.",
-                      "type": "integer",
-                      "example": "1000"
-                    }
-                  },
-                  "required": ["email", "credits"]
+                    "required": ["email", "credits"]
+                  }
                 }
               }
             }
@@ -527,20 +535,23 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "email": {
-                      "description": "The account email address.",
-                      "type": "string",
-                      "example": "user@example.com"
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "description": "The account email address.",
+                        "type": "string",
+                        "example": "user@example.com"
+                      },
+                      "credits": {
+                        "description": "The number of remaining credits allocated to the account.",
+                        "type": "integer",
+                        "example": 1000
+                      }
                     },
-                    "credits": {
-                      "description": "The number of remaining credits allocated to the account.",
-                      "type": "integer",
-                      "example": "1000"
-                    }
-                  },
-                  "required": ["email", "credits"]
+                    "required": ["email", "credits"]
+                  }
                 }
               }
             }
@@ -573,14 +584,17 @@
           },
           {
             "name": "email",
-            "description": "**[Whitelabelers only]** The (case-insensitive) email address of the user whose data to select; multiple addresses can be provided by repeating the key; data for all addresses is included by default.",
-            "schema": { "type": "string", "example": "user@example.com" },
+            "description": "**[Whitelabelers only]** The (case-insensitive) email address of the user whose data to select; multiple addresses can be provided by repeating the key; data for all addresses is selected by default.",
+            "schema": {
+              "type": "array",
+              "items": { "type": "string", "example": "user@example.com" }
+            },
             "in": "query"
           },
           {
             "name": "service",
-            "description": "The service to select data for; multiple services can be provided by repeating the key; data for all services is included by default.",
-            "schema": { "$ref": "#/components/schemas/Service" },
+            "description": "The service to select data for; multiple services can be provided by repeating the key; data for all services is selected by default.",
+            "schema": { "$ref": "#/components/schemas/Services" },
             "in": "query"
           },
           {
