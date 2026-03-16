@@ -476,19 +476,19 @@
         }
       },
       "get": {
-        "summary": "User profiles",
-        "description": "Retrieve the settings and credit balances of multiple accounts.",
+        "summary": "Credit balances",
+        "description": "Retrieve the settings and remaining credits of one or more accounts.",
         "parameters": [
           {
             "name": "email",
-            "description": "The (case-insensitive) email address of the user to look up; multiple email addresses can be provided by repeating the key; data for all email addresses is included by default.",
+            "description": "The (case-insensitive) email address of the user to look up; multiple email addresses can be provided by repeating the key; settings and remaining credits for all email addresses is included by default.",
             "schema": { "type": "string", "example": "user@example.com" },
             "in": "query"
           }
         ],
         "responses": {
           "200": {
-            "description": "The account settings and credit balances.",
+            "description": "The account settings and remaining credits.",
             "content": {
               "application/json": {
                 "schema": {
@@ -519,11 +519,11 @@
     },
     "/user": {
       "get": {
-        "summary": "User profile",
-        "description": "Retrieve the settings and credit balance of an account.",
+        "summary": "Credit balance",
+        "description": "Retrieve the settings and remaining credits of an account.",
         "responses": {
           "200": {
-            "description": "The account settings and credit balance.",
+            "description": "The account settings and remaining credits.",
             "content": {
               "application/json": {
                 "schema": {
