@@ -128,6 +128,7 @@
                     "id": {
                       "description": "The identifier to retrieve the queued search with.",
                       "type": "string",
+                      "format": "uuid",
                       "example": "078fd246-f0f7-44a0-aabb-cadd7b12454f"
                     }
                   },
@@ -154,7 +155,11 @@
           {
             "name": "id",
             "description": "The identifier returned by the [search endpoint](../search) of the queued search to retrieve.",
-            "schema": { "type": "string", "example": "078fd246-f0f7-44a0-aabb-cadd7b12454f" },
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "078fd246-f0f7-44a0-aabb-cadd7b12454f"
+            },
             "in": "query",
             "required": true
           }
@@ -199,7 +204,7 @@
           {
             "name": "url",
             "description": "The URL of the page to browse; any unsafe characters require [URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding).",
-            "schema": { "type": "string", "example": "https://example.com/" },
+            "schema": { "type": "string", "format": "uri", "example": "https://example.com/" },
             "in": "query",
             "required": true
           },
@@ -326,6 +331,7 @@
                     "id": {
                       "description": "The identifier to retrieve the queued request with.",
                       "type": "string",
+                      "format": "uuid",
                       "example": "1851dab8-4619-409f-893f-47dd3a180bc3"
                     }
                   },
@@ -354,7 +360,11 @@
           {
             "name": "id",
             "description": "The identifier returned by the [browser endpoint](../browser) of the queued request to retrieve.",
-            "schema": { "type": "string", "example": "1851dab8-4619-409f-893f-47dd3a180bc3" },
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "1851dab8-4619-409f-893f-47dd3a180bc3"
+            },
             "in": "query",
             "required": true
           }
@@ -429,6 +439,7 @@
                   "email": {
                     "description": "The email address of the user to create an account for; the address is case insensitive and can be up to 255 characters, regardless of character encoding.",
                     "type": "string",
+                    "format": "email",
                     "example": "user@example.com"
                   },
                   "credits": {
@@ -454,6 +465,7 @@
                     "email": {
                       "description": "The account email address as recorded by the API.",
                       "type": "string",
+                      "format": "email",
                       "example": "user@example.com"
                     },
                     "token": {
@@ -488,6 +500,7 @@
                   "email": {
                     "description": "The (case-insensitive) email address of the user whose account to grant credits to.",
                     "type": "string",
+                    "format": "email",
                     "example": "user@example.com"
                   },
                   "credits": {
@@ -513,6 +526,7 @@
                     "email": {
                       "description": "The account email address.",
                       "type": "string",
+                      "format": "email",
                       "example": "user@example.com"
                     },
                     "credits": {
@@ -544,7 +558,7 @@
             "description": "The (case-insensitive) email address of the user whose profile to fetch; multiple addresses can be provided by repeating the key; profiles for all addresses are fetched by default.",
             "schema": {
               "type": "array",
-              "items": { "type": "string", "example": "user@example.com" }
+              "items": { "type": "string", "format": "email", "example": "user@example.com" }
             },
             "in": "query"
           }
@@ -562,6 +576,7 @@
                       "email": {
                         "description": "The account email address.",
                         "type": "string",
+                        "format": "email",
                         "example": "user@example.com"
                       },
                       "credits": {
@@ -600,6 +615,7 @@
                       "email": {
                         "description": "The account email address.",
                         "type": "string",
+                        "format": "email",
                         "example": "user@example.com"
                       },
                       "credits": {
@@ -629,14 +645,22 @@
           {
             "name": "from",
             "description": "The [ISO datetime](https://www.w3.org/TR/NOTE-datetime) to select data starting from, inclusively.",
-            "schema": { "type": "string", "example": "2025-12-24T18:00:00-06:00" },
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2025-12-24T18:00:00-06:00"
+            },
             "in": "query",
             "required": true
           },
           {
             "name": "to",
             "description": "The [ISO datetime](https://www.w3.org/TR/NOTE-datetime) to select data up to, inclusively.",
-            "schema": { "type": "string", "example": "2025-12-25T9:00:00-06:00" },
+            "schema": {
+              "type": "string",
+              "format": "date-time",
+              "example": "2025-12-25T9:00:00-06:00"
+            },
             "in": "query",
             "required": true
           },
@@ -645,7 +669,7 @@
             "description": "**[Whitelabelers only]** The (case-insensitive) email address of the user whose data to select; multiple addresses can be provided by repeating the key; data for all addresses is selected by default.",
             "schema": {
               "type": "array",
-              "items": { "type": "string", "example": "user@example.com" }
+              "items": { "type": "string", "format": "email", "example": "user@example.com" }
             },
             "in": "query"
           },
@@ -680,16 +704,19 @@
                       "email": {
                         "description": "The email address of the user whose data is selected.",
                         "type": "string",
+                        "format": "email",
                         "example": "user@example.com"
                       },
                       "from": {
                         "description": "The ISO datetime of the first datapoint.",
                         "type": "string",
+                        "format": "date-time",
                         "example": "2025-12-25T00:00:00+00:00"
                       },
                       "to": {
                         "description": "The ISO datetime of the last datapoint.",
                         "type": "string",
+                        "format": "date-time",
                         "example": "2025-12-25T15:00:00+00:00"
                       },
                       "service": {
@@ -853,10 +880,10 @@
           "section": { "$ref": "#/components/schemas/Section" },
           "feature": { "type": "integer", "minimum": 1, "example": 1 },
           "position": { "type": "integer", "minimum": 1, "example": 1 },
-          "url": { "type": "string", "example": "https://foofighters.com/" },
+          "url": { "type": "string", "format": "uri", "example": "https://foofighters.com/" },
           "title": { "type": "string", "example": "Foo Fighters" },
           "site": { "type": "string", "example": "Foo Fighters" },
-          "visibleUrl": { "type": "string", "example": "https://foofighters.com" },
+          "visibleUrl": { "type": "string", "format": "uri", "example": "https://foofighters.com" },
           "date": { "type": "string", "nullable": true, "example": null },
           "snippet": { "type": "string", "example": "Official website of Foo Fighters." },
           "rating": {
@@ -929,7 +956,11 @@
         "type": "object",
         "properties": {
           "position": { "type": "integer", "minimum": 1, "example": 1 },
-          "url": { "type": "string", "example": "https://foofighters.com/tour-dates/" },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://foofighters.com/tour-dates/"
+          },
           "title": { "type": "string", "example": "Tour Dates" }
         },
         "required": ["position", "url", "title"]
