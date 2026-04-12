@@ -2,11 +2,11 @@
 title: Geotargeting
 icon: earth-americas
 iconType: light
-description: Search and browse from anywhere.
+description: Search, chat, and browse from anywhere.
 ---
 
 import Country from '/snippets/whitelabel/search/country.mdx';
-import Subdivision from '/snippets/whitelabel/search/subdivision.mdx';
+import Subdivision from '/snippets/whitelabel/ai/subdivision.mdx';
 import City from '/snippets/whitelabel/browser/city.mdx';
 
 ## Local content
@@ -25,7 +25,7 @@ Every HTTP request can be routed through one of more than 190 countries, by subd
   </Accordion>
 </AccordionGroup>
 
-These are the available geotargeting parameters:
+These are the geotargeting request parameters:
 
 | Key           | Required | Value                                                                                                                                                                                                                                                                    |
 | :------------ | :------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -36,3 +36,11 @@ These are the available geotargeting parameters:
 <Warning>
   City targeting takes precedence over subdivision targeting if both are specified.
 </Warning>
+
+These are the response parameters:
+
+| Key           | Value                                                                        |
+| :------------ | :--------------------------------------------------------------------------- |
+| `country`     | The ISO code of the country that was browsed from                            |
+| `subdivision` | The partial ISO code of the subdivision in the country that was browsed from |
+| `city`        | The common name of the city in the country that was browsed from             |

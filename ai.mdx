@@ -1,0 +1,111 @@
+---
+title: AI chat
+icon: message
+iconType: light
+description: Generate popular LLM completions.
+---
+
+import { companyName, apiEndpoint } from '/snippets/whitelabel/config.mdx';
+import { Reference } from '/snippets/whitelabel/reference.mdx';
+import { Autoscaling } from '/snippets/whitelabel/autoscaling.mdx';
+import Authentication from '/snippets/whitelabel/authentication.mdx';
+import Prompt from '/snippets/whitelabel/ai/prompt.mdx';
+import Device from '/snippets/whitelabel/ai/device.mdx';
+import Expiration from '/snippets/whitelabel/ai/expiration.mdx';
+import Devices from '/snippets/whitelabel/ai/devices.mdx';
+import Json from '/snippets/whitelabel/ai/json.mdx';
+
+<Reference endpoint='ai' />
+
+## Service usage
+
+**{companyName}'s** AI service provides all completion content and grounding sources from frontier
+AI labs as structured or raw data for use in generative or language engine optimization. The service
+has a RESTful interface that accepts `GET` requests at **https://&zwj;{apiEndpoint}/ai**.
+
+Conversations can be localized with <Link href='geotargeting'>geotargeting parameters</Link>.
+They're streamed live by default or optionally queued for <Link href='scheduling'>subsequent
+retrieval</Link>. Live conversations take an average of several seconds but may require multiple
+retries, in which case up to **3 minutes** is allocated per API call. <Link href='usage'>Usage
+data</Link> is published regularly.
+
+<Authentication />
+
+<Prompt />
+
+<Autoscaling />
+
+### Chat parameters
+
+Besides the [geotargeting and scheduling parameters](#service-usage) linked above, required and
+optional chat parameters can be added in a
+[standard query string](https://developer.mozilla.org/en-US/docs/Learn/Common_questions/What_is_a_URL#parameters).
+The keys and values **{companyName}** supports are as follows:
+
+| Key                  | Required | Value                                                                                                                                                                                                                                                                                                                                                  |
+| :------------------- | :------- | :----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `prompt`             | ✅       | The question or instruction of up to 2,047 characters to use as a chat prompt; the prompt requires [form or URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding) (with any space character being replaced by a `+` character or `%20` sequence)                                                                           |
+| `model`              | ⬜       | The AI model to chat with, `chatgpt`, `gemini`, `perplexity` (coming soon), or `copilot` (coming soon); `chatgpt` is the default model                                                                                                                                                                                                                 |
+| `device`             | ⬜       | The name as returned by the [devices resource](#device-emulation) of the device to emulate chatting on (these names are case insensitive but must include form- or URL-encoded spaces and punctuation marks); device emulation is unused by default                                                                                                    |
+| `language` (planned) | ⬜       | The commonly spelled name or [two-letter ISO code](https://www.loc.gov/standards/iso639-2/php/code_list.php) of the language to chat in (these names and codes are case insensitive but required to include form- or URL-encoded spaces and punctuation marks); the language is unset by default                                                       |
+| `display` (planned)  | ⬜       | The commonly spelled name or [two-letter ISO code](https://www.loc.gov/standards/iso639-2/php/code_list.php) of the chat interface's display language (these names and codes are case insensitive but required to include form- or URL-encoded spaces and punctuation marks); the display language is unset by default or set to the language if given |
+| `format`             | ⬜       | The format to output to, `json`, `rendered`, or `raw` (see the [section below](#response-format)); `json` is the default format                                                                                                                                                                                                                        |
+| `expiration`         | ⬜       | The age in days of when to consider a cached completion expired, where `0` disables caching; `1` is the default number of days before expiration                                                                                                                                                                                                       |
+
+### Device emulation
+
+The `device` param lets you fetch a device-specific completion, rather than the default desktop
+completion. For a list of supported smartphone and tablet devices, make a request with your API
+token and no params to **https://&zwj;{apiEndpoint}/ai/devices**:
+
+<Devices />
+
+The API will return JSON that contains an alphabetized array of device names:
+
+```json
+[
+  "Blackberry PlayBook",
+  "Blackberry PlayBook landscape",
+  "BlackBerry Z30",
+  "[Remaining device names here]"
+]
+```
+
+Then, pass your device name of choice into your chat request:
+
+<Device />
+
+### Response format
+
+Completions are returned as structured JSON, rendered HTML, or raw (unrendered) HTML.
+
+#### JSON
+
+If you set the output to JSON, your completion will be parsed into an object with the
+[geotargeting keys and values](#service-usage) above and following chat keys and values:
+
+| Key                  | Value                                                                                                                                                                                                                                                                                                                                                  |
+| :------------------- | :----------------------------------------------------------------------------------------------------------------------- |
+| `model`              | The AI model that generated the completion                                                                               |
+| `prompt`             | The user prompt that the completion was generated for                                                                    |
+| `html`               | The rendered HTML of the entire conversation                                                                             |
+| `promptHtml`         | The rendered HTML of just the prompt portion of the conversation                                                         |
+| `completionHtml`     | The rendered HTML of just the completion portion of the conversation                                                     |
+| `sourcesHtml`        | The rendered HTML of just the sources portion of the conversation                                                        |
+| `queries`            | An array of the fanout queries that the model searched to generate the completion; only some models expose these queries |
+| `device`             | The emulated device name that the conversation was had on                                                                |
+| `language` (planned) | The common name or ISO code of the language that the conversation is in                                                  |
+| `display` (planned)  | The common name or ISO code of the display language that conversation interface is in                                    |
+
+<Accordion icon='code' title='View JSON example'>
+  <Json />
+</Accordion>
+
+#### HTML
+
+HTML is available after processing by rendering and JavaScript engines or in the raw form sent by
+the chatbot.
+
+## Additional examples
+
+<Expiration />

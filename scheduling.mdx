@@ -7,8 +7,10 @@ description: Defer responses for later retrieval.
 
 import { apiEndpoint } from '/snippets/whitelabel/config.mdx';
 import Search from '/snippets/whitelabel/search/mode.mdx';
+import Ai from '/snippets/whitelabel/ai/mode.mdx';
 import Browser from '/snippets/whitelabel/browser/mode.mdx';
 import Results from '/snippets/whitelabel/search/id.mdx';
+import Completion from '/snippets/whitelabel/ai/id.mdx';
 import Content from '/snippets/whitelabel/browser/id.mdx';
 
 ## Asynchronous mode
@@ -16,6 +18,8 @@ import Content from '/snippets/whitelabel/browser/id.mdx';
 An API call that includes the `mode=async` key-value pair will be satisfied asynchronously:
 
 <Search />
+
+<Ai />
 
 <Browser />
 
@@ -29,26 +33,34 @@ In response, the API will provide a JSON job identifier:
 { "id": "1851dab8-4619-409f-893f-47dd3a180bc3" }
 ```
 
-The job results or content or job status can be requested at any time thereafter by passing the
-identifier to **https://&zwj;{apiEndpoint}/search/results** or
-**https://&zwj;{apiEndpoint}/browser/content**:
+```json
+{ "id": "21cb972e-0e0f-47bb-9ce9-65b99e9cee77" }
+```
+
+The job results, completion, or content or job status can be requested at any time thereafter by
+passing the identifier to **https://&zwj;{apiEndpoint}/search/results**,
+**https://&zwj;{apiEndpoint}/ai/completions**, or **https://&zwj;{apiEndpoint}/browser/content**:
 
 <Results />
 
+<Completion />
+
 <Content />
 
-The results or content, if ready, will be returned in the <Link href='search#response-format'>same
-format as synchronous results</Link> or <Link href='browser#response-format'>synchronous
-content</Link>; otherwise, a JSON status message will be returned.
+The results, completion, or content, if ready, will be returned in the <Link
+href='search#response-format'>same format as synchronous results</Link>, a <Link
+href='ai#response-format'>synchronous completion</Link>, or <Link
+href='browser#response-format'>synchronous content</Link>; otherwise, a JSON status message will be
+returned.
 
-A `retrieving` status indicates that the search or request is in progress:
+A `retrieving` status indicates that the search, conversation, or request is in progress:
 
 ```json
 { "status": "retrieving" }
 ```
 
-A `failed` status indicates that the search or request was unsuccessful and the call should be
-retried:
+A `failed` status indicates that the search, conversation, or request was unsuccessful and the call
+should be retried:
 
 ```json
 { "status": "failed" }
@@ -56,10 +68,10 @@ retried:
 
 These are the scheduling request parameters:
 
-| Key    | Required | Value                                                                                                                                                |
-| :----- | :------- | :--------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `mode` | ⬜       | The synchronous or asynchronous mode of content retrieval, `sync` or `async`; `sync` is the default mode                                             |
-| `id`   | ⬜       | The identifier provided by the <Link href='search'>search</Link> or <Link href='browser'>browser endpoints</Link> of an asynchronous job to retrieve |
+| Key    | Required | Value                                                                                                                                                                            |
+| :----- | :------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `mode` | ⬜       | The synchronous or asynchronous mode of content retrieval, `sync` or `async`; `sync` is the default mode                                                                         |
+| `id`   | ⬜       | The identifier provided by the <Link href='search'>search</Link>, <Link href='ai'>AI</Link>, or <Link href='browser'>browser endpoints</Link> of an asynchronous job to retrieve |
 
 These are the response parameters:
 
