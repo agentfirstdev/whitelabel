@@ -12,8 +12,10 @@
   "type": "module",
   "scripts": {
     "whitelabel": "node scripts/whitelabel.js",
-    "lint": "npx eslint -c linter/eslint.config.js",
-    "lint-sql": "bash -c 'diff -u \"$1\" <(./linter/3p/pgFormatter/pg_format -c linter/.pg_format \"$1\")' --"
+    "lint": "npx --prefix linter eslint -c linter/eslint.config.js",
+    "lint-css": "npx --prefix linter stylelint --config linter/.stylelintrc.json",
+    "lint-sql": "bash -c 'diff -u \"$1\" <(npx --prefix linter prettier --config linter/.prettierrc \"$1\")' --",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
