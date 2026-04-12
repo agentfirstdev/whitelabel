@@ -1008,12 +1008,12 @@
             "example": null
           },
           "subdivision": {
-            "description": "The partial ISO code of the targeted subdivision.",
+            "description": "The partial ISO code of the targeted subdivision in the country.",
             "type": "string",
             "example": null
           },
           "city": {
-            "description": "The common name of the targeted city.",
+            "description": "The common name of the targeted city in the country.",
             "type": "string",
             "example": null
           },
@@ -1210,12 +1210,12 @@
             "example": null
           },
           "subdivision": {
-            "description": "The partial ISO code of the targeted subdivision.",
+            "description": "The partial ISO code of the targeted subdivision in the country.",
             "type": "string",
             "example": null
           },
           "city": {
-            "description": "The common name of the targeted city.",
+            "description": "The common name of the targeted city in the country.",
             "type": "string",
             "example": null
           },
