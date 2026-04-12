@@ -11,12 +11,12 @@
     "/search": {
       "get": {
         "summary": "Results",
-        "description": "Retrieve popular search results or queue results for later retrieval.",
+        "description": "Retrieve search results or queue results for later retrieval.",
         "parameters": [
           {
             "name": "terms",
-            "description": "The broad or exact word or phrase to query (e.g., `foo bar baz` or `\"foo bar baz\"`); the terms require [form or URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding) (with any space character being replaced by a `+` character or `%20` sequence).",
-            "schema": { "type": "string", "example": "foo" },
+            "description": "The broad or exact word or phrase of up to 255 characters to query (e.g., `foo bar baz` or `\"foo bar baz\"`); the terms require [form or URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding) (with any space character being replaced by a `+` character or `%20` sequence).",
+            "schema": { "type": "string", "example": "foo bar baz" },
             "in": "query",
             "required": true
           },
@@ -42,12 +42,6 @@
             "name": "offset",
             "description": "The number of initial results to skip; results aren’t offset by default.",
             "schema": { "type": "integer", "minimum": 0, "maximum": 100, "example": null },
-            "in": "query"
-          },
-          {
-            "name": "ip",
-            "description": "The type of IP address to search from; a random IP type is used by default.",
-            "schema": { "type": "string", "enum": ["residential", "isp"], "example": null },
             "in": "query"
           },
           {
@@ -87,17 +81,6 @@
             "in": "query"
           },
           {
-            "name": "format",
-            "description": "The format to output to.",
-            "schema": {
-              "type": "string",
-              "enum": ["html", "json"],
-              "default": "html",
-              "example": "json"
-            },
-            "in": "query"
-          },
-          {
             "name": "expiration",
             "description": "The age in days of when to consider cached results expired, where `0` disables caching.",
             "schema": { "type": "integer", "minimum": 0, "maximum": 1, "default": 1, "example": 0 },
@@ -113,10 +96,7 @@
         "responses": {
           "200": {
             "description": "The search results.",
-            "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/Results" } },
-              "text/html": { "schema": { "type": "string" } }
-            }
+            "content": { "text/html": { "schema": { "type": "string" } } }
           },
           "202": {
             "description": "A job identifier.",
@@ -167,10 +147,7 @@
         "responses": {
           "200": {
             "description": "The search results.",
-            "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/Results" } },
-              "text/html": { "schema": { "type": "string" } }
-            }
+            "content": { "text/html": { "schema": { "type": "string" } } }
           },
           "202": {
             "description": "The search status.",
@@ -196,10 +173,207 @@
         }
       }
     },
+    "/ai": {
+      "get": {
+        "summary": "Completion",
+        "description": "Retrieve an LLM completion or queue a completion for later retrieval.",
+        "parameters": [
+          {
+            "name": "prompt",
+            "description": "The question or instruction of up to 2,047 characters to use as a chat prompt; the prompt requires [form or URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding) (with any space character being replaced by a `+` character or `%20` sequence).",
+            "schema": { "type": "string", "example": "best basketball shoes for 2026" },
+            "in": "query",
+            "required": true
+          },
+          {
+            "name": "model",
+            "description": "The AI model to chat with.",
+            "schema": {
+              "type": "string",
+              "enum": ["chatgpt", "gemini", "perplexity (coming soon)", "copilot (coming soon)"],
+              "default": "chatgpt",
+              "example": "gemini"
+            },
+            "in": "query"
+          },
+          {
+            "name": "device",
+            "description": "The name as returned by the [devices resource](ai/devices) of the device to emulate chatting on (these names are case insensitive but must include form- or URL-encoded spaces and punctuation marks); device emulation is unused by default.",
+            "schema": { "type": "string", "example": null },
+            "in": "query"
+          },
+          {
+            "name": "country",
+            "description": "The [two-letter ISO code](https://www.iso.org/obp/ui/#search/code) of the country to chat from (these codes are case insensitive); a random country is used by default.",
+            "schema": { "type": "string", "example": null },
+            "in": "query"
+          },
+          {
+            "name": "subdivision",
+            "description": "The alphanumeric second part (proceeding the separator) of a [first-level subdivision code](https://www.iso.org/obp/ui/#search/code) in the (prerequisite) country to chat from (these codes are case insensitive); a random subdivision is used by default.",
+            "schema": { "type": "string", "example": null },
+            "in": "query"
+          },
+          {
+            "name": "city",
+            "description": "The [commonly spelled name](https://www.geonames.org/) of the city in the (prerequisite) country to chat from (these names are temporarily case sensitive and required to include form- or URL-encoded spaces and punctuation marks); a random city is used by default.",
+            "schema": { "type": "string", "example": null },
+            "in": "query"
+          },
+          {
+            "name": "language (planned)",
+            "description": "The commonly spelled name or [two-letter ISO code](https://www.loc.gov/standards/iso639-2/php/code_list.php) of the language to chat in (these names and codes are case insensitive but required to include form- or URL-encoded spaces and punctuation marks); the language is unset by default.",
+            "schema": { "type": "string", "example": null },
+            "in": "query"
+          },
+          {
+            "name": "display (planned)",
+            "description": "The commonly spelled name or [two-letter ISO code](https://www.loc.gov/standards/iso639-2/php/code_list.php) of the chat interface’s display language (these names and codes are case insensitive but required to include form- or URL-encoded spaces and punctuation marks); the display language is unset by default or set to the language if given.",
+            "schema": { "type": "string", "example": null },
+            "in": "query"
+          },
+          {
+            "name": "format",
+            "description": "The format to output to.",
+            "schema": {
+              "type": "string",
+              "enum": ["json", "rendered", "raw"],
+              "default": "json",
+              "example": "rendered"
+            },
+            "in": "query"
+          },
+          {
+            "name": "expiration",
+            "description": "The age in days of when to consider a cached completion expired, where `0` disables caching.",
+            "schema": { "type": "integer", "minimum": 0, "maximum": 1, "default": 1, "example": 0 },
+            "in": "query"
+          },
+          {
+            "name": "mode",
+            "description": "The synchronous or asynchronous mode of completion retrieval (see the [async resource](ai/completions)).",
+            "schema": { "$ref": "#/components/schemas/Mode" },
+            "in": "query"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The AI completion.",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Completion" } },
+              "text/html": { "schema": { "type": "string" } }
+            }
+          },
+          "202": {
+            "description": "A job identifier.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "description": "The identifier to retrieve the queued conversation with.",
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "1851dab8-4619-409f-893f-47dd3a180bc3"
+                    }
+                  },
+                  "required": ["id"]
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/authenticationError" },
+          "402": { "$ref": "#/components/responses/creditsError" },
+          "422": { "$ref": "#/components/responses/paramsError" },
+          "504": { "$ref": "#/components/responses/timeoutError" },
+          "403": { "$ref": "#/components/responses/captchaError" },
+          "503": { "$ref": "#/components/responses/unavailableError" },
+          "500": { "$ref": "#/components/responses/unknownError" }
+        }
+      }
+    },
+    "/ai/completions": {
+      "get": {
+        "summary": "Async completions",
+        "description": "Retrieve the completion or status of a queued conversation.",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "The identifier returned by the [AI endpoint](../ai) of the queued conversation to retrieve.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "1851dab8-4619-409f-893f-47dd3a180bc3"
+            },
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The AI completion.",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/Completion" } },
+              "text/html": { "schema": { "type": "string" } }
+            }
+          },
+          "202": {
+            "description": "The conversation status.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "description": "The status of the queued conversation.",
+                      "allOf": [{ "$ref": "#/components/schemas/Status" }]
+                    }
+                  },
+                  "required": ["status"]
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/authenticationError" },
+          "403": { "$ref": "#/components/responses/authorizationError" },
+          "422": { "$ref": "#/components/responses/paramsError" },
+          "500": { "$ref": "#/components/responses/unknownError" }
+        }
+      }
+    },
+    "/ai/devices": {
+      "get": {
+        "summary": "Devices",
+        "description": "Retrieve supported device names.",
+        "responses": {
+          "200": {
+            "description": "The device names.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "example": [
+                    "Blackberry PlayBook",
+                    "Blackberry PlayBook landscape",
+                    "BlackBerry Z30",
+                    "<string>"
+                  ]
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/authenticationError" },
+          "403": { "$ref": "#/components/responses/authorizationError" },
+          "402": { "$ref": "#/components/responses/creditsError" }
+        }
+      }
+    },
     "/browser": {
       "get": {
         "summary": "Content",
-        "description": "Retrieve webpage content or queue content for later retrieval.",
+        "description": "Retrieve web content or queue content for later retrieval.",
         "parameters": [
           {
             "name": "url",
@@ -213,7 +387,7 @@
             "description": "The difficulty pool to attempt to access the URL from.",
             "schema": {
               "type": "string",
-              "enum": ["low", "medium", "high (coming soon)"],
+              "enum": ["low", "medium", "high (planned)"],
               "default": "low",
               "example": "low"
             },
@@ -234,16 +408,6 @@
             "name": "device",
             "description": "The name as returned by the [devices resource](browser/devices) of the device to emulate browsing on (these names are case insensitive but must include form- or URL-encoded spaces and punctuation marks); device emulation is unused by default.",
             "schema": { "type": "string", "example": null },
-            "in": "query"
-          },
-          {
-            "name": "ip",
-            "description": "The type of IP address to browse from; a random IP type is used by default.",
-            "schema": {
-              "type": "string",
-              "enum": ["residential", "isp", "datacenter (planned)"],
-              "example": null
-            },
             "in": "query"
           },
           {
@@ -332,7 +496,7 @@
                       "description": "The identifier to retrieve the queued request with.",
                       "type": "string",
                       "format": "uuid",
-                      "example": "1851dab8-4619-409f-893f-47dd3a180bc3"
+                      "example": "21cb972e-0e0f-47bb-9ce9-65b99e9cee77"
                     }
                   },
                   "required": ["id"]
@@ -363,7 +527,7 @@
             "schema": {
               "type": "string",
               "format": "uuid",
-              "example": "1851dab8-4619-409f-893f-47dd3a180bc3"
+              "example": "21cb972e-0e0f-47bb-9ce9-65b99e9cee77"
             },
             "in": "query",
             "required": true
@@ -401,10 +565,10 @@
     "/browser/devices": {
       "get": {
         "summary": "Devices",
-        "description": "Retrieve a list of supported device names.",
+        "description": "Retrieve supported device names.",
         "responses": {
           "200": {
-            "description": "The list of device names.",
+            "description": "The device names.",
             "content": {
               "application/json": {
                 "schema": {
@@ -791,7 +955,7 @@
             "example": "google"
           },
           "terms": {
-            "description": "The queried word or phrase.",
+            "description": "The broad or exact query terms.",
             "type": "string",
             "example": "foo"
           },
@@ -985,6 +1149,96 @@
           "snippet": { "type": "string" }
         },
         "required": ["position", "url", "title", "snippet"]
+      },
+      "Completion": {
+        "summary": "AI completion",
+        "type": "object",
+        "properties": {
+          "model": {
+            "description": "The AI model that generated the completion.",
+            "type": "string",
+            "enum": ["chatgpt", "gemini", "perplexity (coming soon)", "copilot (coming soon)"],
+            "example": "chatgpt"
+          },
+          "prompt": {
+            "description": "The user prompt that the completion was generated for.",
+            "type": "string",
+            "example": "best basketball shoes for 2026"
+          },
+          "html": {
+            "description": "The rendered HTML of the entire conversation.",
+            "type": "string",
+            "example": "<!DOCTYPE html><html lang=\"en-US\" ..."
+          },
+          "promptHtml": {
+            "description": "The rendered HTML of just the prompt portion of the conversation.",
+            "type": "string",
+            "example": "<h4 class=\"sr-only select-none\">You said: ..."
+          },
+          "completionHtml": {
+            "description": "The rendered HTML of just the completion portion of the conversation.",
+            "type": "string",
+            "example": "<h4 class=\"sr-only select-none\">ChatGPT said: ..."
+          },
+          "sourcesHtml": {
+            "description": "The rendered HTML of just the sources portion of the conversation.",
+            "type": "string",
+            "example": "<section aria-label=\"Sources\" ..."
+          },
+          "subqueries": {
+            "description": "The fanout queries that the model searched to generate the completion; only some models expose these queries.",
+            "type": "array",
+            "items": { "type": "string" },
+            "example": [
+              "best basketball shoes 2026",
+              "top rated basketball shoes 2026 reviews",
+              "best performance basketball shoes 2026",
+              "best basketball shoes for guards 2026",
+              "best basketball shoes for wide feet 2026",
+              "best outdoor basketball shoes 2026",
+              "most popular basketball shoes 2026"
+            ]
+          },
+          "device": {
+            "description": "The name of the targeted emulated device.",
+            "type": "string",
+            "example": null
+          },
+          "country": {
+            "description": "The ISO code of the targeted country.",
+            "type": "string",
+            "example": null
+          },
+          "subdivision": {
+            "description": "The partial ISO code of the targeted subdivision.",
+            "type": "string",
+            "example": null
+          },
+          "city": {
+            "description": "The common name of the targeted city.",
+            "type": "string",
+            "example": null
+          },
+          "language (planned)": {
+            "description": "The common name or ISO code of the targeted language.",
+            "type": "string",
+            "example": null
+          },
+          "display (planned)": {
+            "description": "The common name or ISO code of the targeted display language.",
+            "type": "string",
+            "example": null
+          }
+        },
+        "required": [
+          "model",
+          "prompt",
+          "html",
+          "promptHtml",
+          "completionHtml",
+          "sourcesHtml",
+          "subqueries"
+        ]
       },
       "Status": {
         "summary": "Job status",
