@@ -84,7 +84,7 @@ Completions are returned as structured JSON, rendered HTML, or raw (unrendered) 
 If you set the output to JSON, your completion will be parsed into an object with the
 [geotargeting keys and values](#service-usage) above and following chat keys and values:
 
-| Key                  | Value                                                                                                                                                                                                                                                                                                                                                  |
+| Key                  | Value                                                                                                                    |
 | :------------------- | :----------------------------------------------------------------------------------------------------------------------- |
 | `model`              | The AI model that generated the completion                                                                               |
 | `prompt`             | The user prompt that the completion was generated for                                                                    |
@@ -92,7 +92,7 @@ If you set the output to JSON, your completion will be parsed into an object wit
 | `promptHtml`         | The rendered HTML of just the prompt portion of the conversation                                                         |
 | `completionHtml`     | The rendered HTML of just the completion portion of the conversation                                                     |
 | `sourcesHtml`        | The rendered HTML of just the sources portion of the conversation                                                        |
-| `queries`            | An array of the fanout queries that the model searched to generate the completion; only some models expose these queries |
+| `subqueries`         | An array of the fanout queries that the model searched to generate the completion; only some models expose these queries |
 | `device`             | The emulated device name that the conversation was had on                                                                |
 | `language` (planned) | The common name or ISO code of the language that the conversation is in                                                  |
 | `display` (planned)  | The common name or ISO code of the display language that conversation interface is in                                    |
