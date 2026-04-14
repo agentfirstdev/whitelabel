@@ -1160,7 +1160,7 @@
             "enum": ["chatgpt", "gemini", "perplexity (coming soon)", "copilot (coming soon)"],
             "example": "chatgpt"
           },
-          "prompt": {
+          "query": {
             "description": "The user prompt that the completion was generated for.",
             "type": "string",
             "example": "best basketball shoes for 2026"
@@ -1170,17 +1170,17 @@
             "type": "string",
             "example": "<!DOCTYPE html><html lang=\"en-US\" ..."
           },
-          "promptHtml": {
+          "prompt": {
             "description": "The rendered HTML of just the prompt portion of the conversation.",
             "type": "string",
             "example": "<h4 class=\"sr-only select-none\">You said: ..."
           },
-          "completionHtml": {
+          "completion": {
             "description": "The rendered HTML of just the completion portion of the conversation.",
             "type": "string",
             "example": "<h4 class=\"sr-only select-none\">ChatGPT said: ..."
           },
-          "sourcesHtml": {
+          "sources": {
             "description": "The rendered HTML of just the sources portion of the conversation.",
             "type": "string",
             "example": "<section aria-label=\"Sources\" ..."
@@ -1232,11 +1232,11 @@
         },
         "required": [
           "model",
-          "prompt",
+          "query",
           "html",
-          "promptHtml",
-          "completionHtml",
-          "sourcesHtml",
+          "prompt",
+          "completion",
+          "sources",
           "subqueries"
         ]
       },
