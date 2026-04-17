@@ -81,6 +81,12 @@
             "in": "query"
           },
           {
+            "name": "awaiting",
+            "description": "The lazy result features to wait to load; any AI overview, which can take significant time to generate, is awaited for a maximum of **1 minute**; multiple features can be provided by repeating the key; lazy results aren’t awaited by default.",
+            "schema": { "type": "string", "enum": ["ai", "answers"], "example": "ai" },
+            "in": "query"
+          },
+          {
             "name": "expiration",
             "description": "The age in days of when to consider cached results expired, where `0` disables caching.",
             "schema": { "type": "integer", "minimum": 0, "maximum": 1, "default": 1, "example": 0 },
