@@ -196,7 +196,7 @@
             "description": "The AI model to chat with.",
             "schema": {
               "type": "string",
-              "enum": ["chatgpt", "gemini", "perplexity (coming soon)", "copilot (coming soon)"],
+              "enum": ["chatgpt", "gemini", "perplexity", "copilot"],
               "default": "chatgpt",
               "example": "gemini"
             },
@@ -1163,7 +1163,7 @@
           "model": {
             "description": "The AI model that generated the completion.",
             "type": "string",
-            "enum": ["chatgpt", "gemini", "perplexity (coming soon)", "copilot (coming soon)"],
+            "enum": ["chatgpt", "gemini", "perplexity", "copilot"],
             "example": "chatgpt"
           },
           "query": {
