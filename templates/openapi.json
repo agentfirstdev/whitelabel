@@ -673,13 +673,13 @@
                     "format": "email",
                     "example": "user@example.com"
                   },
-                  "credits": {
+                  "amount": {
                     "description": "The number of credits to grant the account.",
                     "type": "integer",
                     "example": 1000
                   }
                 },
-                "required": ["email", "credits"]
+                "required": ["email", "amount"]
               }
             }
           },
