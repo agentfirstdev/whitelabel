@@ -254,12 +254,6 @@
             "description": "The age in days of when to consider a cached completion expired, where `0` disables caching.",
             "schema": { "type": "integer", "minimum": 0, "maximum": 1, "default": 1, "example": 0 },
             "in": "query"
-          },
-          {
-            "name": "mode",
-            "description": "The synchronous or asynchronous mode of completion retrieval (see the [async resource](ai/completions)).",
-            "schema": { "$ref": "#/components/schemas/Mode" },
-            "in": "query"
           }
         ],
         "responses": {
@@ -268,25 +262,6 @@
             "content": {
               "application/json": { "schema": { "$ref": "#/components/schemas/Completion" } },
               "text/html": { "schema": { "type": "string" } }
-            }
-          },
-          "202": {
-            "description": "A job identifier.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "description": "The identifier to retrieve the queued conversation with.",
-                      "type": "string",
-                      "format": "uuid",
-                      "example": "1851dab8-4619-409f-893f-47dd3a180bc3"
-                    }
-                  },
-                  "required": ["id"]
-                }
-              }
             }
           },
           "401": { "$ref": "#/components/responses/authenticationError" },
@@ -295,55 +270,6 @@
           "504": { "$ref": "#/components/responses/timeoutError" },
           "403": { "$ref": "#/components/responses/captchaError" },
           "503": { "$ref": "#/components/responses/unavailableError" },
-          "500": { "$ref": "#/components/responses/unknownError" }
-        }
-      }
-    },
-    "/ai/completions": {
-      "get": {
-        "summary": "Async completions",
-        "description": "Retrieve the completion or status of a queued conversation.",
-        "parameters": [
-          {
-            "name": "id",
-            "description": "The identifier returned by the [AI endpoint](../ai) of the queued conversation to retrieve.",
-            "schema": {
-              "type": "string",
-              "format": "uuid",
-              "example": "1851dab8-4619-409f-893f-47dd3a180bc3"
-            },
-            "in": "query",
-            "required": true
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "The AI completion.",
-            "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/Completion" } },
-              "text/html": { "schema": { "type": "string" } }
-            }
-          },
-          "202": {
-            "description": "The conversation status.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "description": "The status of the queued conversation.",
-                      "allOf": [{ "$ref": "#/components/schemas/Status" }]
-                    }
-                  },
-                  "required": ["status"]
-                }
-              }
-            }
-          },
-          "401": { "$ref": "#/components/responses/authenticationError" },
-          "403": { "$ref": "#/components/responses/authorizationError" },
-          "422": { "$ref": "#/components/responses/paramsError" },
           "500": { "$ref": "#/components/responses/unknownError" }
         }
       }
