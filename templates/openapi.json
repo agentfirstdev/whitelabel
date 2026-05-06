@@ -83,7 +83,7 @@
           {
             "name": "awaiting",
             "description": "The lazy result features to wait to load; any AI overview, which can take significant time to generate, is awaited for a maximum of **1 minute**; multiple features can be provided by repeating the key; lazy results aren’t awaited by default.",
-            "schema": { "type": "string", "enum": ["ai", "answers"], "example": "ai" },
+            "schema": { "type": "string", "enum": ["ai", "answers", "ads"], "example": "ai" },
             "in": "query"
           },
           {
@@ -1191,7 +1191,7 @@
             "type": "string",
             "example": "<section aria-label=\"Sources\" ..."
           },
-          "subqueries": {
+          "fanouts": {
             "description": "The fanout queries that the model searched to generate the completion; only some models expose these queries.",
             "type": "array",
             "items": { "type": "string" },
@@ -1243,7 +1243,7 @@
           "prompt",
           "completion",
           "sources",
-          "subqueries"
+          "fanouts"
         ]
       },
       "Status": {
