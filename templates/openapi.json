@@ -1191,6 +1191,11 @@
             "type": "string",
             "example": "<section aria-label=\"Sources\" ..."
           },
+          "ads": {
+            "description": "The rendered HTML of just the ads portion of the conversation.",
+            "type": "string",
+            "example": "<div class=\"border-token-border-default mt-2 border-t py-4 text-sm\" ..."
+          },
           "fanouts": {
             "description": "The fanout queries that the model searched to generate the completion; only some models expose these queries.",
             "type": "array",
@@ -1243,6 +1248,7 @@
           "prompt",
           "completion",
           "sources",
+          "ads",
           "fanouts"
         ]
       },
