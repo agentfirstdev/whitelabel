@@ -1342,7 +1342,7 @@
           "text/plain": {
             "schema": {
               "type": "string",
-              "example": "Service is autoscaling; please retry in 180 seconds"
+              "example": "Service is autoscaling; please retry in 60 seconds"
             }
           }
         }
