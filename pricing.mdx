@@ -10,27 +10,39 @@ import { companyName, checkoutUrl } from '/snippets/whitelabel/config.mdx';
 ## Credit system
 
 Access to **{companyName}** services is based on prepaid credits. Your credit balance is decremented
-only for successful API calls. Most calls cost **1 credit** each or are **free**:
+only for successful API calls or successful Chrome DevTools Protocol (CDP) sessions. Most calls cost
+**1 credit** each or are **free**:
 
 | Service                             | Base credits |
 | :---------------------------------- | :----------- |
 | <Link href='search'>Search</Link>   | 1            |
-| <Link href='ai'>AI</Link>           | 1            |
 | <Link href='browser'>Browser</Link> | 1            |
 | <Link href='usage'>Reporting</Link> | 0 (free)     |
 | Administration                      | 0 (free)     |
 
-A few premium parameters multiply the base cost of calls that use them:
+Because AI calls are long-running, they cost **5 credits** each:
 
-| Service | Key          | Value        | Credit multiplier |
-| :------ | :----------- | :----------- | :---------------- |
-| Browser | `difficulty` | `medium`     | 2                 |
-| Browser | `speed`      | `ridiculous` | 1.5               |
+| Service                   | Base credits |
+| :------------------------ | :----------- |
+| <Link href='ai'>AI</Link> | 5            |
+
+CDP sessions are billed per minute, rounded down to the nearest credit:
+
+| Service                     | Base credits |
+| :-------------------------- | :----------- |
+| <Link href='cdp'>CDP</Link> | 10/minute    |
+
+A few premium parameters multiply the base cost of calls or sessions that use them:
+
+| Service     | Key          | Value        | Credit multiplier |
+| :---------- | :----------- | :----------- | :---------------- |
+| Browser/CDP | `difficulty` | `medium`     | 2                 |
+| Browser     | `speed`      | `ridiculous` | 2                 |
 
 For example, calling the browser service successfully with both `difficulty=medium` and
-`speed=ridiculous` params would cost **3 credits** in total:
+`speed=ridiculous` params would cost **4 credits** in total:
 
-<Latex>1 base credit x 2 x 1.5 = 3 total credits</Latex>
+<Latex>1 base credit x 2 x 2 = 4 total credits</Latex>
 
 <Card title='Your API credits' icon='link' href={checkoutUrl} horizontal>
   Create or fund an account.
