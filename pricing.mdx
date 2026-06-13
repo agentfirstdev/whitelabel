@@ -23,16 +23,16 @@ only for successful API calls or successful Chrome DevTools Protocol (CDP) sessi
 
 CDP sessions are billed by time, rounded down to the nearest credit:
 
-| Service                     | Base credits |
-| :-------------------------- | :----------- |
-| <Link href='cdp'>CDP</Link> | 10 / minute  |
+| Service                                 | Base credits |
+| :-------------------------------------- | :----------- |
+| <Link href='browser'>Browser CDP</Link> | 10 / minute  |
 
 A few premium parameters multiply the base cost of calls or sessions that use them:
 
 | Service       | Key          | Value        | Credit multiplier |
 | :------------ | :----------- | :----------- | :---------------- |
-| Browser / CDP | `difficulty` | `medium`     | 2                 |
-| Browser / CDP | `difficulty` | `high`       | 5                 |
+| Browser (CDP) | `difficulty` | `medium`     | 2                 |
+| Browser (CDP) | `difficulty` | `high`       | 5                 |
 | Browser       | `speed`      | `ridiculous` | 2                 |
 
 For example, calling the browser service successfully with both `difficulty=medium` and
