@@ -81,6 +81,16 @@
             "in": "query"
           },
           {
+            "name": "url",
+            "description": "The encoded URL of the results page to retrieve; if given, the URL overrides any of the above params.",
+            "schema": {
+              "type": "string",
+              "format": "uri",
+              "example": "https://www.google.com/search?q=foo+bar+baz&hl=fr&gl=fr&ie=UTF-8"
+            },
+            "in": "query"
+          },
+          {
             "name": "awaiting",
             "description": "The lazy result features to wait to load; any AI overview, which can take significant time to generate, is awaited for a maximum of **1 minute**; multiple features can be provided by repeating the key; lazy results aren’t awaited by default.",
             "schema": { "type": "string", "enum": ["ai", "answers", "ads"], "example": "ai" },
