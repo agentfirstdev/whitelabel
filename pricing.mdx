@@ -11,20 +11,15 @@ import { companyName, checkoutUrl } from '/snippets/whitelabel/config.mdx';
 
 Access to **{companyName}** services is based on prepaid credits. Your credit balance is decremented
 only for successful API calls or successful Chrome DevTools Protocol (CDP) sessions. Most calls cost
-**1 credit** each or are **free**:
+**1 credit** each or are **free**, except for substantially longer-running AI calls:
 
 | Service                             | Base credits |
 | :---------------------------------- | :----------- |
 | <Link href='search'>Search</Link>   | 1            |
+| <Link href='ai'>AI</Link>           | 5            |
 | <Link href='browser'>Browser</Link> | 1            |
 | <Link href='usage'>Reporting</Link> | 0 (free)     |
 | Administration                      | 0 (free)     |
-
-AI calls, which are substantially longer-running, cost **5 credits** each:
-
-| Service                   | Base credits |
-| :------------------------ | :----------- |
-| <Link href='ai'>AI</Link> | 5            |
 
 CDP sessions are billed by time, rounded down to the nearest credit:
 
