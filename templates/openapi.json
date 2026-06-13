@@ -1196,7 +1196,12 @@
             "type": "string",
             "example": "<div class=\"border-token-border-default mt-2 border-t py-4 text-sm\" ..."
           },
-          "fanouts": {
+          "sse (ChatGPT only)": {
+            "description": "The server-sent events JSON that was used to populate the conversation HTML.",
+            "type": "string",
+            "example": "{\"type\": \"conversation_detail_metadata\" ..."
+          },
+          "fanouts (ChatGPT only)": {
             "description": "The fanout queries that the model searched to generate the completion; only some models expose these queries.",
             "type": "array",
             "items": { "type": "string" },
@@ -1249,6 +1254,7 @@
           "completion",
           "sources",
           "ads",
+          "sse",
           "fanouts"
         ]
       },

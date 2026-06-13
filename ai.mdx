@@ -84,19 +84,20 @@ Completions are returned as structured JSON, rendered HTML, or raw (unrendered) 
 If you set the output to JSON, your completion will be parsed into an object with the
 [geotargeting keys and values above](#service-usage) and following chat keys and values:
 
-| Key                  | Value                                                                                                                    |
-| :------------------- | :----------------------------------------------------------------------------------------------------------------------- |
-| `model`              | The AI model that generated the completion                                                                               |
-| `query`              | The user prompt that the completion was generated for                                                                    |
-| `html`               | The rendered HTML of the entire conversation                                                                             |
-| `prompt`             | The rendered HTML of just the prompt portion of the conversation                                                         |
-| `completion`         | The rendered HTML of just the completion portion of the conversation                                                     |
-| `sources`            | The rendered HTML of just the sources portion of the conversation                                                        |
-| `ads`                | The rendered HTML of just the ads portion of the conversation                                                            |
-| `fanouts`            | An array of the fanout queries that the model searched to generate the completion; only some models expose these queries |
-| `device`             | The emulated device name that the conversation was had on                                                                |
-| `language` (planned) | The common name or ISO code of the language that the conversation is in                                                  |
-| `display` (planned)  | The common name or ISO code of the display language that conversation interface is in                                    |
+| Key                      | Value                                                                                                                    |
+| :----------------------- | :----------------------------------------------------------------------------------------------------------------------- |
+| `model`                  | The AI model that generated the completion                                                                               |
+| `query`                  | The user prompt that the completion was generated for                                                                    |
+| `html`                   | The rendered HTML of the entire conversation                                                                             |
+| `prompt`                 | The rendered HTML of just the prompt portion of the conversation                                                         |
+| `completion`             | The rendered HTML of just the completion portion of the conversation                                                     |
+| `sources`                | The rendered HTML of just the sources portion, if any, of the conversation                                               |
+| `ads`                    | The rendered HTML of just the ads portion, if any, of the conversation                                                   |
+| `sse` (ChatGPT only)     | The server-sent events JSON that was used to populate the conversation HTML                                              |
+| `fanouts` (ChatGPT only) | An array of the fanout queries that the model searched to generate the completion; only some models expose these queries |
+| `device`                 | The emulated device name that the conversation was had on                                                                |
+| `language` (planned)     | The common name or ISO code of the language that the conversation is in                                                  |
+| `display` (planned)      | The common name or ISO code of the display language that conversation interface is in                                    |
 
 <Accordion icon='code' title='View JSON example'>
   <Json />
