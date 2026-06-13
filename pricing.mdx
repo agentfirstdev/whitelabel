@@ -20,24 +20,24 @@ only for successful API calls or successful Chrome DevTools Protocol (CDP) sessi
 | <Link href='usage'>Reporting</Link> | 0 (free)     |
 | Administration                      | 0 (free)     |
 
-Because AI calls are long-running, they cost **5 credits** each:
+AI calls, which are substantially longer-running, cost **5 credits** each:
 
 | Service                   | Base credits |
 | :------------------------ | :----------- |
 | <Link href='ai'>AI</Link> | 5            |
 
-CDP sessions are billed per minute, rounded down to the nearest credit:
+CDP sessions are billed by time, rounded down to the nearest credit:
 
 | Service                     | Base credits |
 | :-------------------------- | :----------- |
-| <Link href='cdp'>CDP</Link> | 10/minute    |
+| <Link href='cdp'>CDP</Link> | 10 / minute  |
 
 A few premium parameters multiply the base cost of calls or sessions that use them:
 
-| Service     | Key          | Value        | Credit multiplier |
-| :---------- | :----------- | :----------- | :---------------- |
-| Browser/CDP | `difficulty` | `medium`     | 2                 |
-| Browser     | `speed`      | `ridiculous` | 2                 |
+| Service       | Key          | Value        | Credit multiplier |
+| :------------ | :----------- | :----------- | :---------------- |
+| Browser / CDP | `difficulty` | `medium`     | 2                 |
+| Browser       | `speed`      | `ridiculous` | 2                 |
 
 For example, calling the browser service successfully with both `difficulty=medium` and
 `speed=ridiculous` params would cost **4 credits** in total:
