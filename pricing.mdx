@@ -29,11 +29,12 @@ CDP sessions are billed by time, rounded down to the nearest credit:
 
 A few premium parameters multiply the base cost of calls or sessions that use them:
 
-| Service       | Key          | Value        | Credit multiplier |
-| :------------ | :----------- | :----------- | :---------------- |
-| Browser (CDP) | `difficulty` | `medium`     | 2                 |
-| Browser (CDP) | `difficulty` | `high`       | 5                 |
-| Browser       | `speed`      | `ridiculous` | 2                 |
+| Service       | Key          | Value                 | Credit multiplier |
+| :------------ | :----------- | :-------------------- | :---------------- |
+| Browser (CDP) | `difficulty` | `medium`              | 2                 |
+| Browser (CDP) | `difficulty` | `high`                | 6                 |
+| Browser       | `speed`      | `ridiculous`          | 2                 |
+| Browser       | `speed`      | `ludicrous` (planned) | 4                 |
 
 For example, calling the browser service successfully with both `difficulty=medium` and
 `speed=ridiculous` params would cost **4 credits** in total:
