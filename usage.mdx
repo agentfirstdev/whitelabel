@@ -46,6 +46,7 @@ The API will return a JSON array:
   "service": "browser",
   "result": "success",
   "calls": 17208,
+  "credits": 17208,
   "meanSecs": 6.78
 }, {
   "email": "user@example.com",
@@ -54,6 +55,7 @@ The API will return a JSON array:
   "service": "browser",
   "result": "failure",
   "calls": 18,
+  "credits": 0,
   "meanSecs": 60.22
 }]
 ```
@@ -90,6 +92,7 @@ These are the response keys and values:
 | `service`  | The service included in the data, `search`, `ai`, or `browser`  |
 | `result`   | The type of result included in the data, `success` or `failure` |
 | `calls`    | The number of API calls of the service and result type          |
+| `credits`  | The number of credits consumed by the API calls                 |
 | `meanSecs` | The average number of elapsed seconds of the API calls          |
 
 ## Additional examples

@@ -915,6 +915,12 @@
                         "minimum": 1,
                         "example": 17208
                       },
+                      "credits": {
+                        "description": "The number of credits consumed by the API calls.",
+                        "type": "integer",
+                        "minimum": 0,
+                        "example": 17208
+                      },
                       "meanSecs": {
                         "description": "The average number of elapsed seconds of the API calls.",
                         "type": "number",
@@ -922,7 +928,16 @@
                         "example": 6.78
                       }
                     },
-                    "required": ["email", "from", "to", "service", "result", "calls", "meanSecs"]
+                    "required": [
+                      "email",
+                      "from",
+                      "to",
+                      "service",
+                      "result",
+                      "calls",
+                      "credits",
+                      "meanSecs"
+                    ]
                   }
                 }
               }
