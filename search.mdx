@@ -13,6 +13,7 @@ import Terms from '/snippets/whitelabel/search/terms.mdx';
 import Offset from '/snippets/whitelabel/search/offset.mdx';
 import Url from '/snippets/whitelabel/search/url.mdx';
 import Awaiting from '/snippets/whitelabel/search/awaiting.mdx';
+import Callback from '/snippets/whitelabel/search/callback.mdx';
 
 <Reference endpoint='search' />
 
@@ -53,6 +54,7 @@ The keys and values **{companyName}** supports are as follows:
 | `url`        | ⬜       | The encoded URL of the results page to retrieve; if given, the URL overrides any of the above params                                                                                                                                                                                                                                                                                                             |
 | `awaiting`   | ⬜       | The lazy result features to wait to load, an `ai` overview, "People also ask" `answers`, or sponsored `ads`; any AI overview, which can take significant time to generate, is awaited for a maximum of **1 minute**; multiple features can be provided by repeating the key; lazy results aren't awaited by default                                                                                              |
 | `expiration` | ⬜       | The age in days of when to consider cached results expired, where `0` disables caching; `1` is the default number of days before expiration                                                                                                                                                                                                                                                                      |
+| `callback`   | ⬜       | The HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the (prerequisite) asynchronous results have been retrieved                                                                                                                                                                                                                                                                         |
 
 ### Response format
 
@@ -67,3 +69,5 @@ feature infinite scrolling, the HTML of each page will be separated from the nex
 <Url />
 
 <Awaiting />
+
+<Callback />
