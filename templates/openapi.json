@@ -14,11 +14,20 @@
         "description": "Retrieve search results or queue results for later retrieval.",
         "parameters": [
           {
+            "name": "id",
+            "description": "The identifier returned by this endpoint of the queued search to retrieve; if given, all other params are ignored; either an ID or terms are required.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "078fd246-f0f7-44a0-aabb-cadd7b12454f"
+            },
+            "in": "query"
+          }
+          {
             "name": "terms",
-            "description": "The broad or exact word or phrase of up to 255 characters to query (e.g., `foo bar baz` or `\"foo bar baz\"`); the terms require [form or URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding) (with any space character being replaced by a `+` character or `%20` sequence).",
+            "description": "The broad or exact word or phrase of up to 255 characters to query (e.g., `foo bar baz` or `\"foo bar baz\"`); the terms require [form or URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding) (with any space character being replaced by a `+` character or `%20` sequence); either terms or an ID are required.",
             "schema": { "type": "string", "example": "foo bar baz" },
-            "in": "query",
-            "required": true
+            "in": "query"
           },
           {
             "name": "serps",
@@ -104,13 +113,13 @@
           },
           {
             "name": "mode",
-            "description": "The synchronous or asynchronous mode of results retrieval (see the [async resource](search/results)).",
+            "description": "The synchronous or asynchronous mode of results retrieval (retrieve async results by providing the returned ID).",
             "schema": { "$ref": "#/components/schemas/Mode" },
             "in": "query"
           },
           {
             "name": "callback",
-            "description": "The HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the (prerequisite) asynchronous results have been retrieved.",
+            "description": "The HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the (prerequisite) async results have been retrieved.",
             "schema": {
               "type": "string",
               "example": "https://webhook.site/02e249f8-1faf-4fab-bcf5-78ce683e85a8"
@@ -124,20 +133,34 @@
             "content": { "text/html": { "schema": { "type": "string" } } }
           },
           "202": {
-            "description": "A job identifier.",
+            "description": "A job identifier or the search status.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "description": "The identifier to retrieve the queued search with.",
-                      "type": "string",
-                      "format": "uuid",
-                      "example": "078fd246-f0f7-44a0-aabb-cadd7b12454f"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "description": "The identifier to retrieve the queued search with.",
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "078fd246-f0f7-44a0-aabb-cadd7b12454f"
+                        }
+                      },
+                      "required": ["id"]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "description": "The status of the queued search.",
+                          "allOf": [{ "$ref": "#/components/schemas/Status" }]
+                        }
+                      },
+                      "required": ["status"]
                     }
-                  },
-                  "required": ["id"]
+                  ]
                 }
               }
             }
@@ -155,7 +178,7 @@
     "/search/results": {
       "get": {
         "summary": "Async results",
-        "description": "Retrieve the results or status of a queued search.",
+        "description": "[Deprecated] Retrieve the results or status of a queued search – use `GET /search?id=...`.",
         "parameters": [
           {
             "name": "id",
@@ -195,7 +218,8 @@
           "403": { "$ref": "#/components/responses/authorizationError" },
           "422": { "$ref": "#/components/responses/paramsError" },
           "500": { "$ref": "#/components/responses/unknownError" }
-        }
+        },
+        "deprecated": true
       }
     },
     "/ai": {
@@ -204,11 +228,20 @@
         "description": "Retrieve an LLM completion or queue a completion for later retrieval.",
         "parameters": [
           {
+            "name": "id",
+            "description": "The identifier returned by this endpoint of the queued conversation to retrieve; if given, all other params are ignored; either an ID or prompt is required.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "1851dab8-4619-409f-893f-47dd3a180bc3"
+            },
+            "in": "query"
+          },
+          {
             "name": "prompt",
-            "description": "The question or instruction of up to 2,047 characters to use as a chat prompt; the prompt requires [form or URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding) (with any space character being replaced by a `+` character or `%20` sequence).",
+            "description": "The question or instruction of up to 2,047 characters to use as a chat prompt; the prompt requires [form or URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding) (with any space character being replaced by a `+` character or `%20` sequence); either a prompt or ID is required.",
             "schema": { "type": "string", "example": "best basketball shoes for 2026" },
-            "in": "query",
-            "required": true
+            "in": "query"
           },
           {
             "name": "model",
@@ -276,7 +309,7 @@
           },
           {
             "name": "mode",
-            "description": "The synchronous or asynchronous mode of completion retrieval (see the [async resource](ai/completions)).",
+            "description": "The synchronous or asynchronous mode of completion retrieval (retrieve an async completion by providing the returned ID).",
             "schema": { "$ref": "#/components/schemas/Mode" },
             "in": "query"
           }
@@ -290,20 +323,34 @@
             }
           },
           "202": {
-            "description": "A job identifier.",
+            "description": "A job identifier or the conversation status.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "description": "The identifier to retrieve the queued conversation with.",
-                      "type": "string",
-                      "format": "uuid",
-                      "example": "1851dab8-4619-409f-893f-47dd3a180bc3"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "description": "The identifier to retrieve the queued conversation with.",
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "1851dab8-4619-409f-893f-47dd3a180bc3"
+                        }
+                      },
+                      "required": ["id"]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "description": "The status of the queued conversation.",
+                          "allOf": [{ "$ref": "#/components/schemas/Status" }]
+                        }
+                      },
+                      "required": ["status"]
                     }
-                  },
-                  "required": ["id"]
+                  ]
                 }
               }
             }
@@ -321,7 +368,7 @@
     "/ai/completions": {
       "get": {
         "summary": "Async completions",
-        "description": "Retrieve the completion or status of a queued conversation.",
+        "description": "[Deprecated] Retrieve the completion or status of a queued conversation – use `GET /ai?id=...`.",
         "parameters": [
           {
             "name": "id",
@@ -364,7 +411,8 @@
           "403": { "$ref": "#/components/responses/authorizationError" },
           "422": { "$ref": "#/components/responses/paramsError" },
           "500": { "$ref": "#/components/responses/unknownError" }
-        }
+        },
+        "deprecated": true
       }
     },
     "/ai/devices": {
@@ -401,11 +449,20 @@
         "description": "Retrieve web content or queue content for later retrieval.",
         "parameters": [
           {
+            "name": "id",
+            "description": "The identifier returned by this endpoint of the queued request to retrieve; if given, all other params are ignored; either an ID or URL is required.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "21cb972e-0e0f-47bb-9ce9-65b99e9cee77"
+            },
+            "in": "query"
+          },
+          {
             "name": "url",
-            "description": "The URL of the page to browse; any unsafe characters require [URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding).",
+            "description": "The URL of the page to browse; any unsafe characters require [URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding); either a URL or ID is required.",
             "schema": { "type": "string", "format": "uri", "example": "https://example.com/" },
-            "in": "query",
-            "required": true
+            "in": "query"
           },
           {
             "name": "difficulty",
@@ -500,7 +557,7 @@
           },
           {
             "name": "mode",
-            "description": "The synchronous or asynchronous mode of content retrieval (see the [async resource](browser/content)).",
+            "description": "The synchronous or asynchronous mode of content retrieval (retrieve async content by providing the returned ID).",
             "schema": { "$ref": "#/components/schemas/Mode" },
             "in": "query"
           }
@@ -511,20 +568,34 @@
             "content": { "text/html": { "schema": { "type": "string" } } }
           },
           "202": {
-            "description": "A job identifier.",
+            "description": "A job identifier or the request status.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "description": "The identifier to retrieve the queued request with.",
-                      "type": "string",
-                      "format": "uuid",
-                      "example": "21cb972e-0e0f-47bb-9ce9-65b99e9cee77"
+                  "oneOf": [
+                    {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "description": "The identifier to retrieve the queued request with.",
+                          "type": "string",
+                          "format": "uuid",
+                          "example": "21cb972e-0e0f-47bb-9ce9-65b99e9cee77"
+                        }
+                      },
+                      "required": ["id"]
+                    },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "description": "The status of the queued request.",
+                          "allOf": [{ "$ref": "#/components/schemas/Status" }]
+                        }
+                      },
+                      "required": ["status"]
                     }
-                  },
-                  "required": ["id"]
+                  ]
                 }
               }
             }
@@ -544,7 +615,7 @@
     "/browser/content": {
       "get": {
         "summary": "Async content",
-        "description": "Retrieve the content or status of a queued request.",
+        "description": "[Deprecated] Retrieve the content or status of a queued request – use `GET /browser?id=...`.",
         "parameters": [
           {
             "name": "id",
@@ -584,7 +655,8 @@
           "403": { "$ref": "#/components/responses/authorizationError" },
           "422": { "$ref": "#/components/responses/paramsError" },
           "500": { "$ref": "#/components/responses/unknownError" }
-        }
+        },
+        "deprecated": true
       }
     },
     "/browser/devices": {
