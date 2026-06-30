@@ -252,7 +252,7 @@
     },
     "/ai": {
       "get": {
-        "summary": "Completion",
+        "summary": "Completions",
         "description": "Retrieve an LLM completion or queue a completion for later retrieval.",
         "parameters": [
           {
