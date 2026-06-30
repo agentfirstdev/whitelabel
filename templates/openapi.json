@@ -222,6 +222,34 @@
         "deprecated": true
       }
     },
+    "/search/devices": {
+      "get": {
+        "summary": "Devices",
+        "description": "Retrieve supported device names.",
+        "responses": {
+          "200": {
+            "description": "The device names.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "example": [
+                    "Blackberry PlayBook",
+                    "Blackberry PlayBook landscape",
+                    "BlackBerry Z30",
+                    "<string>"
+                  ]
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/authenticationError" },
+          "403": { "$ref": "#/components/responses/authorizationError" },
+          "402": { "$ref": "#/components/responses/creditsError" }
+        }
+      }
+    },
     "/ai": {
       "get": {
         "summary": "Completion",
