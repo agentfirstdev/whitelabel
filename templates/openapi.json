@@ -22,7 +22,7 @@
               "example": "078fd246-f0f7-44a0-aabb-cadd7b12454f"
             },
             "in": "query"
-          }
+          },
           {
             "name": "terms",
             "description": "The broad or exact word or phrase of up to 255 characters to query (e.g., `foo bar baz` or `\"foo bar baz\"`); the terms require [form or URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding) (with any space character being replaced by a `+` character or `%20` sequence); either terms or an ID are required.",
