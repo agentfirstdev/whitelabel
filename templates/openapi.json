@@ -178,7 +178,7 @@
     "/search/results": {
       "get": {
         "summary": "Async results",
-        "description": "[Deprecated] Retrieve the results or status of a queued search – use `GET /search?id=...`.",
+        "description": "Retrieve the results or status of a queued search – use `GET /search?id=...`.",
         "parameters": [
           {
             "name": "id",
@@ -396,7 +396,7 @@
     "/ai/completions": {
       "get": {
         "summary": "Async completions",
-        "description": "[Deprecated] Retrieve the completion or status of a queued conversation – use `GET /ai?id=...`.",
+        "description": "Retrieve the completion or status of a queued conversation – use `GET /ai?id=...`.",
         "parameters": [
           {
             "name": "id",
@@ -643,7 +643,7 @@
     "/browser/content": {
       "get": {
         "summary": "Async content",
-        "description": "[Deprecated] Retrieve the content or status of a queued request – use `GET /browser?id=...`.",
+        "description": "Retrieve the content or status of a queued request – use `GET /browser?id=...`.",
         "parameters": [
           {
             "name": "id",
