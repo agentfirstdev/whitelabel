@@ -250,7 +250,7 @@
     },
     "/ai": {
       "get": {
-        "summary": "Completions",
+        "summary": "Completion",
         "description": "Retrieve an LLM completion or queue a completion for later retrieval.",
         "parameters": [
           {
@@ -397,7 +397,7 @@
     },
     "/ai/completions": {
       "get": {
-        "summary": "Async completions",
+        "summary": "Async completion",
         "description": "Retrieve the completion or status of a queued conversation – use `GET /ai?id=...`.",
         "parameters": [
           {
