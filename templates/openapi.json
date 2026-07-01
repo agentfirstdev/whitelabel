@@ -194,12 +194,9 @@
         ],
         "responses": {
           "200": {
-            "description": "The search results.",
-            "content": { "text/html": { "schema": { "type": "string" } } }
-          },
-          "202": {
-            "description": "The search status.",
+            "description": "The search results or status.",
             "content": {
+              "text/html": { "schema": { "type": "string" } },
               "application/json": {
                 "schema": {
                   "type": "object",
@@ -284,7 +281,7 @@
           },
           {
             "name": "device",
-            "description": "The name as returned by the [devices resource](ai/devices) of the device to emulate chatting on (these names are case insensitive but must include form- or URL-encoded spaces and punctuation marks); device emulation is unused by default.",
+            "description": "The name as returned by the [devices resource](../ai#device-emulation) of the device to emulate chatting on (these names are case insensitive but must include form- or URL-encoded spaces and punctuation marks); device emulation is unused by default.",
             "schema": { "type": "string", "example": null },
             "in": "query"
           },
@@ -412,27 +409,26 @@
         ],
         "responses": {
           "200": {
-            "description": "The AI completion.",
-            "content": {
-              "application/json": { "schema": { "$ref": "#/components/schemas/Completion" } },
-              "text/html": { "schema": { "type": "string" } }
-            }
-          },
-          "202": {
-            "description": "The conversation status.",
+            "description": "The AI completion or status.",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "status": {
-                      "description": "The status of the queued conversation.",
-                      "allOf": [{ "$ref": "#/components/schemas/Status" }]
+                  "oneOf": [
+                    { "$ref": "#/components/schemas/Completion" },
+                    {
+                      "type": "object",
+                      "properties": {
+                        "status": {
+                          "description": "The status of the queued conversation.",
+                          "allOf": [{ "$ref": "#/components/schemas/Status" }]
+                        }
+                      },
+                      "required": ["status"]
                     }
-                  },
-                  "required": ["status"]
+                  ]
                 }
-              }
+              },
+              "text/html": { "schema": { "type": "string" } }
             }
           },
           "401": { "$ref": "#/components/responses/authenticationError" },
@@ -441,6 +437,153 @@
           "500": { "$ref": "#/components/responses/unknownError" }
         },
         "deprecated": true
+      }
+    },
+    "/ai/batches": {
+      "post": {
+        "summary": "Batch completions",
+        "description": "Queue multiple LLM completions for later retrieval.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "prompts": {
+                    "description": "The questions or instructions of up to 2,047 characters each to use as chat prompts.",
+                    "type": "array",
+                    "items": { "type": "string", "maxLength": 2047 },
+                    "minItems": 1,
+                    "maxItems": 1000,
+                    "example": [
+                      "Where can I buy a vintage guitar?",
+                      "Help me find guitar repair shops nearby.",
+                      "Do any local stores sell vinyl records?",
+                      "[Remaining prompts here]"
+                    ]
+                  },
+                  "model": {
+                    "description": "The AI model to chat with.",
+                    "type": "string",
+                    "enum": ["chatgpt", "gemini", "perplexity", "copilot"],
+                    "default": "chatgpt",
+                    "example": "gemini"
+                  },
+                  "device": {
+                    "description": "The name as returned by the [devices resource](../ai#device-emulation) of the device to emulate chatting on (these names are case insensitive but must include form- or URL-encoded spaces and punctuation marks); device emulation is unused by default.",
+                    "type": "string",
+                    "example": null
+                  },
+                  "country": {
+                    "description": "The [two-letter ISO code](https://www.iso.org/obp/ui/#search/code) of the country to chat from (these codes are case insensitive); a random country is used by default.",
+                    "type": "string",
+                    "example": null
+                  },
+                  "subdivision": {
+                    "description": "The alphanumeric second part (proceeding the separator) of a [first-level subdivision code](https://www.iso.org/obp/ui/#search/code) in the (prerequisite) country to chat from (these codes are case insensitive); a random subdivision is used by default.",
+                    "type": "string",
+                    "example": null
+                  },
+                  "city": {
+                    "description": "The [commonly spelled name](https://www.geonames.org/) of the city in the (prerequisite) country to chat from (these names are temporarily case sensitive and required to include form- or URL-encoded spaces and punctuation marks); a random city is used by default.",
+                    "type": "string",
+                    "example": null
+                  },
+                  "language (planned)": {
+                    "description": "The commonly spelled name or [two-letter ISO code](https://www.loc.gov/standards/iso639-2/php/code_list.php) of the language to chat in (these names and codes are case insensitive but required to include form- or URL-encoded spaces and punctuation marks); the language is unset by default.",
+                    "type": "string",
+                    "example": null
+                  },
+                  "display (planned)": {
+                    "description": "The commonly spelled name or [two-letter ISO code](https://www.loc.gov/standards/iso639-2/php/code_list.php) of the chat interface’s display language (these names and codes are case insensitive but required to include form- or URL-encoded spaces and punctuation marks); the display language is unset by default or set to the language if given.",
+                    "type": "string",
+                    "example": null
+                  },
+                  "format": {
+                    "description": "The format to output to.",
+                    "type": "string",
+                    "enum": ["json", "rendered", "raw"],
+                    "default": "json",
+                    "example": "rendered"
+                  },
+                  "expiration": {
+                    "description": "The age in days of when to consider a cached completion expired, where `0` disables caching.",
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "default": 1,
+                    "example": 0
+                  }
+                },
+                "required": ["prompts"]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "A job identifier and conversation count.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "description": "The identifier to retrieve the batched conversations with.",
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "a0482596-c2ad-445a-a435-727002156a20"
+                    },
+                    "count": {
+                      "description": "The number of prompts in the batch as confirmed by the API.",
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 1000,
+                      "example": 37
+                    }
+                  },
+                  "required": ["id", "count"]
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/authenticationError" },
+          "403": { "$ref": "#/components/responses/authorizationError" },
+          "402": { "$ref": "#/components/responses/creditsError" },
+          "422": { "$ref": "#/components/responses/paramsError" },
+          "500": { "$ref": "#/components/responses/unknownError" }
+        }
+      },
+      "get": {
+        "summary": "Batch status",
+        "description": "Retrieve the status of batched conversations.",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "The identifier returned by the [AI batch endpoint](../bulk) of the bulk conversations to retrieve.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "a0482596-c2ad-445a-a435-727002156a20"
+            },
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The batch status.",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/BatchStatus" } }
+            }
+          },
+          "401": { "$ref": "#/components/responses/authenticationError" },
+          "403": { "$ref": "#/components/responses/authorizationError" },
+          "402": { "$ref": "#/components/responses/creditsError" },
+          "422": { "$ref": "#/components/responses/paramsError" },
+          "500": { "$ref": "#/components/responses/unknownError" }
+        }
       }
     },
     "/ai/devices": {
@@ -516,7 +659,7 @@
           },
           {
             "name": "device",
-            "description": "The name as returned by the [devices resource](browser/devices) of the device to emulate browsing on (these names are case insensitive but must include form- or URL-encoded spaces and punctuation marks); device emulation is unused by default.",
+            "description": "The name as returned by the [devices resource](../browser#device-emulation) of the device to emulate browsing on (these names are case insensitive but must include form- or URL-encoded spaces and punctuation marks); device emulation is unused by default.",
             "schema": { "type": "string", "example": null },
             "in": "query"
           },
@@ -659,12 +802,9 @@
         ],
         "responses": {
           "200": {
-            "description": "The request content.",
-            "content": { "text/html": { "schema": { "type": "string" } } }
-          },
-          "202": {
-            "description": "The request status.",
+            "description": "The request content or status.",
             "content": {
+              "text/html": { "schema": { "type": "string" } },
               "application/json": {
                 "schema": {
                   "type": "object",
@@ -1456,8 +1596,52 @@
       "Status": {
         "summary": "Job status",
         "type": "string",
-        "enum": ["retrieving", "failed"],
+        "enum": ["retrieving", "archiving", "successful", "failed"],
         "example": "retrieving"
+      },
+      "BatchStatus": {
+        "summary": "Batch status",
+        "type": "object",
+        "properties": {
+          "engine": {
+            "description": "The identifier to retrieve the batch job with.",
+            "type": "string",
+            "format": "uuid",
+            "example": "a0482596-c2ad-445a-a435-727002156a20"
+          },
+          "status": {
+            "description": "The status of the batch job.",
+            "allOf": [{ "$ref": "#/components/schemas/Status" }]
+          },
+          "count": {
+            "description": "The number of conversations in the batch.",
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000,
+            "example": 37
+          },
+          "successful": {
+            "description": "The number of successful conversations in the batch.",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000,
+            "example": 37
+          },
+          "failed": {
+            "description": "The number of failed conversations in the batch.",
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 1000,
+            "example": 0
+          },
+          "url": {
+            "description": "The archive URL of the completed conversations.",
+            "type": "string",
+            "format": "uri",
+            "example": null
+          }
+        },
+        "required": ["id", "status", "count", "successful", "failed"]
       }
     },
     "responses": {
