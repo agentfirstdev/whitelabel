@@ -213,6 +213,7 @@
           },
           "401": { "$ref": "#/components/responses/authenticationError" },
           "403": { "$ref": "#/components/responses/authorizationError" },
+          "402": { "$ref": "#/components/responses/creditsError" },
           "422": { "$ref": "#/components/responses/paramsError" },
           "500": { "$ref": "#/components/responses/unknownError" }
         },
@@ -433,6 +434,7 @@
           },
           "401": { "$ref": "#/components/responses/authenticationError" },
           "403": { "$ref": "#/components/responses/authorizationError" },
+          "402": { "$ref": "#/components/responses/creditsError" },
           "422": { "$ref": "#/components/responses/paramsError" },
           "500": { "$ref": "#/components/responses/unknownError" }
         },
@@ -821,6 +823,7 @@
           },
           "401": { "$ref": "#/components/responses/authenticationError" },
           "403": { "$ref": "#/components/responses/authorizationError" },
+          "402": { "$ref": "#/components/responses/creditsError" },
           "422": { "$ref": "#/components/responses/paramsError" },
           "500": { "$ref": "#/components/responses/unknownError" }
         },
