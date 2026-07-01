@@ -529,7 +529,7 @@
         },
         "responses": {
           "202": {
-            "description": "A job identifier and conversation count.",
+            "description": "A job identifier and confirmation count.",
             "content": {
               "application/json": {
                 "schema": {
@@ -567,7 +567,7 @@
         "parameters": [
           {
             "name": "id",
-            "description": "The identifier returned by the [AI batch endpoint](../bulk) of the bulk conversations to retrieve.",
+            "description": "The identifier returned by the [batch AI endpoint](../bulk) of the bulk conversations to retrieve.",
             "schema": {
               "type": "string",
               "format": "uuid",
@@ -1622,7 +1622,7 @@
             "allOf": [{ "$ref": "#/components/schemas/Status" }]
           },
           "count": {
-            "description": "The number of conversations in the batch.",
+            "description": "The number of batched conversations.",
             "type": "integer",
             "minimum": 1,
             "maximum": 1000,
@@ -1643,7 +1643,7 @@
             "example": 0
           },
           "url": {
-            "description": "The archive URL of the completed conversations.",
+            "description": "The URL of the archived conversations on job completion.",
             "type": "string",
             "format": "uri",
             "example": null
