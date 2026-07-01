@@ -567,7 +567,7 @@
         "parameters": [
           {
             "name": "id",
-            "description": "The identifier returned by the [batch AI endpoint](../bulk) of the bulk conversations to retrieve.",
+            "description": "The identifier returned by the [batch AI endpoint](../batching) of the bulk conversations to retrieve.",
             "schema": {
               "type": "string",
               "format": "uuid",
