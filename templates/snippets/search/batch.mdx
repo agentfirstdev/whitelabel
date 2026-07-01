@@ -1,0 +1,9 @@
+```shell
+curl -X POST 'https://{{API_ENDPOINT}}/search/batches' \
+-H "Authorization: Bearer ${{COMPANY_SLUG}}_TOKEN" \
+-H 'Content-Type: application/json' \
+-d '{
+  "terms": ["musical instruments"],
+  "country": "US"
+}'
+```
