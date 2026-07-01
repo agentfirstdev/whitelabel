@@ -1611,7 +1611,7 @@
         "summary": "Batch status",
         "type": "object",
         "properties": {
-          "engine": {
+          "id": {
             "description": "The identifier to retrieve the batch job with.",
             "type": "string",
             "format": "uuid",
