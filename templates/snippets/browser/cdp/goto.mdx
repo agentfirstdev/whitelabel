@@ -13,7 +13,9 @@ print(f"Connecting to {ENDPOINT} ...")
 with sync_playwright() as playwright:
     browser = playwright.chromium.connect_over_cdp(
         ENDPOINT,
-        headers={'Authorization': f"Bearer {{{COMPANY_SLUG}}_TOKEN}"},
+        headers={
+            'Authorization': f"Bearer {{{COMPANY_SLUG}}_TOKEN}"
+        },
         timeout=CONNECTION_TIMEOUT
     )
     context = browser.contexts[0]
