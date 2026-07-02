@@ -388,7 +388,7 @@
         }
       },
       "get": {
-        "summary": "Batch status",
+        "summary": "Batch results",
         "description": "Retrieve the status of batch searches.",
         "parameters": [
           {
@@ -774,7 +774,7 @@
         }
       },
       "get": {
-        "summary": "Batch status",
+        "summary": "Batch completions",
         "description": "Retrieve the status of batch conversations.",
         "parameters": [
           {
@@ -1195,7 +1195,7 @@
         }
       },
       "get": {
-        "summary": "Batch status",
+        "summary": "Batch content",
         "description": "Retrieve the status of batch requests.",
         "parameters": [
           {
