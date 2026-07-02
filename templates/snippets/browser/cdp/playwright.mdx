@@ -5,7 +5,7 @@ import os
 from playwright.sync_api import sync_playwright
 
 with sync_playwright() as playwright:
-    browser = await playwright.chromium.connect_over_cdp(
+    browser = playwright.chromium.connect_over_cdp(
         'wss://{{API_ENDPOINT}}/browser',
         headers={
             'Authorization': f"Bearer {os.environ['{{COMPANY_SLUG}}_TOKEN']}"
