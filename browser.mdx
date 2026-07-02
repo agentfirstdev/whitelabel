@@ -10,9 +10,12 @@ import { Reference } from '/snippets/whitelabel/reference.mdx';
 import { Autoscaling } from '/snippets/whitelabel/autoscaling.mdx';
 import Authentication from '/snippets/whitelabel/authentication.mdx';
 import Url from '/snippets/whitelabel/browser/url.mdx';
+import Playwright from '/snippets/whitelabel/browser/cdp/playwright.mdx';
 import Device from '/snippets/whitelabel/browser/device.mdx';
+import CdpDevice from '/snippets/whitelabel/browser/cdp/device.mdx';
 import Expiration from '/snippets/whitelabel/browser/expiration.mdx';
 import Session from '/snippets/whitelabel/browser/session.mdx';
+import CdpSession from '/snippets/whitelabel/browser/cdp/session.mdx';
 import Devices from '/snippets/whitelabel/browser/devices.mdx';
 
 <Reference endpoint='browser' />
@@ -24,13 +27,13 @@ solving [captchas](https://www.ibm.com/topics/captcha), and retrying failed requ
 has a RESTful interface that accepts `GET` requests at
 **https://&zwj;{apiEndpoint}/browser** and a
 [Chrome DevTools Protocol (CDP) interface](#cdp-control) for controlling browser navigation yourself
-that accepts WebSocket connections at **wss://{apiEndpoint}/browser'.
+that accepts WebSocket connections at **wss://{apiEndpoint}/browser**.
 
-Webpages can be localized with <Link href='geotargeting'>geotargeting parameters</Link>. They're
-retrieved in real time by default or optionally queued for <Link href='scheduling'>subsequent
-retrieval</Link>. Up to **3 minutes** is allotted per real-time API call to accommodate
-captcha-solving, multiple retries, and other mitigations. <Link href='usage'>Usage data</Link> is
-published regularly.
+Webpages can be localized with <Link href='geotargeting'>geotargeting parameters</Link>. Those
+requested over REST are retrieved in real time by default or optionally queued for <Link
+href='scheduling'>subsequent retrieval</Link>. Up to **3 minutes** is allotted per real-time API
+call to accommodate captcha-solving, multiple retries, and other mitigations. <Link
+href='usage'>Usage data</Link> is published regularly.
 
 <Tip>
   If a site you're targeting remains blocked, even with different browsing params, <a
@@ -44,10 +47,10 @@ published regularly.
 
 <Autoscaling />
 
-### Browsing parameters
+### REST parameters
 
 Besides the [geotargeting and scheduling params linked above](#service-usage), required and optional
-browsing params can be added in a
+REST params can be added in a
 [standard query string](https://developer.mozilla.org/en-US/docs/Learn/Common_questions/What_is_a_URL#parameters).
 See <Link href='pricing'>our rate card</Link> for the prices of premium params. The keys and values
 **{companyName}** supports are as follows:
@@ -65,9 +68,13 @@ See <Link href='pricing'>our rate card</Link> for the prices of premium params. 
 | `expiration`         | ⬜       | ⬜      | The age in days of when to consider cached content expired, where `0` disables caching; `1` is the default number of days before expiration                                                                                                                               |
 | `callback` (planned) | ⬜       | ⬜      | The encoded HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the (prerequisite) asynchronous content has been retrieved; any SQS queue must grant `sqs:SendMessage` permission to the `arn:aws:iam::180363035301:role/api-instance` AWS principal |
 
+### CDP control
+
+**TODO**.
+
 ### Device emulation
 
-The `device` param lets you fetch device-specific content, rather than the default desktop content.
+The `device` param lets you browse device-specific content, rather than the default desktop content.
 For a list of supported smartphone and tablet devices, make a request with your API token and no
 params to **https://&zwj;{apiEndpoint}/browser/devices**:
 
@@ -84,9 +91,11 @@ The API will return JSON that contains an alphabetized array of device names:
 ]
 ```
 
-Then, pass your device name of choice into your browsing request:
+Then, pass your device name of choice into your browsing request or connection:
 
 <Device />
+
+<CdpDevice />
 
 ### Sticky sessions
 
@@ -94,19 +103,19 @@ To reuse a browser session across requests, set a cookie named `session`:
 
 <Session />
 
+<CdpSession />
+
 The cookie value can be any unique identifier of up to **255 characters** (regardless of character
 encoding) and **{companyName}** will make best efforts to route calls in the same session to the
 same egress node for up to **12 minutes**.
 
 ### Response format
 
-Pages retrieved over REST are returned as rendered HTML, raw (unrendered) HTML, or Markdown
-optimized for LLM prompts.
-
-### CDP control
-
-**TODO**.
+REST-derived pages are returned as rendered HTML, raw (unrendered) HTML, or Markdown optimized for
+LLM prompts.
 
 ## Additional examples
 
 <Expiration />
+
+<Playwright />

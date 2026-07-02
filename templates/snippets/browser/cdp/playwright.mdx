@@ -1,0 +1,34 @@
+### Playwright CDP
+
+```py
+#!/usr/bin/env python3
+
+import os
+import sys
+import asyncio
+
+from playwright.async_api import async_playwright
+
+ENDPOINT = 'wss://{{API_ENDPOINT}}/browser'
+{{COMPANY_SLUG}}_TOKEN = os.environ['{{COMPANY_SLUG}}_TOKEN']
+CONNECTION_TIMEOUT = 10_000
+
+async def main():
+    print(f"Connecting to {ENDPOINT} ...")
+
+    async with async_playwright() as playwright:
+        browser = await playwright.chromium.connect_over_cdp(
+            ENDPOINT,
+            headers={'Authorization': f"Bearer {AGENT_FIRST_TOKEN}"},
+            timeout=CONNECTION_TIMEOUT
+        )
+        context = browser.contexts[0]
+        page = context.pages[0]
+
+        await page.goto('https://example.com/')
+        print(f"URL: {page.url}")
+        print(f"Title: {await page.title()}")
+        await browser.close()
+
+asyncio.run(main())
+```
