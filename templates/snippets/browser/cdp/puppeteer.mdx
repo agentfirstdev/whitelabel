@@ -1,0 +1,8 @@
+```js
+const browser = await puppeteer.connect({
+  browserWSEndpoint: 'wss://{{API_ENDPOINT}}/browser',
+  headers: {
+    Authorization: `Bearer ${process.env.{{COMPANY_SLUG}}_TOKEN}`
+  }
+});
+```
