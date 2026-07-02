@@ -22,7 +22,9 @@ import Devices from '/snippets/whitelabel/browser/devices.mdx';
 **{companyName}'s** browser service navigates intelligently on your behalf, rendering JavaScript,
 solving [captchas](https://www.ibm.com/topics/captcha), and retrying failed requests. The service
 has a RESTful interface that accepts `GET` requests at
-**https://&zwj;{apiEndpoint}/browser**.
+**https://&zwj;{apiEndpoint}/browser** and a
+[Chrome DevTools Protocol (CDP) interface](#cdp-control) for assuming navigation yourself that
+accepts WebSocket connections at **wss://{apiEndpoint}/browser'.
 
 Webpages can be localized with <Link href='geotargeting'>geotargeting parameters</Link>. They're
 retrieved in real time by default or optionally queued for <Link href='scheduling'>subsequent
@@ -98,7 +100,12 @@ same egress node for up to **12 minutes**.
 
 ### Response format
 
-Pages are returned as rendered HTML, raw (unrendered) HTML, or Markdown optimized for LLM prompts.
+Pages that are retrieved over REST are returned as rendered HTML, raw (unrendered) HTML, or Markdown
+optimized for LLM prompts.
+
+### CDP control
+
+**TODO**.
 
 ## Additional examples
 
