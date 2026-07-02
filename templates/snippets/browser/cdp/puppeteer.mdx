@@ -1,4 +1,7 @@
 ```js
+#!/usr/bin/env node
+import puppeteer from 'puppeteer';
+
 const browser = await puppeteer.connect({
   browserWSEndpoint: 'wss://{{API_ENDPOINT}}/browser',
   headers: {
