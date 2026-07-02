@@ -49,7 +49,7 @@ The keys and values **{companyName}** supports are as follows:
 | `device`             | ⬜       | The name as returned by the [devices resource](#device-emulation) of the device to emulate chatting on (these names are case insensitive but must include form- or URL-encoded spaces and punctuation marks); device emulation is unused by default                                                                                                    |
 | `language` (planned) | ⬜       | The commonly spelled name or [two-letter ISO code](https://www.loc.gov/standards/iso639-2/php/code_list.php) of the language to chat in (these names and codes are case insensitive but required to include form- or URL-encoded spaces and punctuation marks); the language is unset by default                                                       |
 | `display` (planned)  | ⬜       | The commonly spelled name or [two-letter ISO code](https://www.loc.gov/standards/iso639-2/php/code_list.php) of the chat interface's display language (these names and codes are case insensitive but required to include form- or URL-encoded spaces and punctuation marks); the display language is unset by default or set to the language if given |
-| `format`             | ⬜       | The format to output to, `json`, `rendered`, or `raw` (see the [section below](#response-format)); `json` is the default format                                                                                                                                                                                                                        |
+| `format`             | ⬜       | The format to output to, `json`, `rendered`, or `raw` (planned) (see the [section below](#response-format)); `json` is the default format                                                                                                                                                                                                              |
 | `expiration`         | ⬜       | The age in days of when to consider a cached completion expired, where `0` disables caching; `1` is the default number of days before expiration                                                                                                                                                                                                       |
 
 ### Device emulation
@@ -77,7 +77,7 @@ Then, pass your device name of choice into your chat request:
 
 ### Response format
 
-Completions are returned as structured JSON, rendered HTML, or raw (unrendered) HTML.
+Completions are returned as structured JSON, rendered HTML, or raw (unrendered) HTML (planned).
 
 #### JSON
 
@@ -106,7 +106,7 @@ If you set the output to JSON, your completion will be parsed into an object wit
 #### HTML
 
 HTML is available after processing by rendering and JavaScript engines or in the raw form sent by
-the chatbot.
+the chatbot (planned).
 
 ## Additional examples
 

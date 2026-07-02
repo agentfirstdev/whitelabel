@@ -11,7 +11,7 @@
     "/search": {
       "get": {
         "summary": "Results",
-        "description": "Retrieve search results or queue results for later retrieval.",
+        "description": "Retrieve search results or queue a search for later retrieval.",
         "parameters": [
           {
             "name": "id",
@@ -27,6 +27,17 @@
             "name": "terms",
             "description": "The broad or exact word or phrase to query (e.g., `foo bar baz` or `\"foo bar baz\"`); the terms require [form or URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding) (with any space character being replaced by a `+` character or `%20` sequence); either terms or an ID are required.",
             "schema": { "type": "string", "maxLength": 255, "example": "foo bar baz" },
+            "in": "query"
+          },
+          {
+            "name": "engine",
+            "description": "The search engine to use.",
+            "schema": {
+              "type": "string",
+              "enum": ["google", "bing (coming soon)"],
+              "default": "google",
+              "example": "google"
+            },
             "in": "query"
           },
           {
@@ -51,6 +62,12 @@
             "name": "offset",
             "description": "The number of initial results to skip; results aren’t offset by default.",
             "schema": { "type": "integer", "minimum": 0, "maximum": 100, "example": null },
+            "in": "query"
+          },
+          {
+            "name": "device",
+            "description": "The name as returned by the [devices resource](../search#device-emulation) of the device to emulate searching on (these names are case insensitive but must include form- or URL-encoded spaces and punctuation marks); device emulation is unused by default.",
+            "schema": { "type": "string", "example": null },
             "in": "query"
           },
           {
@@ -95,7 +112,7 @@
             "schema": {
               "type": "string",
               "format": "uri",
-              "example": "https://www.google.com/search?q=foo+bar+baz&hl=fr&gl=fr&ie=UTF-8"
+              "example": "https%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3Dfoo%2Bbar%2Bbaz%26hl%3Dfr%26gl%3Dfr%26ie%3DUTF-8"
             },
             "in": "query"
           },
@@ -119,10 +136,10 @@
           },
           {
             "name": "callback",
-            "description": "The HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the (prerequisite) async results have been retrieved.",
+            "description": "The encoded HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the (prerequisite) async results have been retrieved.",
             "schema": {
               "type": "string",
-              "example": "https://webhook.site/02e249f8-1faf-4fab-bcf5-78ce683e85a8"
+              "example": "https%3A%2F%2Fwebhook.site%2F02e249f8-1faf-4fab-bcf5-78ce683e85a8"
             },
             "in": "query"
           }
@@ -220,6 +237,187 @@
         "deprecated": true
       }
     },
+    "/search/batches": {
+      "post": {
+        "summary": "Batch results",
+        "description": "Queue multiple searches for later retrieval.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "terms": {
+                    "description": "The broad or exact words or phrases to query (e.g., `foo bar baz` or `\"foo bar baz\"`).",
+                    "type": "array",
+                    "items": { "type": "string", "maxLength": 255 },
+                    "minItems": 1,
+                    "maxItems": 1000,
+                    "example": ["foo bar baz"]
+                  },
+                  "engine": {
+                    "description": "The search engine to use.",
+                    "type": "string",
+                    "enum": ["google", "bing (coming soon)"],
+                    "default": "google",
+                    "example": "google"
+                  },
+                  "serps": {
+                    "description": "The number of results pages to fetch.",
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 10,
+                    "default": 1,
+                    "example": 1
+                  },
+                  "size": {
+                    "description": "The number of results per page to fetch; page size is unset by default.",
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 100,
+                    "example": null
+                  },
+                  "offset": {
+                    "description": "The number of initial results to skip; results aren’t offset by default.",
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 100,
+                    "example": null
+                  },
+                  "device": {
+                    "description": "The name as returned by the [devices resource](../search#device-emulation) of the device to emulate searching on (these names are case insensitive); device emulation is unused by default.",
+                    "type": "string",
+                    "example": null
+                  },
+                  "country": {
+                    "description": "The [two-letter ISO code](https://www.iso.org/obp/ui/#search/code) of the country to search from (these codes are case insensitive); a random country is used by default.",
+                    "type": "string",
+                    "example": null
+                  },
+                  "subdivision": {
+                    "description": "The alphanumeric second part (proceeding the separator) of a [first-level subdivision code](https://www.iso.org/obp/ui/#search/code) in the (prerequisite) country to search from (these codes are case insensitive); a random subdivision is used by default.",
+                    "type": "string",
+                    "example": null
+                  },
+                  "city": {
+                    "description": "The [commonly spelled name](https://www.geonames.org/) of the city in the (prerequisite) country to search from (these names are temporarily case sensitive); a random city is used by default.",
+                    "type": "string",
+                    "example": null
+                  },
+                  "uule": {
+                    "description": "The [proprietary encoded string](https://moz.com/blog/geolocation-the-ultimate-tip-to-emulate-local-search) for emulating the location to search from; if possible, the actual location is searched from not emulated; location emulation is unused by default.",
+                    "type": "string",
+                    "example": null
+                  },
+                  "language": {
+                    "description": "The commonly spelled name, [two-letter ISO code](https://www.loc.gov/standards/iso639-2/php/code_list.php), or [Google code](https://www.google.com/advanced_search) of the language to search in (these names and codes are case insensitive); the language is unset by default.",
+                    "type": "string",
+                    "example": null
+                  },
+                  "display": {
+                    "description": "The commonly spelled name, [two-letter ISO code](https://www.loc.gov/standards/iso639-2/php/code_list.php), or [Google code](https://www.google.com/advanced_search) of the search interface’s display language (these names and codes are case insensitive); the display language is unset by default or set to the language if given.",
+                    "type": "string",
+                    "example": null
+                  },
+                  "urls": {
+                    "description": "The URLs of the results pages to retrieve; if given, the URLs override any of the above params.",
+                    "type": "array",
+                    "items": { "type": "string", "format": "uri" },
+                    "minItems": 1,
+                    "maxItems": 1000,
+                    "example": ["https://www.google.com/search?q=foo+bar+baz&hl=fr&gl=fr&ie=UTF-8"]
+                  },
+                  "awaiting": {
+                    "description": "The lazy result features to wait to load; any AI overview, which can take significant time to generate, is awaited for a maximum of **1 minute**; multiple features can be provided by repeating the key; lazy results aren’t awaited by default.",
+                    "type": "string",
+                    "enum": ["ai", "answers", "ads"],
+                    "example": "ai"
+                  },
+                  "expiration": {
+                    "description": "The age in days of when to consider cached results expired, where `0` disables caching.",
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "default": 1,
+                    "example": 0
+                  },
+                  "callback": {
+                    "description": "The HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the batch results have been retrieved.",
+                    "type": "string",
+                    "example": "https://webhook.site/02e249f8-1faf-4fab-bcf5-78ce683e85a8"
+                  }
+                },
+                "anyOf": [{ "required": ["terms"] }, { "required": ["urls"] }]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "A job identifier and confirmation count.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "description": "The identifier to retrieve the batch searches with.",
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "a0482596-c2ad-445a-a435-727002156a20"
+                    },
+                    "count": {
+                      "description": "The number of queries in the batch as confirmed by the API.",
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 1000,
+                      "example": 1
+                    }
+                  },
+                  "required": ["id", "count"]
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/authenticationError" },
+          "403": { "$ref": "#/components/responses/authorizationError" },
+          "402": { "$ref": "#/components/responses/creditsError" },
+          "422": { "$ref": "#/components/responses/paramsError" },
+          "500": { "$ref": "#/components/responses/unknownError" }
+        }
+      },
+      "get": {
+        "summary": "Batch status",
+        "description": "Retrieve the status of batch searches.",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "The identifier returned by the [batch search endpoint](../batching) of the bulk searches to retrieve.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "a0482596-c2ad-445a-a435-727002156a20"
+            },
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The batch status.",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/BatchStatus" } }
+            }
+          },
+          "401": { "$ref": "#/components/responses/authenticationError" },
+          "403": { "$ref": "#/components/responses/authorizationError" },
+          "402": { "$ref": "#/components/responses/creditsError" },
+          "422": { "$ref": "#/components/responses/paramsError" },
+          "500": { "$ref": "#/components/responses/unknownError" }
+        }
+      }
+    },
     "/search/devices": {
       "get": {
         "summary": "Devices",
@@ -251,7 +449,7 @@
     "/ai": {
       "get": {
         "summary": "Completion",
-        "description": "Retrieve an LLM completion or queue a completion for later retrieval.",
+        "description": "Retrieve an LLM completion or queue a conversation for later retrieval.",
         "parameters": [
           {
             "name": "id",
@@ -325,7 +523,7 @@
             "description": "The format to output to.",
             "schema": {
               "type": "string",
-              "enum": ["json", "rendered", "raw"],
+              "enum": ["json", "rendered", "raw (planned)"],
               "default": "json",
               "example": "rendered"
             },
@@ -448,7 +646,7 @@
     "/ai/batches": {
       "post": {
         "summary": "Batch completions",
-        "description": "Queue multiple LLM completions for later retrieval.",
+        "description": "Queue multiple LLM conversations for later retrieval.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -465,7 +663,7 @@
                       "Where can I buy a vintage guitar?",
                       "Help me find guitar repair shops nearby.",
                       "Do any local stores sell vinyl records?",
-                      "[Remaining prompts here]"
+                      "[Additional prompts here]"
                     ]
                   },
                   "model": {
@@ -508,7 +706,7 @@
                   "format": {
                     "description": "The format to output to.",
                     "type": "string",
-                    "enum": ["json", "rendered", "raw"],
+                    "enum": ["json", "rendered", "raw (planned)"],
                     "default": "json",
                     "example": "rendered"
                   },
@@ -536,7 +734,7 @@
                   "type": "object",
                   "properties": {
                     "id": {
-                      "description": "The identifier to retrieve the batched conversations with.",
+                      "description": "The identifier to retrieve the batch conversations with.",
                       "type": "string",
                       "format": "uuid",
                       "example": "a0482596-c2ad-445a-a435-727002156a20"
@@ -563,7 +761,7 @@
       },
       "get": {
         "summary": "Batch status",
-        "description": "Retrieve the status of batched conversations.",
+        "description": "Retrieve the status of batch conversations.",
         "parameters": [
           {
             "name": "id",
@@ -623,7 +821,7 @@
     "/browser": {
       "get": {
         "summary": "Content",
-        "description": "Retrieve web content or queue content for later retrieval.",
+        "description": "Retrieve web content or queue a request for later retrieval.",
         "parameters": [
           {
             "name": "id",
@@ -832,6 +1030,171 @@
           "500": { "$ref": "#/components/responses/unknownError" }
         },
         "deprecated": true
+      }
+    },
+    "/browser/batches": {
+      "post": {
+        "summary": "Batch content",
+        "description": "Queue multiple web requests for later retrieval.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "urls": {
+                    "description": "The URLs of the pages to browse.",
+                    "type": "array",
+                    "items": { "type": "string", "format": "uri" },
+                    "minItems": 1,
+                    "maxItems": 1000,
+                    "example": [
+                      "https://guitars.com/",
+                      "https://cartervintage.com/",
+                      "https://musiccityvintageguitars.com/",
+                      "[Additional URLs here]"
+                    ]
+                  },
+                  "difficulty": {
+                    "description": "The difficulty pool to attempt to access the URLs from.",
+                    "type": "string",
+                    "enum": ["low", "medium", "high"],
+                    "default": "low",
+                    "example": "low"
+                  },
+                  "speed": {
+                    "description": "The speed to attempt to access the URLs at, where `ridiculous` is 30 percent faster on average than `light` speed.",
+                    "type": "string",
+                    "enum": ["light", "ridiculous", "ludicrous (planned)"],
+                    "default": "light",
+                    "example": "light"
+                  },
+                  "device": {
+                    "description": "The name as returned by the [devices resource](../browser#device-emulation) of the device to emulate browsing on (these names are case insensitive); device emulation is unused by default.",
+                    "type": "string",
+                    "example": null
+                  },
+                  "country": {
+                    "description": "The [two-letter ISO code](https://www.iso.org/obp/ui/#search/code) of the country to browse from (these codes are case insensitive); a random country is used by default.",
+                    "type": "string",
+                    "example": null
+                  },
+                  "subdivision": {
+                    "description": "The alphanumeric second part (proceeding the separator) of a [first-level subdivision code](https://www.iso.org/obp/ui/#search/code) in the (prerequisite) country to browse from (these codes are case insensitive); a random subdivision is used by default.",
+                    "type": "string",
+                    "example": null
+                  },
+                  "city": {
+                    "description": "The [commonly spelled name](https://www.geonames.org/) of the city in the (prerequisite) country to browse from (these names are temporarily case sensitive); a random city is used by default.",
+                    "type": "string",
+                    "example": null
+                  },
+                  "captcha": {
+                    "description": "The intended resolution of any detected captcha, where `rejected` results in a `403` response.",
+                    "type": "string",
+                    "enum": ["solved", "ignored", "rejected"],
+                    "default": "solved",
+                    "example": "rejected"
+                  },
+                  "readiness": {
+                    "description": "The standard ready event to await before snapshotting browsed content.",
+                    "type": "string",
+                    "enum": ["load", "domcontentloaded"],
+                    "default": "load",
+                    "example": "load"
+                  },
+                  "delay": {
+                    "description": "The number of supplemental seconds to delay before snapshotting browsed content; no delay is used by default.",
+                    "type": "number",
+                    "minimum": 0.1,
+                    "maximum": 10,
+                    "example": null
+                  },
+                  "format": {
+                    "description": "The format to output to.",
+                    "type": "string",
+                    "enum": ["rendered", "raw", "markdown"],
+                    "default": "rendered",
+                    "example": "markdown"
+                  },
+                  "expiration": {
+                    "description": "The age in days of when to consider cached content expired, where `0` disables caching.",
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 1,
+                    "default": 1,
+                    "example": 0
+                  }
+                },
+                "required": ["urls"]
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "202": {
+            "description": "A job identifier and confirmation count.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "description": "The identifier to retrieve the batch content with.",
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "a0482596-c2ad-445a-a435-727002156a20"
+                    },
+                    "count": {
+                      "description": "The number of requests in the batch as confirmed by the API.",
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 1000,
+                      "example": 37
+                    }
+                  },
+                  "required": ["id", "count"]
+                }
+              }
+            }
+          },
+          "401": { "$ref": "#/components/responses/authenticationError" },
+          "403": { "$ref": "#/components/responses/authorizationError" },
+          "402": { "$ref": "#/components/responses/creditsError" },
+          "422": { "$ref": "#/components/responses/paramsError" },
+          "500": { "$ref": "#/components/responses/unknownError" }
+        }
+      },
+      "get": {
+        "summary": "Batch status",
+        "description": "Retrieve the status of batch requests.",
+        "parameters": [
+          {
+            "name": "id",
+            "description": "The identifier returned by the [batch browser endpoint](../batching) of the bulk requests to retrieve.",
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "example": "a0482596-c2ad-445a-a435-727002156a20"
+            },
+            "in": "query",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The batch status.",
+            "content": {
+              "application/json": { "schema": { "$ref": "#/components/schemas/BatchStatus" } }
+            }
+          },
+          "401": { "$ref": "#/components/responses/authenticationError" },
+          "403": { "$ref": "#/components/responses/authorizationError" },
+          "402": { "$ref": "#/components/responses/creditsError" },
+          "422": { "$ref": "#/components/responses/paramsError" },
+          "500": { "$ref": "#/components/responses/unknownError" }
+        }
       }
     },
     "/browser/devices": {
@@ -1300,7 +1663,7 @@
           "engine": {
             "description": "The queried search engine.",
             "type": "string",
-            "enum": ["google"],
+            "enum": ["google", "bing (coming soon)"],
             "example": "google"
           },
           "terms": {
@@ -1622,28 +1985,28 @@
             "allOf": [{ "$ref": "#/components/schemas/Status" }]
           },
           "count": {
-            "description": "The number of batched conversations.",
+            "description": "The number of batch requests.",
             "type": "integer",
             "minimum": 1,
             "maximum": 1000,
             "example": 37
           },
           "successful": {
-            "description": "The number of successful conversations in the batch.",
+            "description": "The number of successful requests in the batch.",
             "type": "integer",
             "minimum": 0,
             "maximum": 1000,
             "example": 37
           },
           "failed": {
-            "description": "The number of failed conversations in the batch.",
+            "description": "The number of failed requests in the batch.",
             "type": "integer",
             "minimum": 0,
             "maximum": 1000,
             "example": 0
           },
           "url": {
-            "description": "The URL of the archived conversations on job completion.",
+            "description": "The URL of the archived requests, which is available on job completion.",
             "type": "string",
             "format": "uri",
             "example": null
