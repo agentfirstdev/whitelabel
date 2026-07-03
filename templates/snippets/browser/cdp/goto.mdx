@@ -6,7 +6,6 @@ from playwright.sync_api import sync_playwright
 ENDPOINT = 'wss://{{API_ENDPOINT}}/browser'
 {{COMPANY_SLUG}}_TOKEN = os.environ['{{COMPANY_SLUG}}_TOKEN']
 URL = 'https://example.com/'
-CONNECTION_TIMEOUT = 10_000
 
 print(f"Connecting to {ENDPOINT} ...")
 
@@ -15,8 +14,7 @@ with sync_playwright() as playwright:
         ENDPOINT,
         headers={
             'Authorization': f"Bearer {{{COMPANY_SLUG}}_TOKEN}"
-        },
-        timeout=CONNECTION_TIMEOUT
+        }
     )
     context = browser.contexts[0]
     page = context.pages[0]
