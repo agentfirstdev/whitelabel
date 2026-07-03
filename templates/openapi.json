@@ -835,7 +835,12 @@
     "/browser": {
       "get": {
         "summary": "Content",
-        "description": "Retrieve web content or queue a request for later retrieval.",
+        "description": "Retrieve web content or queue a request for later retrieval; connect to `wss://{{API_ENDPOINT}}/browser` for CDP interaction.",
+        "x-websocket": {
+          "url": "wss://{{API_ENDPOINT}}/browser",
+          "protocol": "Chrome DevTools Protocol",
+          "description": "Interact with webpages by connecting Puppeteer, Playwright, or another CDP-compatible automation framework."
+        },
         "parameters": [
           {
             "name": "id",
