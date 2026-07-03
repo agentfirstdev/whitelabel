@@ -31,8 +31,8 @@ import Devices from '/snippets/whitelabel/browser/devices.mdx';
 solving [captchas](https://www.ibm.com/topics/captcha), and retrying failed requests. The service
 has a RESTful interface that accepts `GET` requests at
 **https://&zwj;{apiEndpoint}/browser** and a
-[Chrome DevTools Protocol (CDP) interface](#cdp-control) for controlling browser navigation yourself
-that accepts WebSocket connections at **wss://{apiEndpoint}/browser**.
+[Chrome DevTools Protocol (CDP) interface](#cdp-interaction) for controlling browser navigation
+yourself that accepts WebSocket connections at **wss://{apiEndpoint}/browser**.
 
 Webpages can be localized with <Link href='geotargeting'>geotargeting parameters</Link>. Those
 requested via REST are retrieved in real time by default or optionally queued for <Link
@@ -73,7 +73,7 @@ See <Link href='pricing'>our rate card</Link> for the prices of premium params. 
 | `expiration`         | ⬜       | ⬜      | The age in days of when to consider cached content expired, where `0` disables caching; `1` is the default number of days before expiration                                                                                                                               |
 | `callback` (planned) | ⬜       | ⬜      | The encoded HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the (prerequisite) asynchronous content has been retrieved; any SQS queue must grant `sqs:SendMessage` permission to the `arn:aws:iam::180363035301:role/api-instance` AWS principal |
 
-### CDP control
+### CDP interaction
 
 If your use case involves interacting with not just reading pages, you can connect
 [Puppeteer](https://pptr.dev/), [Playwright](https://playwright.dev/), or
@@ -97,7 +97,7 @@ CDP use is metered by time, so you should disconnect from the service when done 
 
 ### Protocol mixture
 
-You can manage costs by mixing REST requests and CDP use within a
+You can control costs by mixing REST requests and CDP use within a
 [shared browser session](#sticky-sessions). E.g., you may want to prepare a page for interaction
 over REST then interact with the page over CDP:
 
