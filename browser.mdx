@@ -97,14 +97,15 @@ CDP use is metered by time, so you should disconnect from the service when done 
 
 ### Protocol mixture
 
-You can manage costs by mixing REST requests and CDP use. E.g., you may want to prepare a page for
-interaction over REST then interact with CDP:
+You can manage costs by mixing REST requests and CDP use within a
+[shared browser session](#sticky-sessions). E.g., you may want to prepare a page for interaction
+over REST then interact with the page over CDP:
 
 <Accordion icon='terminal' title='View REST-to-CDP sample'>
   <Rest2Cdp />
 </Accordion>
 
-The reverse, handing off from CDP to REST, is also doable:
+The reverse, handing off from CDP to REST, is equally doable:
 
 <Accordion icon='terminal' title='View CDP-to-REST sample'>
   <Cdp2Rest />
