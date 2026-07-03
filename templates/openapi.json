@@ -66,7 +66,7 @@
           },
           {
             "name": "device",
-            "description": "The name as returned by the [devices resource](../search#device-emulation) of the device to emulate searching on (these names are case insensitive but must include form- or URL-encoded spaces and punctuation marks); device emulation is unused by default.",
+            "description": "The name as returned by the [devices resource](search/devices) of the device to emulate searching on (these names are case insensitive but must include form- or URL-encoded spaces and punctuation marks); device emulation is unused by default.",
             "schema": { "type": "string", "example": null },
             "in": "query"
           },
@@ -285,7 +285,7 @@
                     "example": null
                   },
                   "device": {
-                    "description": "The name as returned by the [devices resource](../search#device-emulation) of the device to emulate searching on (these names are case insensitive); device emulation is unused by default.",
+                    "description": "The name as returned by the [devices resource](search/devices) of the device to emulate searching on (these names are case insensitive); device emulation is unused by default.",
                     "type": "string",
                     "example": null
                   },
@@ -484,7 +484,7 @@
           },
           {
             "name": "device",
-            "description": "The name as returned by the [devices resource](../ai#device-emulation) of the device to emulate chatting on (these names are case insensitive but must include form- or URL-encoded spaces and punctuation marks); device emulation is unused by default.",
+            "description": "The name as returned by the [devices resource](ai/devices) of the device to emulate chatting on (these names are case insensitive but must include form- or URL-encoded spaces and punctuation marks); device emulation is unused by default.",
             "schema": { "type": "string", "example": null },
             "in": "query"
           },
@@ -683,7 +683,7 @@
                     "example": "gemini"
                   },
                   "device": {
-                    "description": "The name as returned by the [devices resource](../ai#device-emulation) of the device to emulate chatting on (these names are case insensitive but must include form- or URL-encoded spaces and punctuation marks); device emulation is unused by default.",
+                    "description": "The name as returned by the [devices resource](ai/devices) of the device to emulate chatting on (these names are case insensitive but must include form- or URL-encoded spaces and punctuation marks); device emulation is unused by default.",
                     "type": "string",
                     "example": null
                   },
@@ -877,7 +877,7 @@
           },
           {
             "name": "device",
-            "description": "The name as returned by the [devices resource](../browser#device-emulation) of the device to emulate browsing on (these names are case insensitive but must include form- or URL-encoded spaces and punctuation marks); device emulation is unused by default.",
+            "description": "The name as returned by the [devices resource](browser/devices) of the device to emulate browsing on (these names are case insensitive but must include form- or URL-encoded spaces and punctuation marks); device emulation is unused by default.",
             "schema": { "type": "string", "example": null },
             "in": "query"
           },
@@ -1093,7 +1093,7 @@
                     "example": "light"
                   },
                   "device": {
-                    "description": "The name as returned by the [devices resource](../browser#device-emulation) of the device to emulate browsing on (these names are case insensitive); device emulation is unused by default.",
+                    "description": "The name as returned by the [devices resource](browser/devices) of the device to emulate browsing on (these names are case insensitive); device emulation is unused by default.",
                     "type": "string",
                     "example": null
                   },
