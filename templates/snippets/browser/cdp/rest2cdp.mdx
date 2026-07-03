@@ -1,0 +1,108 @@
+```js
+#!/usr/bin/env node
+import puppeteer from 'puppeteer';
+
+const restEndpoint = 'https://{{API_ENDPOINT}}/browser';
+const cdpEndpoint = 'wss://{{API_ENDPOINT}}/browser';
+const apiToken = process.env.{{COMPANY_SLUG}}_TOKEN;
+const sessionId = Date.now();
+const headers = {
+  Authorization: `Bearer ${apiToken}`,
+  Cookie: `session=${sessionId}`
+};
+const exampleUrl = 'https://example.com/';
+const ipUrl = 'https://httpbin.org/ip';
+const timeoutMs = 180_000;
+const delayMs = 5_000;
+
+process.on('uncaughtException', (error) => {
+  console.error('Uncaught exception:', error.message);
+
+  process.exit(1);
+});
+
+process.on('unhandledRejection', (reason) => {
+  console.error(
+    'Unhandled rejection:',
+    typeof reason == 'string'
+      ? reason
+      : reason instanceof Error
+        ? reason.message || String(reason)
+        : String(reason)
+  );
+
+  process.exit(1);
+});
+
+console.log(`Making REST request with session ${sessionId} ...`);
+
+const controller = new AbortController();
+const timeoutId = setTimeout(() => {
+  controller.abort();
+}, timeoutMs);
+let response;
+
+try {
+  response = await fetch(
+    `${restEndpoint}?url=${encodeURIComponent(exampleUrl)}&expiration=0`,
+    { headers, signal: controller.signal }
+  );
+
+  clearTimeout(timeoutId);
+} catch (error) {
+  clearTimeout(timeoutId);
+
+  if (error.name == 'AbortError') {
+    response = new Response('Request timed out', { status: 504 });
+  } else {
+    response = new Response('Unknown error occurred', { status: 500 });
+  }
+}
+
+if (response.ok) {
+  console.log('API read successfully');
+} else {
+  console.error('API read failure:', (await response.text()).trimEnd());
+
+  process.exit(1);
+}
+
+await new Promise((resolve) => {
+  setTimeout(resolve, delayMs);
+});
+
+console.log(`Connecting via CDP with session ${sessionId} ...`);
+
+const browser = await puppeteer.connect({
+  browserWSEndpoint: cdpEndpoint,
+  headers
+});
+const page = (await browser.pages()).find((page) => {
+  return page.url().includes(exampleUrl);
+});
+
+if (page) {
+  console.log('Title:', await page.title());
+} else {
+  console.error('Session sharing failure');
+
+  process.exit(1);
+}
+
+response = await page.goto(ipUrl);
+
+if (response?.ok()) {
+  console.log('Title:', await page.title());
+} else {
+  console.error(
+    'API driver failure:',
+    await page.evaluate(() => {
+      return document.body.innerText;
+    })
+  );
+
+  process.exit(1);
+}
+
+await browser.disconnect();
+```

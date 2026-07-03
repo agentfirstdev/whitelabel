@@ -4,7 +4,7 @@ import os
 from playwright.sync_api import sync_playwright
 
 ENDPOINT = 'wss://{{API_ENDPOINT}}/browser'
-{{COMPANY_SLUG}}_TOKEN = os.environ['{{COMPANY_SLUG}}_TOKEN']
+API_TOKEN = os.environ['{{COMPANY_SLUG}}_TOKEN']
 URL = 'https://example.com/'
 
 print(f"Connecting to {ENDPOINT} ...")
@@ -12,9 +12,7 @@ print(f"Connecting to {ENDPOINT} ...")
 with sync_playwright() as playwright:
     browser = playwright.chromium.connect_over_cdp(
         ENDPOINT,
-        headers={
-            'Authorization': f"Bearer {{{COMPANY_SLUG}}_TOKEN}"
-        }
+        headers={'Authorization': f"Bearer {API_TOKEN}"}
     )
     context = browser.contexts[0]
     page = context.pages[0]
