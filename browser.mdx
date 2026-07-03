@@ -10,7 +10,10 @@ import { Reference } from '/snippets/whitelabel/reference.mdx';
 import { Autoscaling } from '/snippets/whitelabel/autoscaling.mdx';
 import Authentication from '/snippets/whitelabel/authentication.mdx';
 import Url from '/snippets/whitelabel/browser/url.mdx';
+import Puppeteer from '/snippets/whitelabel/browser/cdp/puppeteer.mdx';
 import Playwright from '/snippets/whitelabel/browser/cdp/playwright.mdx';
+import Goto from '/snippets/whitelabel/browser/cdp/goto.mdx';
+import E2E from '/snippets/whitelabel/browser/cdp/e2e.mdx';
 import Device from '/snippets/whitelabel/browser/device.mdx';
 import CdpDevice from '/snippets/whitelabel/browser/cdp/device.mdx';
 import Expiration from '/snippets/whitelabel/browser/expiration.mdx';
@@ -70,7 +73,24 @@ See <Link href='pricing'>our rate card</Link> for the prices of premium params. 
 
 ### CDP control
 
-**TODO**.
+If your use case involves interacting with not just reading pages, you can connect
+[Puppeteer](https://pptr.dev/), [Playwright](https://playwright.dev/), or another CDP-compatible
+automation framework to the browser service:
+
+<Puppeteer />
+
+<Accordion icon='terminal' title='View Playwright sample'>
+  <Playwright />
+</Accordion>
+
+After connecting, most of your framework's API (see the [Puppeteer reference](https://pptr.dev/api),
+[Playwright reference](https://playwright.dev/docs/api/class-playwright), et cetera) will be
+available:
+
+<Goto />
+
+CDP use is metered by time, so you should disconnect from the service when done by calling
+`browser.disconnect()` (Puppeteer), `browser.close()` (Playwright), or the equivalent.
 
 ### Device emulation
 
@@ -111,8 +131,8 @@ same egress node for up to **12 minutes**.
 
 ### Response format
 
-REST-derived pages are returned as rendered HTML, raw (unrendered) HTML, or Markdown optimized for
-LLM prompts.
+Read-only pages are returned as rendered HTML, raw (unrendered) HTML, or Markdown optimized for LLM
+prompts.
 
 ## Additional examples
 
@@ -120,8 +140,8 @@ LLM prompts.
 
 <Expiration />
 
-### Playwright CDP
+### End-to-end Playwright
 
-<Accordion icon='terminal' title='View Playwright sample'>
-  <Playwright />
+<Accordion icon='terminal' title='View end-to-end sample'>
+  <E2E />
 </Accordion>
