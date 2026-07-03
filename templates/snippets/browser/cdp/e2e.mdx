@@ -23,6 +23,6 @@ with sync_playwright() as playwright:
 
     page.goto(URL)
     print(f"URL: {page.url}")
-    print(f"Title: {await page.title()}")
+    print(f"Title: {page.title()}")
     browser.close()
 ```
