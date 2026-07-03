@@ -15,25 +15,6 @@ const ipUrl = 'https://httpbin.org/ip';
 const timeoutMs = 180_000;
 const delayMs = 5_000;
 
-process.on('uncaughtException', (error) => {
-  console.error('Uncaught exception:', error.message);
-
-  process.exit(1);
-});
-
-process.on('unhandledRejection', (reason) => {
-  console.error(
-    'Unhandled rejection:',
-    typeof reason == 'string'
-      ? reason
-      : reason instanceof Error
-        ? reason.message || String(reason)
-        : String(reason)
-  );
-
-  process.exit(1);
-});
-
 console.log(`Making REST request with session ${sessionId} ...`);
 
 const controller = new AbortController();
@@ -47,16 +28,14 @@ try {
     `${restEndpoint}?url=${encodeURIComponent(exampleUrl)}&expiration=0`,
     { headers, signal: controller.signal }
   );
-
-  clearTimeout(timeoutId);
 } catch (error) {
-  clearTimeout(timeoutId);
-
   if (error.name == 'AbortError') {
     response = new Response('Request timed out', { status: 504 });
   } else {
     response = new Response('Unknown error occurred', { status: 500 });
   }
+} finally {
+  clearTimeout(timeoutId);
 }
 
 if (response.ok) {
