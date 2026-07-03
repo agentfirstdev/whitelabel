@@ -507,14 +507,14 @@
             "in": "query"
           },
           {
-            "name": "language (planned)",
-            "description": "The commonly spelled name or [two-letter ISO code](https://www.loc.gov/standards/iso639-2/php/code_list.php) of the language to chat in (these names and codes are case insensitive but required to include form- or URL-encoded spaces and punctuation marks); the language is unset by default.",
+            "name": "language",
+            "description": "[Planned] The commonly spelled name or [two-letter ISO code](https://www.loc.gov/standards/iso639-2/php/code_list.php) of the language to chat in (these names and codes are case insensitive but required to include form- or URL-encoded spaces and punctuation marks); the language is unset by default.",
             "schema": { "type": "string", "example": null },
             "in": "query"
           },
           {
-            "name": "display (planned)",
-            "description": "The commonly spelled name or [two-letter ISO code](https://www.loc.gov/standards/iso639-2/php/code_list.php) of the chat interface’s display language (these names and codes are case insensitive but required to include form- or URL-encoded spaces and punctuation marks); the display language is unset by default or set to the language if given.",
+            "name": "display",
+            "description": "[Planned] The commonly spelled name or [two-letter ISO code](https://www.loc.gov/standards/iso639-2/php/code_list.php) of the chat interface’s display language (these names and codes are case insensitive but required to include form- or URL-encoded spaces and punctuation marks); the display language is unset by default or set to the language if given.",
             "schema": { "type": "string", "example": null },
             "in": "query"
           },
@@ -542,8 +542,8 @@
             "in": "query"
           },
           {
-            "name": "callback (planned)",
-            "description": "The encoded HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the (prerequisite) async completion has been retrieved; any SQS queue must grant `sqs:SendMessage` permission to the `arn:aws:iam::180363035301:role/api-instance` AWS principal.",
+            "name": "callback",
+            "description": "[Planned] The encoded HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the (prerequisite) async completion has been retrieved; any SQS queue must grant `sqs:SendMessage` permission to the `arn:aws:iam::180363035301:role/api-instance` AWS principal.",
             "schema": {
               "type": "string",
               "example": "https%3A%2F%2Fwebhook.site%2F02e249f8-1faf-4fab-bcf5-78ce683e85a8"
@@ -702,13 +702,13 @@
                     "type": "string",
                     "example": null
                   },
-                  "language (planned)": {
-                    "description": "The commonly spelled name or [two-letter ISO code](https://www.loc.gov/standards/iso639-2/php/code_list.php) of the language to chat in (these names and codes are case insensitive but required to include form- or URL-encoded spaces and punctuation marks); the language is unset by default.",
+                  "language": {
+                    "description": "[Planned] The commonly spelled name or [two-letter ISO code](https://www.loc.gov/standards/iso639-2/php/code_list.php) of the language to chat in (these names and codes are case insensitive but required to include form- or URL-encoded spaces and punctuation marks); the language is unset by default.",
                     "type": "string",
                     "example": null
                   },
-                  "display (planned)": {
-                    "description": "The commonly spelled name or [two-letter ISO code](https://www.loc.gov/standards/iso639-2/php/code_list.php) of the chat interface’s display language (these names and codes are case insensitive but required to include form- or URL-encoded spaces and punctuation marks); the display language is unset by default or set to the language if given.",
+                  "display": {
+                    "description": "[Planned] The commonly spelled name or [two-letter ISO code](https://www.loc.gov/standards/iso639-2/php/code_list.php) of the chat interface’s display language (these names and codes are case insensitive but required to include form- or URL-encoded spaces and punctuation marks); the display language is unset by default or set to the language if given.",
                     "type": "string",
                     "example": null
                   },
@@ -727,8 +727,8 @@
                     "default": 1,
                     "example": 0
                   },
-                  "callback (planned)": {
-                    "description": "The HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the batch completions have been retrieved; any SQS queue must grant `sqs:SendMessage` permission to the `arn:aws:iam::180363035301:role/api-instance` AWS principal.",
+                  "callback": {
+                    "description": "[Planned] The HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the batch completions have been retrieved; any SQS queue must grant `sqs:SendMessage` permission to the `arn:aws:iam::180363035301:role/api-instance` AWS principal.",
                     "type": "string",
                     "example": "https://webhook.site/02e249f8-1faf-4fab-bcf5-78ce683e85a8"
                   }
@@ -951,8 +951,8 @@
             "in": "query"
           },
           {
-            "name": "callback (planned)",
-            "description": "The encoded HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the (prerequisite) async content has been retrieved; any SQS queue must grant `sqs:SendMessage` permission to the `arn:aws:iam::180363035301:role/api-instance` AWS principal.",
+            "name": "callback",
+            "description": "[Planned] The encoded HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the (prerequisite) async content has been retrieved; any SQS queue must grant `sqs:SendMessage` permission to the `arn:aws:iam::180363035301:role/api-instance` AWS principal.",
             "schema": {
               "type": "string",
               "example": "https%3A%2F%2Fwebhook.site%2F02e249f8-1faf-4fab-bcf5-78ce683e85a8"
@@ -1148,8 +1148,8 @@
                     "default": 1,
                     "example": 0
                   },
-                  "callback (planned)": {
-                    "description": "The HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the batch content has been retrieved; any SQS queue must grant `sqs:SendMessage` permission to the `arn:aws:iam::180363035301:role/api-instance` AWS principal.",
+                  "callback": {
+                    "description": "[Planned] The HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the batch content has been retrieved; any SQS queue must grant `sqs:SendMessage` permission to the `arn:aws:iam::180363035301:role/api-instance` AWS principal.",
                     "type": "string",
                     "example": "https://webhook.site/02e249f8-1faf-4fab-bcf5-78ce683e85a8"
                   }
@@ -1930,13 +1930,13 @@
             "type": "string",
             "example": "<div class=\"border-token-border-default mt-2 border-t py-4 text-sm\" ..."
           },
-          "sse (ChatGPT only)": {
-            "description": "The server-sent events JSON that was used to populate the conversation HTML.",
+          "sse": {
+            "description": "[ChatGPT only] The server-sent events JSON that was used to populate the conversation HTML.",
             "type": "string",
             "example": "{\"type\": \"conversation_detail_metadata\" ..."
           },
-          "fanouts (ChatGPT only)": {
-            "description": "The fanout queries that the model searched to generate the completion; only some models expose these queries.",
+          "fanouts": {
+            "description": "[ChatGPT only] The fanout queries that the model searched to generate the completion; only some models expose these queries.",
             "type": "array",
             "items": { "type": "string" },
             "example": [
@@ -1969,13 +1969,13 @@
             "type": "string",
             "example": null
           },
-          "language (planned)": {
-            "description": "The common name or ISO code of the targeted language.",
+          "language": {
+            "description": "[Planned] The common name or ISO code of the targeted language.",
             "type": "string",
             "example": null
           },
-          "display (planned)": {
-            "description": "The common name or ISO code of the targeted display language.",
+          "display": {
+            "description": "[Planned] The common name or ISO code of the targeted display language.",
             "type": "string",
             "example": null
           }
