@@ -35,7 +35,7 @@ has a RESTful interface that accepts `GET` requests at
 that accepts WebSocket connections at **wss://{apiEndpoint}/browser**.
 
 Webpages can be localized with <Link href='geotargeting'>geotargeting parameters</Link>. Those
-requested over REST are retrieved in real time by default or optionally queued for <Link
+requested via REST are retrieved in real time by default or optionally queued for <Link
 href='scheduling'>subsequent retrieval</Link>. Up to **3 minutes** is allotted per real-time API
 call to accommodate captcha-solving, multiple retries, and other mitigations. <Link
 href='usage'>Usage data</Link> is published regularly.
@@ -97,14 +97,14 @@ CDP use is metered by time, so you should disconnect from the service when done 
 
 ### Protocol mixture
 
-You can optimize cost by mixing REST requests and CDP use. For example, you might want to prepare a
-page with REST then interact with CDP:
+You can manage costs by mixing REST requests and CDP use. E.g., you may want to prepare a page for
+interaction over REST then interact with CDP:
 
 <Accordion icon='terminal' title='View REST-to-CDP sample'>
   <Rest2Cdp />
 </Accordion>
 
-The opposite, handing off from CDP to REST, is also possible:
+The reverse, handing off from CDP to REST, is also doable:
 
 <Accordion icon='terminal' title='View CDP-to-REST sample'>
   <Cdp2Rest />
