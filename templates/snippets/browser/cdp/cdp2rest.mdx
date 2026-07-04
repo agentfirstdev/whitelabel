@@ -28,7 +28,7 @@ const [page] = await browser.pages();
 let response = await page.goto(orderUrl);
 
 if (response?.ok()) {
-  console.log(`Page "${await page.title()}" interacted with successfully`);
+  console.log(`"${await page.title()}" interacted with successfully`);
 } else {
   console.error(
     'Page interaction failure:',

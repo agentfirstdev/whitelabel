@@ -59,7 +59,7 @@ const page = (await browser.pages()).find((page) => {
 });
 
 if (page) {
-  console.log(`Page "${await page.title()}" handed off successfully`);
+  console.log(`"${await page.title()}" handed off successfully`);
 } else {
   console.error('Page handoff failure');
 
