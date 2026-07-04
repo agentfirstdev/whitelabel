@@ -1,0 +1,107 @@
+```js
+#!/usr/bin/env node
+import puppeteer from 'puppeteer';
+
+const cdpEndpoint = 'wss://{{API_ENDPOINT}}/browser';
+const restEndpoint = 'https://{{API_ENDPOINT}}/browser';
+const apiToken = process.env.{{COMPANY_SLUG}}_TOKEN;
+const sessionId = Date.now();
+const headers = {
+  Authorization: `Bearer ${apiToken}`,
+  Cookie: `session=${sessionId}`
+};
+const formUrl = 'https://httpbin.org/forms/post';
+const submissionUrl = 'https://httpbin.org/post';
+const sizeSelector = '[type="radio"][value="medium"]';
+const toppingSelector = '[type="checkbox"][value="onion"]';
+const buttonSelector = 'button';
+const timeoutMs = 180_000;
+const delayMs = 1_000;
+
+console.log(`Connecting via CDP with session ${sessionId} ...`);
+
+const browser = await puppeteer.connect({
+  browserWSEndpoint: cdpEndpoint,
+  headers
+});
+const [page] = await browser.pages();
+let response = await page.goto(formUrl);
+
+if (response?.ok()) {
+  console.log('Title:', await page.title());
+} else {
+  console.error(
+    'API interaction failure:',
+    await page.evaluate(() => {
+      return document.body.innerText;
+    })
+  );
+
+  process.exit(1);
+}
+
+await page.waitForSelector(sizeSelector);
+await page.click(sizeSelector);
+await new Promise((resolve) => {
+  setTimeout(resolve, delayMs);
+});
+await page.waitForSelector(toppingSelector);
+await page.click(toppingSelector);
+await new Promise((resolve) => {
+  setTimeout(resolve, delayMs);
+});
+await page.waitForSelector(buttonSelector);
+await Promise.all([
+  page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+  page.click(buttonSelector)
+]);
+await browser.disconnect();
+
+console.log(`Making REST request with session ${sessionId} ...`);
+
+const controller = new AbortController();
+const timeoutId = setTimeout(() => {
+  controller.abort();
+}, timeoutMs);
+
+try {
+  response = await fetch(
+    `${restEndpoint}?url=${encodeURIComponent(submissionUrl)}&expiration=0`,
+    { headers, signal: controller.signal }
+  );
+} catch (error) {
+  const hasTimedOut = error.name == 'AbortError';
+  response = new Response(
+    hasTimedOut ? 'Request timed out' : 'Unknown error occurred',
+    { status: hasTimedOut ? 504 : 500 }
+  );
+} finally {
+  clearTimeout(timeoutId);
+}
+
+if (response.ok) {
+  const data = await response.json();
+
+  if (
+    data.form &&
+    typeof data.form.size == 'string' &&
+    typeof data.form.topping == 'string'
+  ) {
+    console.log(
+      'Ordered ' +
+        data.form.size.toLowerCase() +
+        ' pizza with ' +
+        data.form.topping.toLowerCase() +
+        ' successfully'
+    );
+  } else {
+    console.error('Receipt was malformed');
+
+    process.exit(1);
+  }
+} else {
+  console.error('API read failure:', (await response.text()).trimEnd());
+
+  process.exit(1);
+}
+```
