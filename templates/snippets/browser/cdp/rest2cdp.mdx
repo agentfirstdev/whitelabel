@@ -51,7 +51,9 @@ try {
 } catch (error) {
   const hasTimedOut = error.name == 'AbortError';
   response = new Response(
-    hasTimedOut ? 'Request timed out' : 'Unknown error occurred',
+    hasTimedOut
+      ? 'Request timed out'
+      : 'Unknown error occurred',
     { status: hasTimedOut ? 504 : 500 }
   );
 } finally {
