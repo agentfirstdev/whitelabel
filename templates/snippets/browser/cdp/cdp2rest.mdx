@@ -10,10 +10,10 @@ const headers = {
   Authorization: `Bearer ${apiToken}`,
   Cookie: `session=${sessionId}`
 };
-const formUrl = 'https://httpbin.org/forms/post';
-const submissionUrl = 'https://httpbin.org/post';
-const sizeSelector = '[type="radio"][value="medium"]';
-const toppingSelector = '[type="checkbox"][value="onion"]';
+const orderUrl = 'https://httpbin.org/forms/post';
+const receiptUrl = 'https://httpbin.org/post';
+const sizeSelector = '[name="size"][value="medium"]';
+const toppingSelector = '[name="topping"][value="onion"]';
 const buttonSelector = 'button';
 const timeoutMs = 180_000;
 const delayMs = 1_000;
@@ -25,13 +25,13 @@ const browser = await puppeteer.connect({
   headers
 });
 const [page] = await browser.pages();
-let response = await page.goto(formUrl);
+let response = await page.goto(orderUrl);
 
 if (response?.ok()) {
-  console.log('Title:', await page.title());
+  console.log(`Page "${await page.title()}" interacted with successfully`);
 } else {
   console.error(
-    'API interaction failure:',
+    'Page interaction failure:',
     await page.evaluate(() => {
       return document.body.innerText;
     })
@@ -66,7 +66,7 @@ const timeoutId = setTimeout(() => {
 
 try {
   response = await fetch(
-    `${restEndpoint}?url=${encodeURIComponent(submissionUrl)}&expiration=0`,
+    `${restEndpoint}?url=${encodeURIComponent(receiptUrl)}&expiration=0`,
     { headers, signal: controller.signal }
   );
 } catch (error) {
@@ -100,7 +100,7 @@ if (response.ok) {
     process.exit(1);
   }
 } else {
-  console.error('API read failure:', (await response.text()).trimEnd());
+  console.error('Order form read failure:', (await response.text()).trimEnd());
 
   process.exit(1);
 }

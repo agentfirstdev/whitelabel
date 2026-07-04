@@ -10,10 +10,12 @@ const headers = {
   Authorization: `Bearer ${apiToken}`,
   Cookie: `session=${sessionId}`
 };
-const exampleUrl = 'https://example.com/';
-const ipUrl = 'https://httpbin.org/ip';
+const orderUrl = 'https://httpbin.org/forms/post';
+const sizeSelector = '[name="size"][value="small"]';
+const toppingSelector = '[name="topping"][value="cheese"]';
+const buttonSelector = 'button';
 const timeoutMs = 180_000;
-const delayMs = 5_000;
+const delayMs = 1_000;
 
 console.log(`Making REST request with session ${sessionId} ...`);
 
@@ -25,30 +27,26 @@ let response;
 
 try {
   response = await fetch(
-    `${restEndpoint}?url=${encodeURIComponent(exampleUrl)}&expiration=0`,
+    `${restEndpoint}?url=${encodeURIComponent(orderUrl)}&expiration=0`,
     { headers, signal: controller.signal }
   );
 } catch (error) {
-  if (error.name == 'AbortError') {
-    response = new Response('Request timed out', { status: 504 });
-  } else {
-    response = new Response('Unknown error occurred', { status: 500 });
-  }
+  const hasTimedOut = error.name == 'AbortError';
+  response = new Response(
+    hasTimedOut ? 'Request timed out' : 'Unknown error occurred',
+    { status: hasTimedOut ? 504 : 500 }
+  );
 } finally {
   clearTimeout(timeoutId);
 }
 
 if (response.ok) {
-  console.log('API read successfully');
+  console.log('Order form read successfully');
 } else {
-  console.error('API read failure:', (await response.text()).trimEnd());
+  console.error('Order form read failure:', (await response.text()).trimEnd());
 
   process.exit(1);
 }
-
-await new Promise((resolve) => {
-  setTimeout(resolve, delayMs);
-});
 
 console.log(`Connecting via CDP with session ${sessionId} ...`);
 
@@ -57,28 +55,57 @@ const browser = await puppeteer.connect({
   headers
 });
 const page = (await browser.pages()).find((page) => {
-  return page.url().includes(exampleUrl);
+  return page.url().includes(orderUrl);
 });
 
 if (page) {
-  console.log('Title:', await page.title());
+  console.log(`Page "${await page.title()}" handed off successfully`);
 } else {
-  console.error('Session sharing failure');
+  console.error('Page handoff failure');
 
   process.exit(1);
 }
 
-response = await page.goto(ipUrl);
+await page.waitForSelector(sizeSelector);
+await page.click(sizeSelector);
+await new Promise((resolve) => {
+  setTimeout(resolve, delayMs);
+});
+await page.waitForSelector(toppingSelector);
+await page.click(toppingSelector);
+await new Promise((resolve) => {
+  setTimeout(resolve, delayMs);
+});
+await page.waitForSelector(buttonSelector);
+await Promise.all([
+  page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
+  page.click(buttonSelector)
+]);
 
-if (response?.ok()) {
-  console.log('Title:', await page.title());
-} else {
-  console.error(
-    'API driver failure:',
-    await page.evaluate(() => {
-      return document.body.innerText;
-    })
-  );
+try {
+  const data = JSON.parse(await page.evaluate(() => {
+    return document.body.innerText;
+  }));
+
+  if (
+    data.form &&
+    typeof data.form.size == 'string' &&
+    typeof data.form.topping == 'string'
+  ) {
+    console.log(
+      'Ordered ' +
+        data.form.size.toLowerCase() +
+        ' pizza with ' +
+        data.form.topping.toLowerCase() +
+        ' successfully'
+    );
+  } else {
+    console.error('Receipt was malformed');
+
+    process.exit(1);
+  }
+} catch (error) {
+  console.error('Receipt parse failure:', error.message);
 
   process.exit(1);
 }
