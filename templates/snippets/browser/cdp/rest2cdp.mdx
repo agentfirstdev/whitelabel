@@ -44,7 +44,10 @@ try {
     '&session=' +
     sessionId +
     '&expiration=0';
-  response = await fetch(url, { headers, signal: controller.signal });
+  response = await fetch(
+    url,
+    { headers, signal: controller.signal }
+  );
 } catch (error) {
   const hasTimedOut = error.name == 'AbortError';
   response = new Response(
