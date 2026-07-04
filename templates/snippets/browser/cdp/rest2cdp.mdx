@@ -28,7 +28,11 @@ const getCookies = (response) => {
   return keyvals.join('; ');
 };
 
-console.log(`Making REST request with session ${sessionId} ...`);
+console.log(
+  'Making REST request with session',
+  sessionId,
+  '...'
+);
 
 const controller = new AbortController();
 let timeoutId = setTimeout(() => {
@@ -70,7 +74,11 @@ if (response.ok) {
   process.exit(1);
 }
 
-console.log(`Connecting via CDP with session ${sessionId} ...`);
+console.log(
+  'Connecting via CDP with session',
+  sessionId,
+  '...'
+);
 
 timeoutId = setTimeout(() => {
   console.error('Connection timed out');
@@ -121,10 +129,10 @@ try {
     typeof data.form.topping == 'string'
   ) {
     console.log(
-      'Ordered ' +
-        data.form.size.toLowerCase() +
-        ' pizza with ' +
-        data.form.topping.toLowerCase()
+      'Ordered',
+      data.form.size.toLowerCase(),
+      'pizza with',
+      data.form.topping.toLowerCase()
     );
   } else {
     console.error('Receipt was malformed');
