@@ -12,15 +12,15 @@ import Authentication from '/snippets/whitelabel/authentication.mdx';
 import Url from '/snippets/whitelabel/browser/url.mdx';
 import Puppeteer from '/snippets/whitelabel/browser/cdp/puppeteer.mdx';
 import Playwright from '/snippets/whitelabel/browser/cdp/playwright.mdx';
+import Difficulty from '/snippets/whitelabel/browser/cdp/difficulty.mdx';
 import Goto from '/snippets/whitelabel/browser/cdp/goto.mdx';
-import E2E from '/snippets/whitelabel/browser/cdp/e2e.mdx';
 import Rest2Cdp from '/snippets/whitelabel/browser/cdp/rest2cdp.mdx';
-import Cdp2Rest from '/snippets/whitelabel/browser/cdp/cdp2rest.mdx';
 import Device from '/snippets/whitelabel/browser/device.mdx';
 import CdpDevice from '/snippets/whitelabel/browser/cdp/device.mdx';
 import Expiration from '/snippets/whitelabel/browser/expiration.mdx';
 import Session from '/snippets/whitelabel/browser/session.mdx';
 import CdpSession from '/snippets/whitelabel/browser/cdp/session.mdx';
+import E2E from '/snippets/whitelabel/browser/cdp/e2e.mdx';
 import Devices from '/snippets/whitelabel/browser/devices.mdx';
 
 <Reference endpoint='browser' />
@@ -86,6 +86,11 @@ to the browser service:
   <Playwright />
 </Accordion>
 
+The connection string takes geotargeting params and a subset of the [REST params](#rest-parameters),
+namely `difficulty`, `device`, and `session`:
+
+<Difficulty />
+
 After connecting, most of your framework's API (see the [Puppeteer reference](https://pptr.dev/api),
 [Playwright reference](https://playwright.dev/docs/api/class-playwright), et cetera) will be
 available:
@@ -103,12 +108,6 @@ over REST then interact with the page over CDP:
 
 <Accordion icon='terminal' title='View REST-to-CDP sample'>
   <Rest2Cdp />
-</Accordion>
-
-The reverse, handing off from CDP to REST, is equally doable:
-
-<Accordion icon='terminal' title='View CDP-to-REST sample'>
-  <Cdp2Rest />
 </Accordion>
 
 ### Device emulation

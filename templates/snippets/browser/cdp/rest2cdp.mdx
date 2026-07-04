@@ -5,31 +5,46 @@ import puppeteer from 'puppeteer';
 const restEndpoint = 'https://{{API_ENDPOINT}}/browser';
 const cdpEndpoint = 'wss://{{API_ENDPOINT}}/browser';
 const apiToken = process.env.{{COMPANY_SLUG}}_TOKEN;
+const headers = { Authorization: `Bearer ${apiToken}` };
 const sessionId = Date.now();
-const headers = {
-  Authorization: `Bearer ${apiToken}`,
-  Cookie: `session=${sessionId}`
-};
 const orderUrl = 'https://httpbin.org/forms/post';
 const sizeSelector = '[name="size"][value="small"]';
 const toppingSelector = '[name="topping"][value="cheese"]';
 const buttonSelector = 'button';
-const timeoutMs = 180_000;
+const requestTimeoutMs = 180_000;
+const connectionTimeoutMs = 10_000;
 const delayMs = 1_000;
+const delay = (ms) => {
+  return new Promise((resolve) => {
+    setTimeout(resolve, ms);
+  });
+};
+const getCookies = (response) => {
+  const cookies = response.headers.getSetCookie?.() ?? [];
+  const keyvals = cookies.map((cookie) => {
+    return cookie.split(';', 1)[0];
+  });
+
+  return keyvals.join('; ');
+};
 
 console.log(`Making REST request with session ${sessionId} ...`);
 
 const controller = new AbortController();
-const timeoutId = setTimeout(() => {
+let timeoutId = setTimeout(() => {
   controller.abort();
-}, timeoutMs);
+}, requestTimeoutMs);
 let response;
 
 try {
-  response = await fetch(
-    `${restEndpoint}?url=${encodeURIComponent(orderUrl)}&expiration=0`,
-    { headers, signal: controller.signal }
-  );
+  const url =
+    restEndpoint +
+    '?url=' +
+    encodeURIComponent(orderUrl) +
+    '&session=' +
+    sessionId +
+    '&expiration=0';
+  response = await fetch(url, { headers, signal: controller.signal });
 } catch (error) {
   const hasTimedOut = error.name == 'AbortError';
   response = new Response(
@@ -43,39 +58,46 @@ try {
 if (response.ok) {
   console.log('Order form read successfully');
 } else {
-  console.error('Order form read failure:', (await response.text()).trimEnd());
+  const text = await response.text();
+
+  console.error('Order form read failure:', text.trimEnd());
 
   process.exit(1);
 }
 
 console.log(`Connecting via CDP with session ${sessionId} ...`);
 
+timeoutId = setTimeout(() => {
+  console.error('Connection timed out');
+
+  process.exit(1);
+}, connectionTimeoutMs);
+const url = `${cdpEndpoint}?session=${sessionId}`;
 const browser = await puppeteer.connect({
-  browserWSEndpoint: cdpEndpoint,
-  headers
+  browserWSEndpoint: url,
+  headers: { ...headers, Cookie: getCookies(response) }
 });
+
+clearTimeout(timeoutId);
+
 const page = (await browser.pages()).find((page) => {
   return page.url().includes(orderUrl);
 });
 
 if (page) {
-  console.log(`"${await page.title()}" handed off successfully`);
+  console.log('Session handed off successfully');
 } else {
-  console.error('Page handoff failure');
+  console.error('Session handoff failure');
 
   process.exit(1);
 }
 
 await page.waitForSelector(sizeSelector);
 await page.click(sizeSelector);
-await new Promise((resolve) => {
-  setTimeout(resolve, delayMs);
-});
+await delay(delayMs);
 await page.waitForSelector(toppingSelector);
 await page.click(toppingSelector);
-await new Promise((resolve) => {
-  setTimeout(resolve, delayMs);
-});
+await delay(delayMs);
 await page.waitForSelector(buttonSelector);
 await Promise.all([
   page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
@@ -83,9 +105,10 @@ await Promise.all([
 ]);
 
 try {
-  const data = JSON.parse(await page.evaluate(() => {
+  const json = await page.evaluate(() => {
     return document.body.innerText;
-  }));
+  });
+  const data = JSON.parse(json);
 
   if (
     data.form &&
@@ -96,8 +119,7 @@ try {
       'Ordered ' +
         data.form.size.toLowerCase() +
         ' pizza with ' +
-        data.form.topping.toLowerCase() +
-        ' successfully'
+        data.form.topping.toLowerCase()
     );
   } else {
     console.error('Receipt was malformed');
