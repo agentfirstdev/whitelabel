@@ -546,7 +546,7 @@
           },
           {
             "name": "callback",
-            "description": "[Planned] The encoded HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the (prerequisite) async completion has been retrieved; any SQS queue must grant `sqs:SendMessage` permission to the `arn:aws:iam::180363035301:role/api-instance` AWS principal.",
+            "description": "The encoded HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the (prerequisite) async completion has been retrieved; any SQS queue must grant `sqs:SendMessage` permission to the `arn:aws:iam::180363035301:role/api-instance` AWS principal.",
             "schema": {
               "type": "string",
               "maxLength": 2047,
@@ -732,7 +732,7 @@
                     "example": 0
                   },
                   "callback": {
-                    "description": "[Planned] The HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the batch completions have been retrieved; any SQS queue must grant `sqs:SendMessage` permission to the `arn:aws:iam::180363035301:role/api-instance` AWS principal.",
+                    "description": "The HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the batch completions have been retrieved; any SQS queue must grant `sqs:SendMessage` permission to the `arn:aws:iam::180363035301:role/api-instance` AWS principal.",
                     "type": "string",
                     "maxLength": 2047,
                     "example": "https://webhook.site/02e249f8-1faf-4fab-bcf5-78ce683e85a8"
@@ -967,7 +967,7 @@
           },
           {
             "name": "callback",
-            "description": "[Planned] The encoded HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the (prerequisite) async content has been retrieved; any SQS queue must grant `sqs:SendMessage` permission to the `arn:aws:iam::180363035301:role/api-instance` AWS principal.",
+            "description": "The encoded HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the (prerequisite) async content has been retrieved; any SQS queue must grant `sqs:SendMessage` permission to the `arn:aws:iam::180363035301:role/api-instance` AWS principal.",
             "schema": {
               "type": "string",
               "maxLength": 2047,
@@ -1165,7 +1165,7 @@
                     "example": 0
                   },
                   "callback": {
-                    "description": "[Planned] The HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the batch content has been retrieved; any SQS queue must grant `sqs:SendMessage` permission to the `arn:aws:iam::180363035301:role/api-instance` AWS principal.",
+                    "description": "The HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the batch content has been retrieved; any SQS queue must grant `sqs:SendMessage` permission to the `arn:aws:iam::180363035301:role/api-instance` AWS principal.",
                     "type": "string",
                     "maxLength": 2047,
                     "example": "https://webhook.site/02e249f8-1faf-4fab-bcf5-78ce683e85a8"
