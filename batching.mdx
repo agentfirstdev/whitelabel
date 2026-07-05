@@ -1,0 +1,46 @@
+---
+title: Bulk processing
+icon: ball-pile
+iconType: light
+description: Process large batch jobs in parallel.
+---
+
+import { apiEndpoint } from '/snippets/whitelabel/config.mdx';
+import Search from '/snippets/whitelabel/search/batch.mdx';
+import Ai from '/snippets/whitelabel/ai/batch.mdx';
+import Browser from '/snippets/whitelabel/browser/batch.mdx';
+import Results from '/snippets/whitelabel/search/results.mdx';
+import Completions from '/snippets/whitelabel/ai/completions.mdx';
+import Content from '/snippets/whitelabel/browser/content.mdx';
+
+## Batch jobs
+
+The search, AI, and browser services each support a batch endpoint that will process up to **1,000
+requests** for you as JSON in a `POST` body:
+
+<Search />
+
+<Ai />
+
+<Browser />
+
+<Link href='search#search-parameters'>Search</Link>, <Link href='ai#chat-parameters'>AI</Link>, or
+<Link href='browser#rest-parameters'>browsing</Link> and
+<Link href='geotargeting'>geotargeting parameters</Link> can be converted into JSON:
+
+In response, the API will provide a job identifier and a confirmation of the request count:
+
+```json
+{
+  "id": "a0482596-c2ad-445a-a435-727002156a20",
+  "count": 37
+}
+```
+
+The job status can be requested at any time thereafter by passing back the ID:
+
+<Results />
+
+<Completions />
+
+<Content />
