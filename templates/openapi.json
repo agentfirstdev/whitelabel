@@ -112,6 +112,7 @@
             "schema": {
               "type": "string",
               "format": "uri",
+              "maxLength": 2047,
               "example": "https%3A%2F%2Fwww.google.com%2Fsearch%3Fq%3Dfoo%2Bbar%2Bbaz%26hl%3Dfr%26gl%3Dfr%26ie%3DUTF-8"
             },
             "in": "query"
@@ -139,6 +140,7 @@
             "description": "The encoded HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the (prerequisite) async results have been retrieved; any SQS queue must grant `sqs:SendMessage` permission to the `arn:aws:iam::180363035301:role/api-instance` AWS principal.",
             "schema": {
               "type": "string",
+              "maxLength": 2047,
               "example": "https%3A%2F%2Fwebhook.site%2F02e249f8-1faf-4fab-bcf5-78ce683e85a8"
             },
             "in": "query"
@@ -322,7 +324,7 @@
                   "urls": {
                     "description": "The URLs of the results pages to retrieve; if given, the URLs override any of the above params.",
                     "type": "array",
-                    "items": { "type": "string", "format": "uri" },
+                    "items": { "type": "string", "format": "uri", "maxLength": 2047 },
                     "minItems": 1,
                     "maxItems": 1000,
                     "example": ["https://www.google.com/search?q=foo+bar+baz&hl=fr&gl=fr&ie=UTF-8"]
@@ -344,6 +346,7 @@
                   "callback": {
                     "description": "The HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the batch results have been retrieved; any SQS queue must grant `sqs:SendMessage` permission to the `arn:aws:iam::180363035301:role/api-instance` AWS principal.",
                     "type": "string",
+                    "maxLength": 2047,
                     "example": "https://webhook.site/02e249f8-1faf-4fab-bcf5-78ce683e85a8"
                   }
                 },
@@ -546,6 +549,7 @@
             "description": "[Planned] The encoded HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the (prerequisite) async completion has been retrieved; any SQS queue must grant `sqs:SendMessage` permission to the `arn:aws:iam::180363035301:role/api-instance` AWS principal.",
             "schema": {
               "type": "string",
+              "maxLength": 2047,
               "example": "https%3A%2F%2Fwebhook.site%2F02e249f8-1faf-4fab-bcf5-78ce683e85a8"
             },
             "in": "query"
@@ -730,6 +734,7 @@
                   "callback": {
                     "description": "[Planned] The HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the batch completions have been retrieved; any SQS queue must grant `sqs:SendMessage` permission to the `arn:aws:iam::180363035301:role/api-instance` AWS principal.",
                     "type": "string",
+                    "maxLength": 2047,
                     "example": "https://webhook.site/02e249f8-1faf-4fab-bcf5-78ce683e85a8"
                   }
                 },
@@ -855,7 +860,12 @@
           {
             "name": "url",
             "description": "The URL of the page to browse; any unsafe characters require [URL encoding](https://developer.mozilla.org/en-US/docs/Glossary/Percent-encoding); either a URL or ID is required.",
-            "schema": { "type": "string", "format": "uri", "example": "https://example.com/" },
+            "schema": {
+              "type": "string",
+              "format": "uri",
+              "maxLength": 2047,
+              "example": "https://example.com/"
+            },
             "in": "query"
           },
           {
@@ -960,6 +970,7 @@
             "description": "[Planned] The encoded HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the (prerequisite) async content has been retrieved; any SQS queue must grant `sqs:SendMessage` permission to the `arn:aws:iam::180363035301:role/api-instance` AWS principal.",
             "schema": {
               "type": "string",
+              "maxLength": 2047,
               "example": "https%3A%2F%2Fwebhook.site%2F02e249f8-1faf-4fab-bcf5-78ce683e85a8"
             },
             "in": "query"
@@ -1073,7 +1084,7 @@
                   "urls": {
                     "description": "The URLs of the pages to browse.",
                     "type": "array",
-                    "items": { "type": "string", "format": "uri" },
+                    "items": { "type": "string", "format": "uri", "maxLength": 2047 },
                     "minItems": 1,
                     "maxItems": 1000,
                     "example": [
@@ -1156,6 +1167,7 @@
                   "callback": {
                     "description": "[Planned] The HTTP or HTTPS callback URL or Amazon SQS queue URL or ARN to notify when the batch content has been retrieved; any SQS queue must grant `sqs:SendMessage` permission to the `arn:aws:iam::180363035301:role/api-instance` AWS principal.",
                     "type": "string",
+                    "maxLength": 2047,
                     "example": "https://webhook.site/02e249f8-1faf-4fab-bcf5-78ce683e85a8"
                   }
                 },
@@ -1833,10 +1845,10 @@
           "section": { "$ref": "#/components/schemas/Section" },
           "feature": { "type": "integer", "minimum": 1 },
           "position": { "type": "integer", "minimum": 1 },
-          "url": { "type": "string" },
+          "url": { "type": "string", "format": "uri" },
           "title": { "type": "string" },
           "site": { "type": "string" },
-          "visibleUrl": { "type": "string" },
+          "visibleUrl": { "type": "string", "format": "uri" },
           "snippet": { "type": "string" },
           "sitelinks": { "type": "array", "items": { "$ref": "#/components/schemas/Sitelink" } }
         },
@@ -1889,7 +1901,7 @@
         "type": "object",
         "properties": {
           "position": { "type": "integer", "minimum": 1 },
-          "url": { "type": "string" },
+          "url": { "type": "string", "format": "uri" },
           "title": { "type": "string" },
           "snippet": { "type": "string" }
         },
@@ -2042,6 +2054,7 @@
             "description": "The URL of the archived requests, which is available on job completion.",
             "type": "string",
             "format": "uri",
+            "maxLength": 2047,
             "example": null
           }
         },
