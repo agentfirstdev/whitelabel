@@ -18,11 +18,11 @@ import Content from '/snippets/whitelabel/browser/batches/id.mdx';
 Each service has a batch endpoint that accepts a JSON array of up to **1,000 requests** in a `POST`
 body:
 
-<Terms />
+<Prompts />
 
 <AccordionGroup>
-  <Accordion icon='terminal' title='View AI example'>
-    <Prompts />
+  <Accordion icon='terminal' title='View search example'>
+    <Terms />
   </Accordion>
 
   <Accordion icon='terminal' title='View browser example'>
@@ -32,9 +32,8 @@ body:
 
 <Link href='search#search-parameters'>Search</Link>, <Link href='ai#chat-parameters'>AI</Link>, or
 <Link href='browser#rest-parameters'>browsing</Link> and
-<Link href='geotargeting'>geotargeting parameters</Link> can be included in the body.
-
-In response, the API will provide a job identifier and confirmation of the request count:
+<Link href='geotargeting'>geotargeting parameters</Link> can be included in the body. In response,
+the API will provide a job identifier and confirmation of the request count:
 
 ```json
 {
@@ -43,13 +42,13 @@ In response, the API will provide a job identifier and confirmation of the reque
 }
 ```
 
-The job status can be requested at any time thereafter by passing back the ID:
+The job status can be requested any time thereafter by passing back the ID:
 
-<Results />
+<Completions />
 
 <AccordionGroup>
-  <Accordion icon='terminal' title='View AI example'>
-    <Completions />
+  <Accordion icon='terminal' title='View search example'>
+    <Results />
   </Accordion>
 
   <Accordion icon='terminal' title='View browser example'>
