@@ -6,9 +6,9 @@ description: Defer responses for later retrieval.
 ---
 
 import { apiEndpoint } from '/snippets/whitelabel/config.mdx';
-import Search from '/snippets/whitelabel/search/mode.mdx';
-import Ai from '/snippets/whitelabel/ai/mode.mdx';
-import Browser from '/snippets/whitelabel/browser/mode.mdx';
+import Terms from '/snippets/whitelabel/search/mode.mdx';
+import Prompt from '/snippets/whitelabel/ai/mode.mdx';
+import Url from '/snippets/whitelabel/browser/mode.mdx';
 import Results from '/snippets/whitelabel/search/id.mdx';
 import Completion from '/snippets/whitelabel/ai/id.mdx';
 import Content from '/snippets/whitelabel/browser/id.mdx';
@@ -17,24 +17,22 @@ import Content from '/snippets/whitelabel/browser/id.mdx';
 
 An API call that includes the `mode=async` key-value pair will be satisfied asynchronously:
 
-<Search />
+<Terms />
 
-<Ai />
+<AccordionGroup>
+  <Accordion icon='terminal' title='View AI example'>
+    <Prompt />
+  </Accordion>
 
-<Browser />
+  <Accordion icon='terminal' title='View browser example'>
+    <Url />
+  </Accordion>
+</AccordionGroup>
 
 In response, the API will provide a JSON job identifier:
 
 ```json
-{ "id": "078fd246-f0f7-44a0-aabb-cadd7b12454f" }
-```
-
-```json
 { "id": "1851dab8-4619-409f-893f-47dd3a180bc3" }
-```
-
-```json
-{ "id": "21cb972e-0e0f-47bb-9ce9-65b99e9cee77" }
 ```
 
 The job results, completion, or content or job status can be requested at any time thereafter by
@@ -42,9 +40,15 @@ passing back the ID:
 
 <Results />
 
-<Completion />
+<AccordionGroup>
+  <Accordion icon='terminal' title='View AI example'>
+    <Completion />
+  </Accordion>
 
-<Content />
+  <Accordion icon='terminal' title='View browser example'>
+    <Content />
+  </Accordion>
+</AccordionGroup>
 
 The results, completion, or content, if ready, will be returned in the same format as <Link
 href='search#response-format'>synchronous results</Link>, a <Link
